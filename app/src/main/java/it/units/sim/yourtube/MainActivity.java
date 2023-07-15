@@ -17,17 +17,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.Arrays;
-import java.util.List;
-
-import it.units.sim.yourtube.api.RequestThread;
-import it.units.sim.yourtube.api.SubscriptionListCallback;
-import it.units.sim.yourtube.api.SubscriptionListRequest;
-import it.units.sim.yourtube.api.YouTubeApiRequest;
-import it.units.sim.yourtube.model.UserSubscription;
 
 public class MainActivity extends AppCompatActivity {
     private GoogleAccountCredential googleAccountCredential;
-
     private SharedPreferences defaultSharedPreferences;
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
@@ -37,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         this.defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -49,9 +40,8 @@ public class MainActivity extends AppCompatActivity {
         // if null go to auth activity
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        NavController navController = null;
         if (navHostFragment != null) {
-            navController = navHostFragment.getNavController();
+            NavController navController = navHostFragment.getNavController();
             BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
