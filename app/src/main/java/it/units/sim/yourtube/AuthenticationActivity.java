@@ -51,6 +51,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                 .setBackOff(new ExponentialBackOff());
 
         if (isUserLoggedIn()) {
+            updateAccountName(defaultSharedPreferences.getString(PREF_ACCOUNT_NAME, null));
             googleCredentialManager.setCredential(googleAccountCredential);
             openMainActivity();
         }
