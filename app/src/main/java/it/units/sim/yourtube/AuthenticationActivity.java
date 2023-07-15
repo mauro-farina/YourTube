@@ -32,31 +32,33 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
 
-    private GoogleAccountCredential googleAccountCredential;
+    private GoogleAccountCredential credential;
     private SharedPreferences defaultSharedPreferences;
     private ActivityResultLaunchers activityResultLaunchers;
-    private GoogleCredentialManager googleCredentialManager;
+    private GoogleCredentialManager credentialManager;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
 
-        this.defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        googleCredentialManager = GoogleCredentialManager.getInstance();
+        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        credentialManager = GoogleCredentialManager.getInstance();
 
         // Initialize credentials and service object.
-        googleAccountCredential = GoogleAccountCredential
+        credential = GoogleAccountCredential
                 .usingOAuth2(getApplicationContext(), Arrays.asList(YOUTUBE_API_SCOPES))
                 .setBackOff(new ExponentialBackOff());
 
         if (isUserLoggedIn()) {
-            updateAccountName(defaultSharedPreferences.getString(PREF_ACCOUNT_NAME, null));
-            googleCredentialManager.setCredential(googleAccountCredential);
+            String accountName = getAccountName();
+            credential.setSelectedAccountName(accountName);
+            credentialManager.setCredential(credential);
             openMainActivity();
         }
 
-        Button loginButton = findViewById(R.id.loginButton);
+        loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(this);
 
         // register for activities results
@@ -64,21 +66,23 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     }
 
     /**
-     * Opens MainActivity, assumes user's authentication is verified.
+     * Opens MainActivity. Assumes user's authentication is verified.
      */
     private void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("googleAccount", googleAccountCredential.getSelectedAccountName());
         startActivity(intent);
     }
 
     /**
-     * Checks whether a 'userName' preference has previously been set in the preferences
-     * @return true if preferences contain 'userName', false otherwise
+     * Checks whether a 'accountName' preference has previously been set in the preferences
+     * @return true if preferences contain 'accountName', false otherwise
      */
     private boolean isUserLoggedIn() {
-        String accountName = defaultSharedPreferences.getString(PREF_ACCOUNT_NAME, null);
-        return accountName != null;
+        return getAccountName() != null;
+    }
+
+    private String getAccountName() {
+        return defaultSharedPreferences.getString(PREF_ACCOUNT_NAME, null);
     }
 
     /**
@@ -103,27 +107,17 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
      * Requires GET_ACCOUNTS permission.
      */
     private void chooseGoogleAccount() {
-        Intent chooseGoogleAccountIntent = googleAccountCredential.newChooseAccountIntent();
+        Intent chooseGoogleAccountIntent = credential.newChooseAccountIntent();
         activityResultLaunchers.chooseGoogleAccount(chooseGoogleAccountIntent);
     }
 
-    /**
-     * Updates activity's preferences with the new value for PREF_ACCOUNT_NAME.
-     * @param accountName the account name to set in the preferences
-     */
-    private void updateAccountName(String accountName) {
-        googleAccountCredential.setSelectedAccountName(accountName);
-        SharedPreferences.Editor editor = defaultSharedPreferences.edit();
-        editor.putString(PREF_ACCOUNT_NAME, accountName);
-        editor.apply();
-    }
-
     private void login(String accountName) {
-        googleAccountCredential.setSelectedAccountName(accountName);
-        googleCredentialManager.setCredential(googleAccountCredential);
+        credential.setSelectedAccountName(accountName);
+        credentialManager.setCredential(credential);
         SharedPreferences.Editor editor = defaultSharedPreferences.edit();
         editor.putString(PREF_ACCOUNT_NAME, accountName);
         editor.apply();
+        openMainActivity();
     }
 
     /**
@@ -167,7 +161,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
      */
     void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        // works, but requires a manual dialog
+        // TODO: Informative Dialog
         Intent intent = apiAvailability.getErrorResolutionIntent(this, connectionStatusCode, "str");
         activityResultLaunchers.googlePlayServicesAvailability.launch(intent);
     }
@@ -207,9 +201,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                         String chosenAccount = result.getData()
                                 .getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                         if (chosenAccount != null) {
-                            updateAccountName(chosenAccount);
-                            googleCredentialManager.setCredential(googleAccountCredential);
-                            openMainActivity();
+                            login(chosenAccount);
                         }
                     }
                 }
@@ -220,8 +212,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                         new ActivityResultContracts.RequestPermission(),
                         isGranted -> {
                             if (isGranted) {
-                                // FEEDBACK
-                                System.out.println("GET_ACCOUNTS granted");
+                                onClick(loginButton);
                             } else {
                                 // FEEDBACK
                                 System.out.println
