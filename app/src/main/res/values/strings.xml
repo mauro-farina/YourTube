@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">YourTube</string>
+    <string name="app_requires_google_play_services">
+        This app requires Google Play Services.
+        Please install Google Play Services on your device and relaunch this app.
+    </string>
+    <string name="app_requires_google_account_access">
+        This app needs to access your Google account (via Contacts).
+    </string>
+    <string name="no_network_connection">No network connection available.</string>
+    <string name="welcome_text">YourTube</string>
+    <string name="login_button_text">Login with Google</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bottom_nav_videos">Videos</string>
+    <string name="bottom_nav_subscriptions">Subscriptions</string>
+    <string name="bottom_nav_categories">Categories</string>
+
+</resources>

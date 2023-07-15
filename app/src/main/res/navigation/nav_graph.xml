@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/videosFragment">
+
+    <fragment
+        android:id="@+id/videosFragment"
+        android:name="it.units.sim.yourtube.VideosFragment"
+        android:label="fragment_homepage"
+        tools:layout="@layout/fragment_videos" >
+        <action
+            android:id="@+id/action_homepage_to_subscriptions"
+            app:destination="@id/subscriptionsFragment" />
+        <action
+            android:id="@+id/action_homepage_to_categories"
+            app:destination="@id/categoriesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/subscriptionsFragment"
+        android:name="it.units.sim.yourtube.SubscriptionsFragment"
+        android:label="fragment_subscriptions"
+        tools:layout="@layout/fragment_subscriptions" >
+        <action
+            android:id="@+id/action_subscriptions_to_categories"
+            app:destination="@id/categoriesFragment" />
+        <action
+            android:id="@+id/action_subscriptions_to_homepage"
+            app:destination="@id/videosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="it.units.sim.yourtube.CategoriesFragment"
+        android:label="fragment_categories"
+        tools:layout="@layout/fragment_categories" >
+        <action
+            android:id="@+id/action_categories_to_subscriptions"
+            app:destination="@id/subscriptionsFragment" />
+        <action
+            android:id="@+id/action_categories_to_homepage"
+            app:destination="@id/videosFragment" />
+    </fragment>
+
+</navigation>
