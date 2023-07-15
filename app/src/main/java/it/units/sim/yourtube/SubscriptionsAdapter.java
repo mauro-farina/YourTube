@@ -16,12 +16,12 @@ import java.util.List;
 
 import it.units.sim.yourtube.model.UserSubscription;
 
-public class SubscriptionsListAdapter extends RecyclerView.Adapter<SubscriptionsListAdapter.ViewHolder> {
+public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdapter.ViewHolder> {
 
 
     private List<UserSubscription> subscriptionsList;
 
-    public SubscriptionsListAdapter(List<UserSubscription> subscriptionsList) {
+    public SubscriptionsAdapter(List<UserSubscription> subscriptionsList) {
         this.subscriptionsList = subscriptionsList;
     }
 
@@ -52,7 +52,7 @@ public class SubscriptionsListAdapter extends RecyclerView.Adapter<Subscriptions
      */
     @NonNull
     @Override
-    public SubscriptionsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SubscriptionsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.list_item_subscription, parent, false);
@@ -81,7 +81,7 @@ public class SubscriptionsListAdapter extends RecyclerView.Adapter<Subscriptions
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull SubscriptionsListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SubscriptionsAdapter.ViewHolder holder, int position) {
         TextView channelNameTextView = holder.getChannelNameTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
         channelNameTextView.setText(subscriptionsList.get(position).getChannelName());

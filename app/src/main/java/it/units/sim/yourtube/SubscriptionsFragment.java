@@ -30,7 +30,7 @@ public class SubscriptionsFragment extends Fragment {
 
     private List<UserSubscription> userSubscriptionsList;
     private RecyclerView recyclerView;
-    private SubscriptionsListAdapter adapter;
+    private SubscriptionsAdapter adapter;
 
     public SubscriptionsFragment() {
         super(R.layout.fragment_subscriptions);
@@ -51,7 +51,7 @@ public class SubscriptionsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.subscriptions_recycler_view);
-        adapter = new SubscriptionsListAdapter(userSubscriptionsList);
+        adapter = new SubscriptionsAdapter(userSubscriptionsList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         fetchUserSubscriptions();
