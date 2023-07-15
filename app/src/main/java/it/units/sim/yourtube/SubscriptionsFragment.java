@@ -22,7 +22,6 @@ import java.util.List;
 
 import it.units.sim.yourtube.api.RequestCallback;
 import it.units.sim.yourtube.api.RequestThread;
-import it.units.sim.yourtube.api.SubscriptionListCallback;
 import it.units.sim.yourtube.api.SubscriptionListRequest;
 import it.units.sim.yourtube.api.YouTubeApiRequest;
 import it.units.sim.yourtube.model.UserSubscription;

@@ -25,8 +25,8 @@ import com.google.api.services.youtube.YouTubeScopes;
 import java.util.Arrays;
 import java.util.List;
 
+import it.units.sim.yourtube.api.RequestCallback;
 import it.units.sim.yourtube.api.RequestThread;
-import it.units.sim.yourtube.api.SubscriptionListCallback;
 import it.units.sim.yourtube.api.SubscriptionListRequest;
 import it.units.sim.yourtube.api.YouTubeApiRequest;
 import it.units.sim.yourtube.model.UserSubscription;
@@ -94,7 +94,7 @@ public class PlaygroundActivity extends AppCompatActivity
             // mCredential.getSelectedAccountName() = "zyzz@gmail.com"
             YouTubeApiRequest<List<UserSubscription>> subscriptionRequest =
                     new SubscriptionListRequest(mCredential);
-            SubscriptionListCallback subscriptionListCallback = subscriptionList -> {
+            RequestCallback<List<UserSubscription>> subscriptionListCallback =  subscriptionList -> {
                 // update subscriptionList
                 StringBuilder stringBuilder = new StringBuilder();
                 subscriptionList.forEach(
