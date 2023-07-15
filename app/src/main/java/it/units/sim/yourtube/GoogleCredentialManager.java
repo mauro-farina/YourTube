@@ -1,8 +1,6 @@
 package it.units.sim.yourtube;
 
-import com.google.api.client.googleapis.extensions.android.accounts.GoogleAccountManager;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.services.youtube.YouTubeScopes;
 
 public class GoogleCredentialManager {
     private static GoogleCredentialManager instance;
