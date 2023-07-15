@@ -35,6 +35,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private GoogleAccountCredential googleAccountCredential;
     private SharedPreferences defaultSharedPreferences;
     private ActivityResultLaunchers activityResultLaunchers;
+    private GoogleCredentialManager googleCredentialManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_authentication);
 
         this.defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        googleCredentialManager = GoogleCredentialManager.getInstance();
 
         // Initialize credentials and service object.
         googleAccountCredential = GoogleAccountCredential
@@ -49,6 +51,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                 .setBackOff(new ExponentialBackOff());
 
         if (isUserLoggedIn()) {
+            googleCredentialManager.setCredential(googleAccountCredential);
             openMainActivity();
         }
 
@@ -109,6 +112,14 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
      */
     private void updateAccountName(String accountName) {
         googleAccountCredential.setSelectedAccountName(accountName);
+        SharedPreferences.Editor editor = defaultSharedPreferences.edit();
+        editor.putString(PREF_ACCOUNT_NAME, accountName);
+        editor.apply();
+    }
+
+    private void login(String accountName) {
+        googleAccountCredential.setSelectedAccountName(accountName);
+        googleCredentialManager.setCredential(googleAccountCredential);
         SharedPreferences.Editor editor = defaultSharedPreferences.edit();
         editor.putString(PREF_ACCOUNT_NAME, accountName);
         editor.apply();
@@ -196,6 +207,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                                 .getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                         if (chosenAccount != null) {
                             updateAccountName(chosenAccount);
+                            googleCredentialManager.setCredential(googleAccountCredential);
                             openMainActivity();
                         }
                     }

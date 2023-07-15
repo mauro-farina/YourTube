@@ -7,17 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.util.ExponentialBackOff;
-import com.google.api.services.youtube.YouTubeScopes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import it.units.sim.yourtube.api.RequestCallback;
@@ -58,9 +54,9 @@ public class SubscriptionsFragment extends Fragment {
     }
 
     private void fetchUserSubscriptions() {
-        GoogleAccountCredential mCredential = getGoogleAccountCredential();
+        GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         YouTubeApiRequest<List<UserSubscription>> subscriptionRequest =
-                new SubscriptionListRequest(mCredential);
+                new SubscriptionListRequest(credential);
         RequestCallback<List<UserSubscription>> subscriptionListCallback = subscriptionList -> {
             this.userSubscriptionsList = subscriptionList;
             adapter.setSubscriptionsList(subscriptionList);
@@ -70,14 +66,4 @@ public class SubscriptionsFragment extends Fragment {
         rThread.start();
     }
 
-    private GoogleAccountCredential getGoogleAccountCredential() {
-        final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
-        GoogleAccountCredential mCredential = GoogleAccountCredential
-                .usingOAuth2(getActivity().getApplicationContext(), Arrays.asList(YOUTUBE_API_SCOPES))
-                .setBackOff(new ExponentialBackOff());
-        String accountName = PreferenceManager.getDefaultSharedPreferences
-                (getActivity()).getString("accountName", null);
-        mCredential.setSelectedAccountName(accountName);
-        return mCredential;
-    }
 }
