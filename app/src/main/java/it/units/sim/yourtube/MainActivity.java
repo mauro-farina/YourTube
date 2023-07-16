@@ -12,15 +12,14 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
-    private GoogleAccountCredential googleAccountCredential;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        googleAccountCredential = GoogleCredentialManager.getInstance().getCredential();
-        if (googleAccountCredential.getSelectedAccountName() == null) {
+        GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
+        if (credential.getSelectedAccountName() == null) {
             finish();
             Intent intent = new Intent(this, AuthenticationActivity.class);
             startActivity(intent);
