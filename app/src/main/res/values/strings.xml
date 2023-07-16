@@ -15,5 +15,6 @@
     <string name="bottom_nav_videos">Videos</string>
     <string name="bottom_nav_subscriptions">Subscriptions</string>
     <string name="bottom_nav_categories">Categories</string>
+    <string name="channel_thumbnail_img_placeholder">Channel thumbnail</string>
 
 </resources>
