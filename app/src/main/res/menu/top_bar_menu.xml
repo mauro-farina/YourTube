@@ -7,7 +7,7 @@
         android:icon="@drawable/icon_logout"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/subscriptionsFragment"
+        android:id="@+id/settingsButton"
         android:title="@string/settings"
         android:icon="@drawable/icon_settings"
         app:showAsAction="always" />
