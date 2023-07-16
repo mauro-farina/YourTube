@@ -69,6 +69,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
      * Opens MainActivity. Assumes user's authentication is verified.
      */
     private void openMainActivity() {
+        finish();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
