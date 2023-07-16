@@ -3,20 +3,13 @@ package it.units.sim.yourtube;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
-import com.google.api.client.util.ExponentialBackOff;
-
-import com.google.api.services.youtube.YouTubeScopes;
-
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
-
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     private GoogleAccountCredential googleAccountCredential;
@@ -27,7 +20,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         googleAccountCredential = GoogleCredentialManager.getInstance().getCredential();
-        // if null go to auth activity
+        if (googleAccountCredential.getSelectedAccountName() == null) {
+            finish();
+            Intent intent = new Intent(this, AuthenticationActivity.class);
+            startActivity(intent);
+        }
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
