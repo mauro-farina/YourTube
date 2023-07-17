@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTubeScopes;
@@ -183,9 +184,17 @@ public class AuthenticationActivity extends AppCompatActivity
      */
     void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        // TODO: Informative Dialog
-        Intent intent = apiAvailability.getErrorResolutionIntent(this, connectionStatusCode, "str");
-        activityResultLaunchers.googlePlayServicesAvailability.launch(intent);
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.app_name))
+                .setMessage(getString(R.string.app_requires_google_play_services))
+                .setPositiveButton(("OK"), (dialog, which) -> {
+                    Intent intent = apiAvailability.getErrorResolutionIntent(this, connectionStatusCode, "str");
+                    activityResultLaunchers.googlePlayServicesAvailability.launch(intent);
+                })
+                .setNegativeButton("NO", (dialog, which) -> Toast
+                        .makeText(this, getString(R.string.app_requires_google_play_services), Toast.LENGTH_SHORT)
+                        .show())
+                .show();
     }
 
     @Override
