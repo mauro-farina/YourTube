@@ -31,13 +31,13 @@ import com.google.api.services.youtube.YouTubeScopes;
 import java.util.Arrays;
 
 import it.units.sim.yourtube.api.ChannelInfoRequest;
-import it.units.sim.yourtube.api.MissingAuthorizationCallback;
+import it.units.sim.yourtube.api.AuthorizationCallback;
 import it.units.sim.yourtube.api.RequestCallback;
 import it.units.sim.yourtube.api.RequestThread;
 import it.units.sim.yourtube.api.YouTubeApiRequest;
 
 public class AuthenticationActivity extends AppCompatActivity
-        implements View.OnClickListener, MissingAuthorizationCallback {
+        implements View.OnClickListener, AuthorizationCallback {
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };

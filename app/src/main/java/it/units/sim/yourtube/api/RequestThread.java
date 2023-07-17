@@ -9,12 +9,12 @@ public class RequestThread<T> extends Thread {
 
     private final YouTubeApiRequest<T> request;
     private final RequestCallback<T> callback;
-    private final MissingAuthorizationCallback authorizationCallback;
+    private final AuthorizationCallback authorizationCallback;
     public RequestThread(YouTubeApiRequest<T> request, RequestCallback<T> callback) {
         this(request, callback, null);
     }
 
-    public RequestThread(YouTubeApiRequest<T> request, RequestCallback<T> callback, MissingAuthorizationCallback authorizationCallback) {
+    public RequestThread(YouTubeApiRequest<T> request, RequestCallback<T> callback, AuthorizationCallback authorizationCallback) {
         this.request = request;
         this.callback = callback;
         this.authorizationCallback = authorizationCallback;
