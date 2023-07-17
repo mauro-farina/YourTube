@@ -1,5 +1,6 @@
 package it.units.sim.yourtube;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
         this.subscriptionsList = new ArrayList<>();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setSubscriptionsList(List<UserSubscription> subscriptionsList) {
         this.subscriptionsList = subscriptionsList;
         notifyDataSetChanged();
