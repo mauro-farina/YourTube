@@ -24,9 +24,8 @@ import it.units.sim.yourtube.model.UserSubscription;
 
 public class SubscriptionsFragment extends Fragment {
 
-    private RecyclerView recyclerView;
     private SubscriptionsAdapter adapter;
-    private MutableLiveData<List<UserSubscription>> myData = new MutableLiveData<>();
+    private final MutableLiveData<List<UserSubscription>> myData = new MutableLiveData<>();
 
     public SubscriptionsFragment() {
         super(R.layout.fragment_subscriptions);
@@ -40,15 +39,16 @@ public class SubscriptionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_subscriptions, container, false);
+        View view = inflater.inflate(R.layout.fragment_subscriptions, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.subscriptions_recycler_view);
+        adapter = new SubscriptionsAdapter();
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        recyclerView = view.findViewById(R.id.subscriptions_recycler_view);
-        adapter = new SubscriptionsAdapter();
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         myData.observe(getViewLifecycleOwner(), subscriptionList -> {
             // onChanged(): Update the adapter with the new List<UserSubscription>
             adapter.setSubscriptionsList(subscriptionList);
@@ -60,8 +60,7 @@ public class SubscriptionsFragment extends Fragment {
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         YouTubeApiRequest<List<UserSubscription>> subscriptionRequest =
                 new SubscriptionListRequest(credential);
-        RequestCallback<List<UserSubscription>> subscriptionListCallback =
-                subscriptionList -> myData.setValue(subscriptionList);
+        RequestCallback<List<UserSubscription>> subscriptionListCallback = myData::setValue;
 
         RequestThread<List<UserSubscription>> rThread =
                 new RequestThread<>(subscriptionRequest, subscriptionListCallback);

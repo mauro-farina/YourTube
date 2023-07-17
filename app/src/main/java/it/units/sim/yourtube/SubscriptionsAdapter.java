@@ -57,8 +57,7 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.list_item_subscription, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     /**
