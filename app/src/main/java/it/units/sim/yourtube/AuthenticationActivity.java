@@ -27,7 +27,14 @@ import com.google.api.services.youtube.YouTubeScopes;
 
 import java.util.Arrays;
 
-public class AuthenticationActivity extends AppCompatActivity implements View.OnClickListener {
+import it.units.sim.yourtube.api.ChannelInfoRequest;
+import it.units.sim.yourtube.api.MissingAuthorizationCallback;
+import it.units.sim.yourtube.api.RequestCallback;
+import it.units.sim.yourtube.api.RequestThread;
+import it.units.sim.yourtube.api.YouTubeApiRequest;
+
+public class AuthenticationActivity extends AppCompatActivity
+        implements View.OnClickListener, MissingAuthorizationCallback {
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
@@ -112,13 +119,27 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         activityResultLaunchers.chooseGoogleAccount(chooseGoogleAccountIntent);
     }
 
+    private void getAuthorizationIfMissing() {
+        YouTubeApiRequest<String> request =
+                new ChannelInfoRequest(credential);
+        RequestCallback<String> callback = subscriptionList -> {
+            // empty
+        };
+        RequestThread<String> rThread = new RequestThread<>(request, callback, this);
+        rThread.start();
+    }
+
+    @Override
+    public void onMissingAuthorization(Intent intent) {
+        activityResultLaunchers.getAuthorizationActivity.launch(intent);
+    }
+
     private void login(String accountName) {
         credential.setSelectedAccountName(accountName);
         credentialManager.setCredential(credential);
         SharedPreferences.Editor editor = defaultSharedPreferences.edit();
         editor.putString(PREF_ACCOUNT_NAME, accountName);
         editor.apply();
-        openMainActivity();
     }
 
     /**
@@ -190,6 +211,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         private final ActivityResultLauncher<Intent> chooseAccount;
         private final ActivityResultLauncher<String> requestPermission;
         private final ActivityResultLauncher<Intent> googlePlayServicesAvailability;
+        private final ActivityResultLauncher<Intent> getAuthorizationActivity;
 
         private ActivityResultLaunchers() {
             chooseAccount = registerForActivityResult(
@@ -203,6 +225,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                                 .getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                         if (chosenAccount != null) {
                             login(chosenAccount);
+                            getAuthorizationIfMissing();
                         }
                     }
                 }
@@ -237,6 +260,18 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                             }
                         }
                 );
+
+            getAuthorizationActivity = registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK) {
+                            openMainActivity();
+                        } else {
+                            System.out.println("oh man :c");
+                            // TODO: Dialog
+                        }
+                    }
+            );
         }
 
         private void chooseGoogleAccount(Intent intent) {
