@@ -22,10 +22,6 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
 
     private List<UserSubscription> subscriptionsList;
 
-    public SubscriptionsAdapter(List<UserSubscription> subscriptionsList) {
-        this.subscriptionsList = subscriptionsList;
-    }
-
     public SubscriptionsAdapter() {
         this.subscriptionsList = new ArrayList<>();
     }
