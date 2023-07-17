@@ -248,6 +248,16 @@ public class AuthenticationActivity extends AppCompatActivity
                                 onClick(loginButton);
                             } else {
                                 // FEEDBACK
+                                new MaterialAlertDialogBuilder(AuthenticationActivity.this)
+                                        .setTitle(getString(R.string.app_name))
+                                        .setMessage(getString(R.string.app_requires_google_account_access))
+//                                        .setPositiveButton("OK", (dialog, which) -> {
+//                                            requestGetAccountsPermission();
+//                                        })
+                                        .setNeutralButton("CLOSE", (dialog, which) -> {
+                                            // no actions required
+                                        })
+                                        .show();
                                 System.out.println
                                         (getString(R.string.app_requires_google_account_access));
                             }
@@ -285,6 +295,9 @@ public class AuthenticationActivity extends AppCompatActivity
 
         private void chooseGoogleAccount(Intent intent) {
             chooseAccount.launch(intent);
+        }
+        private void requestGetAccountsPermission() {
+            requestPermission.launch("GET_ACCOUNTS");
         }
     }
 }
