@@ -13,8 +13,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -251,10 +253,14 @@ public class AuthenticationActivity extends AppCompatActivity
                                 new MaterialAlertDialogBuilder(AuthenticationActivity.this)
                                         .setTitle(getString(R.string.app_name))
                                         .setMessage(getString(R.string.app_requires_google_account_access))
-//                                        .setPositiveButton("OK", (dialog, which) -> {
-//                                            requestGetAccountsPermission();
-//                                        })
-                                        .setNeutralButton("CLOSE", (dialog, which) -> {
+                                        .setPositiveButton("OK", (dialog, which) -> {
+                                            Intent intent = new Intent();
+                                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                            intent.setData(uri);
+                                            startActivity(intent);
+                                        })
+                                        .setNegativeButton("CLOSE", (dialog, which) -> {
                                             // no actions required
                                         })
                                         .show();
