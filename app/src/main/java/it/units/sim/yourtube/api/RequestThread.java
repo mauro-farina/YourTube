@@ -28,6 +28,7 @@ public class RequestThread<T> extends Thread {
             handler.post(() -> {
                 // Perform UI operations in main thread
                 callback.onResponse(result);
+                authorizationCallback.onGrantedAuthorization();
             });
         } catch (UserRecoverableAuthIOException e) {
             System.out.println("missing authorization to access private data...");

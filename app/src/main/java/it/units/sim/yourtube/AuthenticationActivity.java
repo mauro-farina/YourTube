@@ -137,6 +137,11 @@ public class AuthenticationActivity extends AppCompatActivity
         activityResultLaunchers.getAuthorizationActivity.launch(intent);
     }
 
+    @Override
+    public void onGrantedAuthorization() {
+        openMainActivity();
+    }
+
     private void login(String accountName) {
         credential.setSelectedAccountName(accountName);
         credentialManager.setCredential(credential);
