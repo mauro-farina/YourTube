@@ -1,6 +1,7 @@
 package it.units.sim.yourtube.model;
 
 import com.google.api.services.youtube.model.PlaylistItem;
+import com.google.api.services.youtube.model.PlaylistItemSnippet;
 
 public class VideoData {
     private final String title;
@@ -13,11 +14,11 @@ public class VideoData {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public VideoData(PlaylistItem playlistItem) {
+    public VideoData(PlaylistItemSnippet playlistItemSnippet) {
         this(
-                playlistItem.getSnippet().getTitle(),
-                playlistItem.getSnippet().getResourceId().getVideoId(),
-                playlistItem.getSnippet().getThumbnails().getStandard().getUrl()
+                playlistItemSnippet.getTitle(),
+                playlistItemSnippet.getResourceId().getVideoId(),
+                playlistItemSnippet.getThumbnails().getStandard().getUrl()
         );
     }
 
