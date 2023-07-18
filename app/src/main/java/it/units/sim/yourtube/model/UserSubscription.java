@@ -9,12 +9,13 @@ public class UserSubscription {
     private final String channelName;
     private final String channelId;
     private final String thumbnailUrl;
-    private String uploadsPlaylistId; // Uri?
+    private final String uploadsPlaylistId;
 
     public UserSubscription(String channelName, String channelId, String thumbnailUrl) {
         this.channelName = channelName;
         this.channelId = channelId;
         this.thumbnailUrl = thumbnailUrl;
+        this.uploadsPlaylistId = "UU" + channelId.substring(2);
     }
 
     public UserSubscription(Subscription subscription) {
@@ -37,10 +38,6 @@ public class UserSubscription {
 
     public String getUploadsPlaylistId() {
         return uploadsPlaylistId;
-    }
-
-    public void setUploadsPlaylistId(String uploadsPlaylistId) {
-        this.uploadsPlaylistId = uploadsPlaylistId;
     }
 
     public String getChannelName() {
