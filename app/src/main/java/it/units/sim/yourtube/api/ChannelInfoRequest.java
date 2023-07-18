@@ -14,12 +14,13 @@ public class ChannelInfoRequest extends YouTubeApiRequest<String> {
     public String call() throws Exception {
         YouTube.Channels.List channelRequest = youtubeService
                 .channels()
-                .list("snippet,contentDetails,statistics");
+                .list("snippet");
 
         ChannelListResponse response = channelRequest
                 .setMine(true)
                 .execute();
-//        System.out.println(response);
-        return response.getItems().get(0).getSnippet().getTitle();
+        if (response.getPageInfo().getTotalResults() == 0)
+            return "";
+        return response.getItems().get(0).getSnippet().getCustomUrl();
     }
 }
