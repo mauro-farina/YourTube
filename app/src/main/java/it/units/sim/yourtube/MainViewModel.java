@@ -16,7 +16,8 @@ import it.units.sim.yourtube.model.UserSubscription;
 
 public class MainViewModel extends ViewModel {
 
-    private final MutableLiveData<List<UserSubscription>> subscriptionsList = new MutableLiveData<>();
+    private final MutableLiveData<List<UserSubscription>>
+            subscriptionsList = new MutableLiveData<>(new ArrayList<>());
 
     public void fetchUserSubscriptions() {
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
@@ -29,9 +30,6 @@ public class MainViewModel extends ViewModel {
     }
 
     public LiveData<List<UserSubscription>> getSubscriptionsList() {
-        if (subscriptionsList.getValue() == null) {
-            subscriptionsList.setValue(new ArrayList<>());
-        }
         return subscriptionsList;
     }
 
