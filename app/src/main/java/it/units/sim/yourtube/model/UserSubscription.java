@@ -2,6 +2,7 @@ package it.units.sim.yourtube.model;
 
 import androidx.annotation.NonNull;
 
+import com.google.api.client.util.DateTime;
 import com.google.api.services.youtube.model.Subscription;
 import com.google.api.services.youtube.model.SubscriptionSnippet;
 
@@ -11,6 +12,7 @@ public class UserSubscription {
     private final String channelId;
     private final String thumbnailUrl;
     private final String uploadsPlaylistId;
+    private final DateTime subscribedSince;
 
     public UserSubscription(Subscription subscription) {
         SubscriptionSnippet snippet = subscription.getSnippet();
@@ -18,6 +20,7 @@ public class UserSubscription {
         channelId = subscription.getSnippet().getResourceId().getChannelId();
         thumbnailUrl = snippet.getThumbnails().getDefault().getUrl();
         uploadsPlaylistId = "UU" + channelId.substring(2);
+        subscribedSince = snippet.getPublishedAt();
     }
 
     @NonNull
@@ -44,5 +47,9 @@ public class UserSubscription {
 
     public String getThumbnailUrl() {
         return thumbnailUrl;
+    }
+
+    public DateTime getSubscribedSince() {
+        return subscribedSince;
     }
 }
