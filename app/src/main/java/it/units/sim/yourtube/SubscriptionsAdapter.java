@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import it.units.sim.yourtube.model.UserSubscription;
@@ -23,8 +22,8 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
 
     private List<UserSubscription> subscriptionsList;
 
-    public SubscriptionsAdapter() {
-        this.subscriptionsList = new ArrayList<>();
+    public SubscriptionsAdapter(List<UserSubscription> subscriptionsList) {
+        this.subscriptionsList = subscriptionsList;
     }
 
     @SuppressLint("NotifyDataSetChanged")

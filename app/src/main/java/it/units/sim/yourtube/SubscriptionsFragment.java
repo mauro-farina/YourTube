@@ -24,7 +24,7 @@ public class SubscriptionsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         viewModel.fetchUserSubscriptions();
     }
 
@@ -33,7 +33,7 @@ public class SubscriptionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_subscriptions, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.subscriptions_recycler_view);
-        adapter = new SubscriptionsAdapter();
+        adapter = new SubscriptionsAdapter(viewModel.getSubscriptionsList().getValue());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
