@@ -3,6 +3,7 @@ package it.units.sim.yourtube.model;
 import androidx.annotation.NonNull;
 
 import com.google.api.services.youtube.model.Subscription;
+import com.google.api.services.youtube.model.SubscriptionSnippet;
 
 public class UserSubscription {
 
@@ -11,19 +12,12 @@ public class UserSubscription {
     private final String thumbnailUrl;
     private final String uploadsPlaylistId;
 
-    public UserSubscription(String channelName, String channelId, String thumbnailUrl) {
-        this.channelName = channelName;
-        this.channelId = channelId;
-        this.thumbnailUrl = thumbnailUrl;
-        this.uploadsPlaylistId = "UU" + channelId.substring(2);
-    }
-
     public UserSubscription(Subscription subscription) {
-        this(
-                subscription.getSnippet().getTitle(),
-                subscription.getSnippet().getResourceId().getChannelId(),
-                subscription.getSnippet().getThumbnails().getDefault().getUrl()
-        );
+        SubscriptionSnippet snippet = subscription.getSnippet();
+        channelName = subscription.getSnippet().getTitle();
+        channelId = subscription.getSnippet().getResourceId().getChannelId();
+        thumbnailUrl = snippet.getThumbnails().getDefault().getUrl();
+        uploadsPlaylistId = "UU" + channelId.substring(2);
     }
 
     @NonNull
