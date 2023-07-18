@@ -29,6 +29,9 @@ public class MainViewModel extends ViewModel {
         rThread.start();
     }
 
+    public void fetchVideos() {
+    }
+
     public LiveData<List<UserSubscription>> getSubscriptionsList() {
         return subscriptionsList;
     }
