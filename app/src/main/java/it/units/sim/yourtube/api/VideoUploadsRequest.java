@@ -42,7 +42,8 @@ public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
 
         PlaylistItemListResponse response = videosRequest.execute();
 
-        int results = response.getItems().size();
+        List<PlaylistItem> playlistItems = response.getItems();
+        int results = playlistItems.size();
         if (results == 0) {
             return new ArrayList<>();
         }
@@ -60,15 +61,14 @@ public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
         calendar.add(Calendar.MILLISECOND, -1);
         DateTime publishedBefore = new DateTime(calendar.getTime());
 
-        List<PlaylistItem> playlistItems = response.getItems();
         DateTime firstPlaylistItemPublishDateTime = playlistItems
                 .get(0)
-                .getContentDetails()
-                .getVideoPublishedAt();
+                .getSnippet()
+                .getPublishedAt();
         DateTime lastPlaylistItemPublishDateTime = playlistItems
                 .get(results-1)
-                .getContentDetails()
-                .getVideoPublishedAt();
+                .getSnippet()
+                .getPublishedAt();
 
         if (firstPlaylistItemPublishDateTime.getValue() < publishedAfter.getValue()) {
             return new ArrayList<>();
@@ -81,8 +81,8 @@ public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
 
         return playlistItems
                 .stream()
-                .filter(i -> i.getContentDetails().getVideoPublishedAt().getValue() > publishedAfter.getValue())
-                .filter(i -> i.getContentDetails().getVideoPublishedAt().getValue() <  publishedBefore.getValue())
+                .filter(i -> i.getSnippet().getPublishedAt().getValue() > publishedAfter.getValue())
+                .filter(i -> i.getSnippet().getPublishedAt().getValue() < publishedBefore.getValue())
                 .map(i -> new VideoData(i.getSnippet()))
                 .collect(Collectors.toList());
     }
