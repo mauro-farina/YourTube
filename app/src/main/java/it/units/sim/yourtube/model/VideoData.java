@@ -9,20 +9,11 @@ public class VideoData {
     private final String thumbnailUrl;
     private final DateTime publishedAt;
 
-    public VideoData(String title, String videoId, String thumbnailUrl, DateTime publishedAt) {
-        this.title = title;
-        this.videoId = videoId;
-        this.thumbnailUrl = thumbnailUrl;
-        this.publishedAt = publishedAt;
-    }
-
     public VideoData(PlaylistItemSnippet playlistItemSnippet) {
-        this(
-                playlistItemSnippet.getTitle(),
-                playlistItemSnippet.getResourceId().getVideoId(),
-                playlistItemSnippet.getThumbnails().getStandard().getUrl(),
-                playlistItemSnippet.getPublishedAt()
-        );
+        this.title = playlistItemSnippet.getTitle();
+        this.videoId = playlistItemSnippet.getResourceId().getVideoId();
+        this.thumbnailUrl = playlistItemSnippet.getThumbnails().getStandard().getUrl();
+        this.publishedAt = playlistItemSnippet.getPublishedAt();
     }
 
     public String getTitle() {
