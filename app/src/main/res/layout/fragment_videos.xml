@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".VideosFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="\n\n\n H O M E P A G E" />
+        android:id="@+id/videos_recycler_view" />
 
 </FrameLayout>
