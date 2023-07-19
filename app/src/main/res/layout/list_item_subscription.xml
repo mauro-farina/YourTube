@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/list_item_subscription_thumbnail"
-            android:contentDescription="@string/channel_thumbnail_img_placeholder" />
+            android:contentDescription="@string/thumbnail_img_placeholder" />
 
     </androidx.cardview.widget.CardView>
 
