@@ -36,6 +36,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void fetchVideos() {
+        videosList.setValue(new ArrayList<>());
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
             VideoUploadsRequest subscriptionRequest = new VideoUploadsRequest(credential, sub, new Date());
