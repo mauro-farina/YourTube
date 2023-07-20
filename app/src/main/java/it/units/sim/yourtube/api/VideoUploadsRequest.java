@@ -83,7 +83,7 @@ public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
                 .stream()
                 .filter(i -> i.getSnippet().getPublishedAt().getValue() > publishedAfter.getValue())
                 .filter(i -> i.getSnippet().getPublishedAt().getValue() < publishedBefore.getValue())
-                .map(i -> new VideoData(i.getSnippet()))
+                .map(i -> new VideoData(i.getSnippet(), subscription))
                 .collect(Collectors.toList());
     }
 }
