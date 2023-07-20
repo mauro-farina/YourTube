@@ -13,5 +13,6 @@
         <item name="android:statusBarColor">?attr/colorOnPrimary</item>
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">?attr/colorOnPrimary</item>
+        <item name="colorSurface">?attr/colorOnPrimary</item>
     </style>
 </resources>
