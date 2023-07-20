@@ -41,13 +41,20 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull VideosAdapter.ViewHolder holder, int position) {
-        TextView channelNameTextView = holder.getVideoTitleTextView();
+        TextView videoTitleTextView = holder.getVideoTitleTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
-        channelNameTextView.setText(videosList.get(position).getTitle());
+        ImageView channelImageView = holder.getChannelImageView();
+        TextView channelTextView = holder.getChannelTextView();
+        videoTitleTextView.setText(videosList.get(position).getTitle());
+        channelTextView.setText(videosList.get(position).getChannel().getChannelName());
         Picasso
                 .get()
                 .load(videosList.get(position).getThumbnailUrl())
                 .into(thumbnailImageView);
+        Picasso
+                .get()
+                .load(videosList.get(position).getChannel().getThumbnailUrl())
+                .into(channelImageView);
     }
 
     @Override
@@ -59,10 +66,14 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
         // will generate a new layout item for each list item
         private final TextView videoTitleTextView;
         private final ImageView thumbnailImageView;
+        private final ImageView channelImageView;
+        private final TextView channelTextView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             videoTitleTextView = itemView.findViewById(R.id.list_item_video_title);
             thumbnailImageView = itemView.findViewById(R.id.list_item_video_thumbnail);
+            channelImageView = itemView.findViewById(R.id.list_item_video_channel_thumbnail);
+            channelTextView = itemView.findViewById(R.id.list_item_video_channel_name);
         }
 
         public TextView getVideoTitleTextView() {
@@ -71,6 +82,11 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
         public ImageView getThumbnailImageView() {
             return thumbnailImageView;
         }
-
+        public ImageView getChannelImageView() {
+            return channelImageView;
+        }
+        public TextView getChannelTextView() {
+            return channelTextView;
+        }
     }
 }

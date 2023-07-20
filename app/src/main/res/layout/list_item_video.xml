@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
+    <LinearLayout
+        android:id="@+id/list_item_video_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_item_video_channel_thumbnail"
+                android:contentDescription="@string/thumbnail_img_placeholder" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_video_channel_name"
+            android:textSize="18sp"
+            android:paddingStart="20dp"
+            android:paddingEnd="0dp" />
+
+    </LinearLayout>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/list_item_video_thumbnail"
+        android:scaleType="centerCrop"
         android:contentDescription="@string/thumbnail_img_placeholder" />
 
     <TextView
@@ -17,7 +49,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_item_video_title"
         android:textSize="18sp"
-        android:paddingStart="20dp"
-        android:paddingEnd="0dp" />
+        android:paddingStart="15dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="15dp" />
 
 </LinearLayout>
