@@ -35,11 +35,11 @@ public class MainViewModel extends ViewModel {
         rThread.start();
     }
 
-    public void fetchVideos() {
+    public void fetchVideos(Date date) {
         videosList.setValue(new ArrayList<>());
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
-            VideoUploadsRequest subscriptionRequest = new VideoUploadsRequest(credential, sub, new Date());
+            VideoUploadsRequest subscriptionRequest = new VideoUploadsRequest(credential, sub, date);
             RequestCallback<List<VideoData>> subscriptionListCallback = list -> {
                 List<VideoData> videos = videosList.getValue();
                 if (videos != null) {
