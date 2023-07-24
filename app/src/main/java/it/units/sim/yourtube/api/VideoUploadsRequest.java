@@ -6,6 +6,7 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemListResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,7 +18,7 @@ import it.units.sim.yourtube.model.VideoData;
 
 public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
 
-    private static final long MAX_RESULTS = 5;
+    private static final long MAX_RESULTS = 35;
 
     private final UserSubscription subscription;
     private final Date publishedOn;
@@ -74,9 +75,8 @@ public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
             return new ArrayList<>();
         }
 
-        if (lastPlaylistItemPublishDateTime.getValue() > publishedBefore.getValue()) {
-            // TODO: recursive call
-            System.out.println("recursion");
+        if (lastPlaylistItemPublishDateTime.getValue() > publishedAfter.getValue()) {
+            recursiveWorker(playlistItems, response.getNextPageToken(), publishedAfter);
         }
 
         return playlistItems
@@ -85,5 +85,34 @@ public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
                 .filter(i -> i.getSnippet().getPublishedAt().getValue() < publishedBefore.getValue())
                 .map(i -> new VideoData(i.getSnippet(), subscription))
                 .collect(Collectors.toList());
+    }
+
+    private void recursiveWorker(List<PlaylistItem> list, String nextPageToken, DateTime publishedAfter) throws IOException {
+        String playlistId = subscription.getUploadsPlaylistId();
+
+        YouTube.PlaylistItems.List videosRequest = youtubeService
+                .playlistItems()
+                .list("snippet")
+                .setMaxResults(MAX_RESULTS)
+                .setPageToken(nextPageToken)
+                .setPlaylistId(playlistId);
+
+        PlaylistItemListResponse response = videosRequest.execute();
+        List<PlaylistItem> playlistItems = response.getItems();
+
+        int results = playlistItems.size();
+        if (results == 0) {
+            return;
+        }
+        list.addAll(playlistItems);
+
+        DateTime lastPlaylistItemPublishDateTime = playlistItems
+                .get(results-1)
+                .getSnippet()
+                .getPublishedAt();
+
+        if (lastPlaylistItemPublishDateTime.getValue() > publishedAfter.getValue()) {
+            recursiveWorker(list, response.getNextPageToken(), publishedAfter);
+        }
     }
 }
