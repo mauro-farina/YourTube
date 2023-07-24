@@ -2,6 +2,7 @@ package it.units.sim.yourtube.model;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.youtube.model.PlaylistItemSnippet;
+import com.google.api.services.youtube.model.ThumbnailDetails;
 
 public class VideoData {
     private final String title;
@@ -13,9 +14,25 @@ public class VideoData {
     public VideoData(PlaylistItemSnippet playlistItemSnippet, UserSubscription subscription) {
         this.title = playlistItemSnippet.getTitle();
         this.videoId = playlistItemSnippet.getResourceId().getVideoId();
-        this.thumbnailUrl = playlistItemSnippet.getThumbnails().getMaxres().getUrl();
+        // might be missing...
+        this.thumbnailUrl = getHighestResThumbnailUrl(playlistItemSnippet.getThumbnails());
         this.publishedAt = playlistItemSnippet.getPublishedAt();
         this.subscription = subscription;
+    }
+
+    private String getHighestResThumbnailUrl(ThumbnailDetails thumbnails) {
+        String url = "";
+        if (thumbnails.getMaxres() != null)
+            url = thumbnails.getMaxres().getUrl();
+        if (thumbnails.getStandard() != null)
+            url = thumbnails.getStandard().getUrl();
+        if (thumbnails.getHigh() != null)
+            url = thumbnails.getHigh().getUrl();
+        if (thumbnails.getMedium() != null)
+            url = thumbnails.getMedium().getUrl();
+        if (thumbnails.getDefault() != null)
+            url = thumbnails.getDefault().getUrl();
+        return url;
     }
 
     public String getTitle() {
