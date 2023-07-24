@@ -14,7 +14,6 @@ public class VideoData {
     public VideoData(PlaylistItemSnippet playlistItemSnippet, UserSubscription subscription) {
         this.title = playlistItemSnippet.getTitle();
         this.videoId = playlistItemSnippet.getResourceId().getVideoId();
-        // might be missing...
         this.thumbnailUrl = getHighestResThumbnailUrl(playlistItemSnippet.getThumbnails());
         this.publishedAt = playlistItemSnippet.getPublishedAt();
         this.subscription = subscription;
@@ -22,16 +21,16 @@ public class VideoData {
 
     private String getHighestResThumbnailUrl(ThumbnailDetails thumbnails) {
         String url = "";
-        if (thumbnails.getMaxres() != null)
-            url = thumbnails.getMaxres().getUrl();
-        if (thumbnails.getStandard() != null)
-            url = thumbnails.getStandard().getUrl();
-        if (thumbnails.getHigh() != null)
-            url = thumbnails.getHigh().getUrl();
-        if (thumbnails.getMedium() != null)
-            url = thumbnails.getMedium().getUrl();
         if (thumbnails.getDefault() != null)
             url = thumbnails.getDefault().getUrl();
+        if (thumbnails.getMedium() != null)
+            url = thumbnails.getMedium().getUrl();
+        if (thumbnails.getHigh() != null)
+            url = thumbnails.getHigh().getUrl();
+        if (thumbnails.getStandard() != null)
+            url = thumbnails.getStandard().getUrl();
+        if (thumbnails.getMaxres() != null)
+            url = thumbnails.getMaxres().getUrl();
         return url;
     }
 
