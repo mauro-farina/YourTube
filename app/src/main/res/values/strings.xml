@@ -18,5 +18,8 @@
     <string name="thumbnail_img_placeholder">Thumbnail</string>
     <string name="settings">Settings</string>
     <string name="logout">Logout</string>
+    <string name="next_day">Next day</string>
+    <string name="previous_day">Previous day</string>
+    <string name="current_date">Current date</string>
 
 </resources>

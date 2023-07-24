@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <Button
+    <ImageButton
         android:id="@+id/date_filter_previous"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="P" />
+        android:layout_height="match_parent"
+        android:src="@drawable/icon_keyboard_arrow_left_24"
+        app:tint="?attr/colorPrimary"
+        android:background="?attr/colorOnPrimary"
+        android:contentDescription="@string/previous_day" />
 
     <Button
         android:id="@+id/date_filter_pick"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/current_date"
+        android:textColor="?attr/colorPrimary"
+        android:theme="@style/Theme.YourTube"
+        android:backgroundTint="?attr/colorOnPrimary" />
 
-    <Button
+    <ImageButton
         android:id="@+id/date_filter_next"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="N" />
+        android:layout_height="match_parent"
+        android:src="@drawable/icon_keyboard_arrow_right_24"
+        app:tint="?attr/colorPrimary"
+        android:background="?attr/colorOnPrimary"
+        android:contentDescription="@string/next_day"  />
 
 </LinearLayout>
