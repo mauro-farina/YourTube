@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,11 +23,15 @@ import java.util.Objects;
 
 public class VideosFragment extends Fragment {
 
+    private SimpleDateFormat dateFormat;
     private MainViewModel viewModel;
     private VideosAdapter adapter;
     private Calendar calendar;
     private Button datePicker;
+    private ImageButton previousDateButton;
+    private ImageButton nextDateButton;
     private Date date;
+    private Date currentDateReference;
 
     public VideosFragment() {
         super(R.layout.fragment_videos);
@@ -36,7 +41,10 @@ public class VideosFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-        date = new Date();
+        calendar = Calendar.getInstance();
+        date = calendar.getTime();
+        currentDateReference = new Date();
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         if (Objects.requireNonNull(viewModel.getSubscriptionsList().getValue()).size() > 0) {
             viewModel.fetchVideos(date);
         }
@@ -58,11 +66,29 @@ public class VideosFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         viewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> viewModel.fetchVideos(date));
         viewModel.getVideosList().observe(getViewLifecycleOwner(), adapter::setVideosList);
+
         datePicker = view.findViewById(R.id.date_filter_pick);
-        calendar = Calendar.getInstance();
+        previousDateButton = view.findViewById(R.id.date_filter_previous);
+        nextDateButton = view.findViewById(R.id.date_filter_next);
+        datePicker = view.findViewById(R.id.date_filter_pick);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         datePicker.setText(sdf.format(calendar.getTime()));
         datePicker.setOnClickListener(v -> showDatePickerDialog());
+        previousDateButton.setOnClickListener(view1 -> {
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            date = calendar.getTime();
+            viewModel.fetchVideos(date);
+            datePicker.setText(dateFormat.format(date));
+        });
+        nextDateButton.setOnClickListener(view1 -> {
+            if (currentDateReference.getTime()-10 < calendar.getTime().getTime()) {
+                return;
+            }
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            date = calendar.getTime();
+            viewModel.fetchVideos(date);
+            datePicker.setText(dateFormat.format(date));
+        });
     }
 
     private void showDatePickerDialog() {
@@ -72,13 +98,9 @@ public class VideosFragment extends Fragment {
                     calendar.set(Calendar.YEAR, year);
                     calendar.set(Calendar.MONTH, monthOfYear);
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
                     date = calendar.getTime();
                     viewModel.fetchVideos(calendar.getTime());
-
-                    // Update the button text
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                    datePicker.setText(sdf.format(calendar.getTime()));
+                    datePicker.setText(dateFormat.format(calendar.getTime()));
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
