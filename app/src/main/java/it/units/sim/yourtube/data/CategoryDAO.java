@@ -6,21 +6,18 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
 import java.util.List;
 
 import it.units.sim.yourtube.model.Category;
-import it.units.sim.yourtube.model.UserSubscription;
 
 @Dao
 public interface CategoryDAO {
 
     @Query("SELECT * FROM categories")
-    ListenableFuture<List<Category>> getAll();
+    List<Category> getAll();
 
     @Query("SELECT * FROM categories WHERE name LIKE :name LIMIT 1")
-    ListenableFuture<Category> findByName(String name, List<UserSubscription> channels);
+    Category findByName(String name);
 
     @Insert
     void insertAll(Category... categories);
