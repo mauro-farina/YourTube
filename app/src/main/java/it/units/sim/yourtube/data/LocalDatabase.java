@@ -6,7 +6,7 @@ import androidx.room.TypeConverters;
 
 import it.units.sim.yourtube.model.Category;
 
-@Database(entities = {Category.class}, version = 1)
+@Database(entities = {Category.class}, version = 1, exportSchema = false)
 @TypeConverters({CategoryConverter.class})
 public abstract class LocalDatabase extends RoomDatabase {
     public abstract CategoryDAO categoryDao();
