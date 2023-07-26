@@ -48,6 +48,7 @@ dependencies {
 
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-guava:$room_version"
     implementation "com.google.code.gson:gson:2.8.9"
 
     // Picasso to get image from a URL
