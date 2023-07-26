@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -26,6 +28,7 @@ public class CategoriesFragment extends Fragment {
 
     private CategoriesAdapter adapter;
     private List<Category> categories;
+    private FloatingActionButton fab;
 
     public CategoriesFragment() {
         super(R.layout.fragment_categories);
@@ -61,6 +64,11 @@ public class CategoriesFragment extends Fragment {
         adapter = new CategoriesAdapter(categories);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        fab = view.findViewById(R.id.categories_add_category_fab);
+        fab.setOnClickListener(v -> {
+            // dialog
+        });
         return view;
     }
 }
