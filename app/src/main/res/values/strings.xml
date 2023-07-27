@@ -21,5 +21,7 @@
     <string name="next_day">Next day</string>
     <string name="previous_day">Previous day</string>
     <string name="current_date">Current date</string>
+    <string name="new_category_dialog_title">New category</string>
+    <string name="new_category_name_field">New category name</string>
 
 </resources>
