@@ -3,32 +3,27 @@ package it.units.sim.yourtube;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-import it.units.sim.yourtube.data.CategoryDAO;
-import it.units.sim.yourtube.data.LocalDatabase;
 import it.units.sim.yourtube.model.Category;
 
 public class CategoriesFragment extends Fragment {
 
     private CategoriesAdapter adapter;
-    private List<Category> categories;
-    private FloatingActionButton fab;
+    private CategoriesViewModel categoriesViewModel;
 
     public CategoriesFragment() {
         super(R.layout.fragment_categories);
@@ -37,21 +32,9 @@ public class CategoriesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LocalDatabase db = Room
-                .databaseBuilder(
-                    requireActivity().getApplicationContext(),
-                    LocalDatabase.class,
-                    "categories-db")
-                .build();
-        CategoryDAO categoryDao = db.categoryDao();
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-        Future<List<Category>> future = executor.submit(categoryDao::getAll);
-        try {
-            categories = future.get();
-            System.out.println(categories);
-        } catch (ExecutionException | InterruptedException e) {
-            System.err.println(e.getMessage());
-        }
+        categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
+        categoriesViewModel.fetchCategories();
+        adapter = new CategoriesAdapter(new ArrayList<>());
     }
 
     @Override
@@ -60,15 +43,28 @@ public class CategoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.categories_recycler_view);
-        categories = new ArrayList<>();
-        adapter = new CategoriesAdapter(categories);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        fab = view.findViewById(R.id.categories_add_category_fab);
+        categoriesViewModel.getCategoriesList().observe(getViewLifecycleOwner(), adapter::setCategoriesList);
+
+        FloatingActionButton fab = view.findViewById(R.id.categories_add_category_fab);
         fab.setOnClickListener(v -> {
             // dialog
+            View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_category_dialog, null);
+            EditText input = dialogView.findViewById(R.id.new_category_dialog_name);
+            new MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.new_category_dialog_title)
+                    .setView(dialogView)
+                    .setPositiveButton("ADD", (dialog, which) -> addCategory(input.getText().toString()))
+                    .show();
         });
         return view;
+    }
+
+    private void addCategory(String name) {
+        Toast.makeText(requireContext(), name, Toast.LENGTH_SHORT).show();
+        Category newCategory = new Category(name);
+        categoriesViewModel.addCategory(newCategory);
     }
 }
