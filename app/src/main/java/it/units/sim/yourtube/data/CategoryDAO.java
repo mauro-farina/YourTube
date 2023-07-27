@@ -1,5 +1,6 @@
 package it.units.sim.yourtube.data;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,10 +15,10 @@ import it.units.sim.yourtube.model.Category;
 public interface CategoryDAO {
 
     @Query("SELECT * FROM categories")
-    List<Category> getAll();
+    LiveData<List<Category>> getAll();
 
     @Query("SELECT * FROM categories WHERE name LIKE :name LIMIT 1")
-    Category findByName(String name);
+    LiveData<Category> findByName(String name);
 
     @Insert
     void insertAll(Category... categories);
