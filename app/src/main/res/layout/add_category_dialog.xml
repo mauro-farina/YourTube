@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?attr/materialIconButtonStyle"
-            android:id="@+id/add_category_dialog_expand_list"
+            android:id="@+id/add_category_dialog_expand_list_subscriptions"
             android:src="@drawable/icon_expand"
             app:tint="?attr/colorAccent"
             android:background="@android:color/transparent"
@@ -48,6 +48,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/new_category_dialog_channels_list"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_new_category_pick_icon"
+            android:textSize="18sp"
+            android:layout_gravity="center_vertical"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?attr/materialIconButtonStyle"
+            android:id="@+id/add_category_dialog_expand_list_icons"
+            android:src="@drawable/icon_expand"
+            app:tint="?attr/colorAccent"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/expand_list_button" />
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/dialog_add_category_icon_picker"
+        android:id="@+id/dialog_add_category_icon_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:visibility="gone" />
 
 </LinearLayout>

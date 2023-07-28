@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,13 +92,25 @@ public class CategoriesFragment extends Fragment {
             );
 
             //expand button
-            ImageButton expandSubscriptionRecyclerView = dialogView.findViewById(R.id.add_category_dialog_expand_list);
+            ImageButton expandSubscriptionRecyclerView = dialogView.findViewById(R.id.add_category_dialog_expand_list_subscriptions);
             expandSubscriptionRecyclerView.setOnClickListener(expandBtn -> {
                 if (subscriptionsRecyclerView.getVisibility() == View.GONE) {
                     subscriptionsRecyclerView.setVisibility(View.VISIBLE);
                     expandBtn.setRotation(180);
                 } else {
                     subscriptionsRecyclerView.setVisibility(View.GONE);
+                    expandBtn.setRotation(0);
+                }
+            });
+
+            GridLayout iconsGridLayout = dialogView.findViewById(R.id.dialog_add_category_icon_picker);
+            ImageButton expandIconPicker = dialogView.findViewById(R.id.add_category_dialog_expand_list_icons);
+            expandIconPicker.setOnClickListener(expandBtn -> {
+                if (iconsGridLayout.getVisibility() == View.GONE) {
+                    iconsGridLayout.setVisibility(View.VISIBLE);
+                    expandBtn.setRotation(180);
+                } else {
+                    iconsGridLayout.setVisibility(View.GONE);
                     expandBtn.setRotation(0);
                 }
             });

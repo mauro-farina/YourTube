@@ -25,5 +25,12 @@
     <string name="new_category_name_field">New category name</string>
     <string name="add_channels_to_the_category">Add channels to the category</string>
     <string name="expand_list_button">Expand list button</string>
+    <string name="category_basketball">Basketball</string>
+    <string name="category_car">Car</string>
+    <string name="category_travel">Travel</string>
+    <string name="category_videogame">Videogame</string>
+    <string name="category_computer">Computer</string>
+    <string name="category_podcast">Podcast</string>
+    <string name="dialog_new_category_pick_icon">Pick an icon</string>
 
 </resources>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="3"
+    android:layout_gravity="center_horizontal">
+
+    <ImageView
+        android:layout_width="@dimen/category_icon"
+        android:layout_height="@dimen/category_icon"
+        android:layout_margin="@dimen/category_icon_margin"
+        android:src="@drawable/icon_category_basketball"
+        android:contentDescription="@string/category_basketball" />
+
+    <ImageView
+        android:layout_width="@dimen/category_icon"
+        android:layout_height="@dimen/category_icon"
+        android:layout_margin="@dimen/category_icon_margin"
+        android:src="@drawable/icon_category_car"
+        android:contentDescription="@string/category_car" />
+
+    <ImageView
+        android:layout_width="@dimen/category_icon"
+        android:layout_height="@dimen/category_icon"
+        android:layout_margin="@dimen/category_icon_margin"
+        android:src="@drawable/icon_category_travel"
+        android:contentDescription="@string/category_travel" />
+
+    <ImageView
+        android:layout_width="@dimen/category_icon"
+        android:layout_height="@dimen/category_icon"
+        android:layout_margin="@dimen/category_icon_margin"
+        android:src="@drawable/icon_category_videogame"
+        android:contentDescription="@string/category_videogame" />
+
+    <ImageView
+        android:layout_width="@dimen/category_icon"
+        android:layout_height="@dimen/category_icon"
+        android:layout_margin="@dimen/category_icon_margin"
+        android:src="@drawable/icon_category_computer"
+        android:contentDescription="@string/category_computer" />
+
+    <ImageView
+        android:layout_width="@dimen/category_icon"
+        android:layout_height="@dimen/category_icon"
+        android:layout_margin="@dimen/category_icon_margin"
+        android:src="@drawable/icon_category_podcast"
+        android:contentDescription="@string/category_podcast" />
+
+</GridLayout>
