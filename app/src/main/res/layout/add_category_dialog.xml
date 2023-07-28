@@ -2,12 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
 
     <EditText
         android:id="@+id/new_category_dialog_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:hint="@string/new_category_name_field"
         android:inputType="textNoSuggestions"
         android:autofillHints="" />
@@ -15,6 +19,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/new_category_dialog_channels_list" />
+        android:id="@+id/new_category_dialog_channels_list"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp" />
 
 </LinearLayout>
