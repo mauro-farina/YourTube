@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,6 +90,18 @@ public class CategoriesFragment extends Fragment {
                         selectedChannels.add(selectedChannel.getChannelId());
                     }
             );
+
+            //expand button
+            ImageButton expandSubscriptionRecyclerView = dialogView.findViewById(R.id.add_category_dialog_expand_list);
+            expandSubscriptionRecyclerView.setOnClickListener(expandBtn -> {
+                if (subscriptionsRecyclerView.getVisibility() == View.GONE) {
+                    subscriptionsRecyclerView.setVisibility(View.VISIBLE);
+                    expandBtn.setRotation(180);
+                } else {
+                    subscriptionsRecyclerView.setVisibility(View.GONE);
+                    expandBtn.setRotation(0);
+                }
+            });
 
             subscriptionsRecyclerView.setAdapter(subscriptionsAdapter);
             subscriptionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
