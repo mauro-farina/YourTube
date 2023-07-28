@@ -21,9 +21,16 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
 
 
     private List<UserSubscription> subscriptionsList;
+    private final View.OnClickListener onItemClickListener;
 
     public SubscriptionsAdapter(List<UserSubscription> subscriptionsList) {
+        this(subscriptionsList, null);
+    }
+
+    public SubscriptionsAdapter
+            (List<UserSubscription> subscriptionsList, View.OnClickListener onListItemClickListener) {
         this.subscriptionsList = subscriptionsList;
+        this.onItemClickListener = onListItemClickListener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -107,7 +114,7 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
         return subscriptionsList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         // will generate a new layout item for each list item
         private final TextView channelNameTextView;
         private final ImageView thumbnailImageView;
@@ -115,6 +122,9 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
             super(itemView);
             channelNameTextView = itemView.findViewById(R.id.list_item_subscription_channel_name);
             thumbnailImageView = itemView.findViewById(R.id.list_item_subscription_thumbnail);
+            if (onItemClickListener != null) {
+                itemView.setOnClickListener(onItemClickListener);
+            }
         }
 
         public TextView getChannelNameTextView() {
