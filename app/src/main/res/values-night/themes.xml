@@ -14,5 +14,6 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">?attr/colorOnPrimary</item>
         <item name="colorSurface">?attr/colorOnPrimary</item>
+        <item name="colorAccent">@color/white</item>
     </style>
 </resources>
