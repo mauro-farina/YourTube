@@ -23,7 +23,7 @@
     <string name="current_date">Current date</string>
     <string name="new_category_dialog_title">New category</string>
     <string name="new_category_name_field">New category name</string>
-    <string name="add_channels_to_the_category">Add channels to the category</string>
+    <string name="add_channels_to_the_category">Add channels</string>
     <string name="expand_list_button">Expand list button</string>
     <string name="category_basketball">Basketball</string>
     <string name="category_car">Car</string>
