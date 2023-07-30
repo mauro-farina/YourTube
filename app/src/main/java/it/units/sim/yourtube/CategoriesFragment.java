@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,6 +61,9 @@ public class CategoriesFragment extends Fragment {
 
         FloatingActionButton fab = view.findViewById(R.id.categories_add_category_fab);
         fab.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.newCategoryFragment);
+            /*
             // dialog
             View dialogView = LayoutInflater
                     .from(requireContext())
@@ -127,6 +132,7 @@ public class CategoriesFragment extends Fragment {
                         addCategory(input.getText().toString());
                     })
                     .show();
+             */
         });
         return view;
     }

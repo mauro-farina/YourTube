@@ -40,6 +40,18 @@
         <action
             android:id="@+id/action_categories_to_homepage"
             app:destination="@id/videosFragment" />
+        <action
+            android:id="@+id/action_categories_to_newCategory"
+            app:destination="@id/newCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newCategoryFragment"
+        android:name="it.units.sim.yourtube.NewCategoryFragment"
+        android:label="fragment_new_category"
+        tools:layout="@layout/fragment_new_category" >
+        <action
+            android:id="@+id/action_newCategory_to_categories"
+            app:destination="@id/categoriesFragment" />
     </fragment>
 
 </navigation>
