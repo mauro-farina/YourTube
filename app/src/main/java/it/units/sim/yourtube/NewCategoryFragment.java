@@ -20,8 +20,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.model.Category;
@@ -106,7 +109,10 @@ public class NewCategoryFragment extends Fragment {
 
         Button createCategoryBtn = view.findViewById(R.id.new_category_create);
         createCategoryBtn.setOnClickListener(btn -> {
-            EditText categoryNameInput = view.findViewById(R.id.new_category_name);
+            TextInputLayout categoryNameInputLayout = view.findViewById(R.id.new_category_name);
+            EditText categoryNameInput = categoryNameInputLayout.getEditText();
+            if (categoryNameInput == null)
+                return;
             String categoryName = categoryNameInput.getText().toString().trim();
             addCategory(categoryName);
             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);

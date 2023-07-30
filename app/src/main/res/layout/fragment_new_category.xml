@@ -11,6 +11,23 @@
     android:paddingStart="20dp"
     android:paddingEnd="20dp">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/new_category_name"
+        style="?attr/textInputOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/new_category_name_field"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textNoSuggestions"
+            android:textSize="18sp"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+<!--
     <EditText
         android:id="@+id/new_category_name"
         android:layout_width="match_parent"
@@ -20,7 +37,7 @@
         android:inputType="textNoSuggestions"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent" />
-
+-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
