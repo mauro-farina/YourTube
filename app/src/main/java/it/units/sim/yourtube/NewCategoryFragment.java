@@ -73,8 +73,13 @@ public class NewCategoryFragment extends Fragment {
                         System.err.println("Something very wrong just happened...");
                         return;
                     }
-                    selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.BOLD);
-                    selectedChannels.add(selectedChannel);
+                    if (selectedChannels.contains(selectedChannel)) {
+                        selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.ITALIC);
+                        selectedChannels.remove(selectedChannel);
+                    } else {
+                        selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.BOLD);
+                        selectedChannels.add(selectedChannel);
+                    }
                 }
         );
 
