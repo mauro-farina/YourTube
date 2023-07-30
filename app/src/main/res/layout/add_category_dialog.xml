@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?attr/materialIconButtonStyle"
-            android:id="@+id/add_category_dialog_expand_list_icons"
+            android:id="@+id/new_category_icons_list_expand"
             android:src="@drawable/icon_expand"
             app:tint="?attr/colorAccent"
             android:background="@android:color/transparent"

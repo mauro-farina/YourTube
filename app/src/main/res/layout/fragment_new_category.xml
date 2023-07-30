@@ -17,90 +17,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/new_category_name_field"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textNoSuggestions"
-            android:textSize="18sp"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-<!--
-    <EditText
-        android:id="@+id/new_category_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:hint="@string/new_category_name_field"
-        android:inputType="textNoSuggestions"
-        android:textSize="18sp"
-        app:layout_constraintTop_toTopOf="parent" />
--->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:id="@+id/new_category_subscriptions_expand_container"
-        app:layout_constraintTop_toBottomOf="@+id/new_category_name">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/add_channels_to_the_category"
             android:textSize="18sp" />
 
-        <ImageButton
-            android:id="@+id/new_category_subscriptions_list_expand"
-            style="?attr/materialIconButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/expand_list_button"
-            android:src="@drawable/icon_expand"
-            app:tint="?attr/colorAccent" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
+    <Button
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:id="@+id/new_category_subscriptions_list_expand"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_channels_to_the_category"
+        app:icon="@drawable/icon_subscriptions"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@+id/new_category_name"
+        app:layout_constraintStart_toStartOf="@+id/new_category_name" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/new_category_subscriptions_list"
-        app:layout_constraintTop_toBottomOf="@+id/new_category_subscriptions_expand_container"
+        app:layout_constraintTop_toBottomOf="@+id/new_category_subscriptions_list_expand"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <Button
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:id="@+id/new_category_icons_list_expand"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:text="@string/dialog_new_category_pick_icon"
+        app:icon="@drawable/icon_categories"
+        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@+id/new_category_subscriptions_list"
-        tools:layout_editor_absoluteX="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/dialog_new_category_pick_icon"
-            android:textSize="18sp" />
-
-        <ImageButton
-            android:id="@+id/add_category_dialog_expand_list_icons"
-            style="?attr/materialIconButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/expand_list_button"
-            android:src="@drawable/icon_expand"
-            app:tint="?attr/colorAccent" />
-
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="@+id/new_category_name" />
 
     <include
         android:id="@+id/dialog_add_category_icon_picker"
@@ -111,7 +68,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/new_category_icons_list_expand" />
 
     <Button
         android:id="@+id/new_category_create"

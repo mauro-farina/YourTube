@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +23,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.model.Category;
@@ -54,7 +52,6 @@ public class NewCategoryFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_category, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.new_category_subscriptions_list);
         List<UserSubscription> subscriptions = subscriptionsViewModel
                                 .getSubscriptionsList()
                                 .getValue();
@@ -79,28 +76,25 @@ public class NewCategoryFragment extends Fragment {
                 }
         );
 
-        //expand button
-        ImageButton expandSubscriptionRecyclerView = view.findViewById(R.id.new_category_subscriptions_list_expand);
+        //expand subscriptions button
+        RecyclerView recyclerView = view.findViewById(R.id.new_category_subscriptions_list);
+        Button expandSubscriptionRecyclerView = view.findViewById(R.id.new_category_subscriptions_list_expand);
         expandSubscriptionRecyclerView.setOnClickListener(expandBtn -> {
             if (recyclerView.getVisibility() == View.GONE) {
                 recyclerView.setVisibility(View.VISIBLE);
-                expandBtn.setRotation(180);
             } else {
                 recyclerView.setVisibility(View.GONE);
-                expandBtn.setRotation(0);
             }
         });
 
         // Icon picker
         GridLayout iconsGridLayout = view.findViewById(R.id.dialog_add_category_icon_picker);
-        ImageButton expandIconPicker = view.findViewById(R.id.add_category_dialog_expand_list_icons);
+        Button expandIconPicker = view.findViewById(R.id.new_category_icons_list_expand);
         expandIconPicker.setOnClickListener(expandBtn -> {
             if (iconsGridLayout.getVisibility() == View.GONE) {
                 iconsGridLayout.setVisibility(View.VISIBLE);
-                expandBtn.setRotation(180);
             } else {
                 iconsGridLayout.setVisibility(View.GONE);
-                expandBtn.setRotation(0);
             }
         });
 
