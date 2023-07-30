@@ -19,6 +19,8 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -78,12 +80,21 @@ public class NewCategoryFragment extends Fragment {
 
         //expand subscriptions button
         RecyclerView recyclerView = view.findViewById(R.id.new_category_subscriptions_list);
+        ChipGroup chipGroup = view.findViewById(R.id.new_category_subscriptions_chips);
         Button expandSubscriptionRecyclerView = view.findViewById(R.id.new_category_subscriptions_list_expand);
         expandSubscriptionRecyclerView.setOnClickListener(expandBtn -> {
             if (recyclerView.getVisibility() == View.GONE) {
                 recyclerView.setVisibility(View.VISIBLE);
+                chipGroup.removeAllViews();
             } else {
                 recyclerView.setVisibility(View.GONE);
+                for (UserSubscription sub : selectedChannels) {
+                    Chip chip = new Chip(requireContext());
+                    chip.setText(sub.getChannelName());
+                    chip.setClickable(false);
+                    chip.setCheckable(false);
+                    chipGroup.addView(chip);
+                }
             }
         });
 
