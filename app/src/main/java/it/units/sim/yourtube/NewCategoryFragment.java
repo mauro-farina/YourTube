@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +22,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.UserSubscription;
@@ -29,6 +31,7 @@ public class NewCategoryFragment extends Fragment {
 
     private List<UserSubscription> selectedChannels;
     private MainViewModel subscriptionsViewModel;
+    private CategoriesViewModel categoriesViewModel;
 
     public NewCategoryFragment() {
         // Required empty public constructor
@@ -37,6 +40,8 @@ public class NewCategoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
+        categoriesViewModel.fetchCategories();
         subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         selectedChannels = new ArrayList<>();
     }
@@ -104,7 +109,8 @@ public class NewCategoryFragment extends Fragment {
             EditText categoryNameInput = view.findViewById(R.id.new_category_name);
             String categoryName = categoryNameInput.getText().toString().trim();
             addCategory(categoryName);
-
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.categoriesFragment);
         });
 
         return view;
@@ -114,8 +120,12 @@ public class NewCategoryFragment extends Fragment {
         if (name.length() == 0)
             return;
         Toast.makeText(requireContext(), name, Toast.LENGTH_SHORT).show();
-//        Category newCategory = new Category(name);
-//        categoriesViewModel.addCategory(newCategory);
+        List<String> selectedChannelsId = selectedChannels
+                .stream()
+                .map(UserSubscription::getChannelId)
+                .collect(Collectors.toList());
+        Category newCategory = new Category(name, selectedChannelsId);
+        categoriesViewModel.addCategory(newCategory);
     }
 
 }
