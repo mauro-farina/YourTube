@@ -32,5 +32,7 @@
     <string name="category_computer">Computer</string>
     <string name="category_podcast">Podcast</string>
     <string name="dialog_new_category_pick_icon">Pick an icon</string>
+    <string name="create">Create</string>
+    <string name="create_new_category">Create new category</string>
 
 </resources>
