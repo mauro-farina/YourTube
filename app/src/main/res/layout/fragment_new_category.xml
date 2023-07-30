@@ -29,7 +29,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        style="@style/Widget.Material3.Button.ElevatedButton"
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
         android:id="@+id/new_category_subscriptions_list_expand"
         android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
         />
 
     <Button
-        style="@style/Widget.Material3.Button.ElevatedButton"
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
         android:id="@+id/new_category_icons_list_expand"
         android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
