@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class NewCategoryFragment extends Fragment {
     private List<UserSubscription> selectedChannels;
     private MainViewModel subscriptionsViewModel;
     private CategoriesViewModel categoriesViewModel;
-    private String categoryIcon;
+    private int chosenCategoryResId;
     private ImageView categoryIconPreview;
 
     public NewCategoryFragment() {
@@ -53,6 +54,7 @@ public class NewCategoryFragment extends Fragment {
         selectedChannels = new ArrayList<>();
     }
 
+    @SuppressLint("DiscouragedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, 
                              ViewGroup container,
@@ -117,9 +119,14 @@ public class NewCategoryFragment extends Fragment {
             if (!(childView instanceof ImageView)) continue;
             ImageView imageView = (ImageView) childView;
             imageView.setOnClickListener(v -> {
-                categoryIcon = v.getTag().toString();
+                String categoryIconName = v.getTag().toString();
+                chosenCategoryResId = getResources().getIdentifier(
+                        categoryIconName,
+                        "drawable",
+                        requireContext().getPackageName()
+                );
                 toggleVisibility(iconsGridLayout);
-                setPickedCategoryIconPreview();
+                categoryIconPreview.setImageResource(chosenCategoryResId);
             });
         }
 
@@ -133,9 +140,11 @@ public class NewCategoryFragment extends Fragment {
             if (categoryNameInput == null)
                 return;
             String categoryName = categoryNameInput.getText().toString().trim();
-            addCategory(categoryName);
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            navController.navigate(R.id.categoriesFragment);
+            if (addCategory(categoryName)) {
+                Snackbar.make(view, "Category " + categoryName + " created!", Snackbar.LENGTH_SHORT).show();
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.categoriesFragment);
+            }
         });
 
         categoryIconPreview = view.findViewById(R.id.new_category_icons_preview);
@@ -143,16 +152,22 @@ public class NewCategoryFragment extends Fragment {
         return view;
     }
 
-    private void addCategory(String name) {
-        if (name.length() == 0)
-            return;
-        Toast.makeText(requireContext(), name, Toast.LENGTH_SHORT).show();
+    private boolean addCategory(String name) {
+        if (name.length() == 0) {
+            Toast.makeText(requireContext(), "You need to specify a name for the category", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (chosenCategoryResId == 0) {
+            Toast.makeText(requireContext(), "You need to pick an icon", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         List<String> selectedChannelsId = selectedChannels
                 .stream()
                 .map(UserSubscription::getChannelId)
                 .collect(Collectors.toList());
-        Category newCategory = new Category(name, selectedChannelsId, "");
+        Category newCategory = new Category(name, selectedChannelsId, chosenCategoryResId);
         categoriesViewModel.addCategory(newCategory);
+        return true;
     }
 
     private void toggleVisibility(View view) {
@@ -161,16 +176,6 @@ public class NewCategoryFragment extends Fragment {
         } else {
             view.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void setPickedCategoryIconPreview() {
-        @SuppressLint("DiscouragedApi")
-        int pickedIconResId = getResources().getIdentifier(
-                categoryIcon,
-                "drawable",
-                requireContext().getPackageName()
-        );
-        categoryIconPreview.setImageResource(pickedIconResId);
     }
 
 }
