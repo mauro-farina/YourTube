@@ -17,5 +17,7 @@
         <item name="colorOnSurfaceVariant">@color/red</item>
         <item name="colorOnSecondaryContainer">@color/red</item>
         <item name="colorOnSurface">@color/red</item>
+        <item name="colorPrimaryContainer">?attr/colorPrimary</item>
+        <item name="colorOnPrimaryContainer">?attr/colorOnPrimary</item>
     </style>
 </resources>

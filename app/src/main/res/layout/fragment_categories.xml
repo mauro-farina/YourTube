@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/icon_add"
         android:contentDescription="@string/bottom_nav_categories"
-        android:backgroundTint="@color/red_darker"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
