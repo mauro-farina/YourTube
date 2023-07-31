@@ -16,6 +16,8 @@ public class Category {
     public String name;
     @ColumnInfo(name = "channels")
     public List<String> channelIds;
+    @ColumnInfo(name = "icon_res_id")
+    public int drawableIconResId;
 
     public Category(){
         this("", new ArrayList<>(), 0);
@@ -24,6 +26,7 @@ public class Category {
     public Category(@NonNull String name, List<String> channelIds, int drawableIconId) {
         this.name = name;
         this.channelIds = channelIds;
+        this.drawableIconResId = drawableIconId;
     }
 
     @NonNull
