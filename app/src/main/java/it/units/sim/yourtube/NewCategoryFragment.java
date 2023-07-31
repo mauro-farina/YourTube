@@ -104,7 +104,7 @@ public class NewCategoryFragment extends Fragment {
         });
 
         // Icon picker
-        GridLayout iconsGridLayout = view.findViewById(R.id.dialog_add_category_icon_picker);
+        GridLayout iconsGridLayout = view.findViewById(R.id.category_icons);
         Button expandIconPicker = view.findViewById(R.id.new_category_icons_list_expand);
         expandIconPicker.setOnClickListener(expandBtn -> {
             if (iconsGridLayout.getVisibility() == View.GONE) {

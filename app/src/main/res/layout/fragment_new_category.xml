@@ -67,8 +67,8 @@
         app:layout_constraintStart_toStartOf="@+id/new_category_name" />
 
     <include
-        android:id="@+id/dialog_add_category_icon_picker"
-        layout="@layout/dialog_add_category_icon_picker"
+        android:id="@+id/category_icons"
+        layout="@layout/category_icons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
