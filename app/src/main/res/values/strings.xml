@@ -34,5 +34,6 @@
     <string name="dialog_new_category_pick_icon">Pick an icon</string>
     <string name="create">Create</string>
     <string name="create_new_category">Create new category</string>
+    <string name="chosen_category_icon">Chosen category icon</string>
 
 </resources>

@@ -66,6 +66,17 @@
         app:layout_constraintTop_toBottomOf="@+id/new_category_subscriptions_chips"
         app:layout_constraintStart_toStartOf="@+id/new_category_name" />
 
+    <ImageView
+        android:layout_width="@dimen/category_icon_preview"
+        android:layout_height="@dimen/category_icon_preview"
+        android:id="@+id/new_category_icons_preview"
+        android:layout_marginStart="20dp"
+        app:tint="?attr/colorAccent"
+        app:layout_constraintStart_toEndOf="@+id/new_category_icons_list_expand"
+        app:layout_constraintTop_toTopOf="@+id/new_category_icons_list_expand"
+        app:layout_constraintBottom_toBottomOf="@+id/new_category_icons_list_expand"
+        android:contentDescription="@string/chosen_category_icon" />
+
     <include
         android:id="@+id/category_icons"
         layout="@layout/category_icons"

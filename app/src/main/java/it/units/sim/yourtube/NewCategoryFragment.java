@@ -1,5 +1,6 @@
 package it.units.sim.yourtube;
 
+import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -37,6 +38,7 @@ public class NewCategoryFragment extends Fragment {
     private MainViewModel subscriptionsViewModel;
     private CategoriesViewModel categoriesViewModel;
     private String categoryIcon;
+    private ImageView categoryIconPreview;
 
     public NewCategoryFragment() {
         // Required empty public constructor
@@ -106,6 +108,10 @@ public class NewCategoryFragment extends Fragment {
 
         // Icon picker
         GridLayout iconsGridLayout = view.findViewById(R.id.category_icons);
+
+        Button expandIconPicker = view.findViewById(R.id.new_category_icons_list_expand);
+        expandIconPicker.setOnClickListener(expandBtn -> toggleVisibility(iconsGridLayout));
+
         for (int i = 0; i < iconsGridLayout.getChildCount(); i++) {
             View childView = iconsGridLayout.getChildAt(i);
             if (!(childView instanceof ImageView)) continue;
@@ -113,11 +119,9 @@ public class NewCategoryFragment extends Fragment {
             imageView.setOnClickListener(v -> {
                 categoryIcon = v.getTag().toString();
                 toggleVisibility(iconsGridLayout);
+                setPickedCategoryIconPreview();
             });
         }
-
-        Button expandIconPicker = view.findViewById(R.id.new_category_icons_list_expand);
-        expandIconPicker.setOnClickListener(expandBtn -> toggleVisibility(iconsGridLayout));
 
         recyclerView.setAdapter(subscriptionsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -133,6 +137,8 @@ public class NewCategoryFragment extends Fragment {
             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.categoriesFragment);
         });
+
+        categoryIconPreview = view.findViewById(R.id.new_category_icons_preview);
 
         return view;
     }
@@ -155,6 +161,16 @@ public class NewCategoryFragment extends Fragment {
         } else {
             view.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setPickedCategoryIconPreview() {
+        @SuppressLint("DiscouragedApi")
+        int pickedIconResId = getResources().getIdentifier(
+                categoryIcon,
+                "drawable",
+                requireContext().getPackageName()
+        );
+        categoryIconPreview.setImageResource(pickedIconResId);
     }
 
 }

@@ -18,16 +18,16 @@ public class Category {
     public List<String> channelIds;
 
     public Category(){
-        this("", new ArrayList<>());
+        this("", new ArrayList<>(), "");
     }
 
-    public Category(@NonNull String name, List<String> channelIds) {
+    public Category(@NonNull String name, List<String> channelIds, String drawableIconName) {
         this.name = name;
         this.channelIds = channelIds;
     }
 
     public Category(String name) {
-        this(name, new ArrayList<>());
+        this(name, new ArrayList<>(), "");
     }
 
     @NonNull
