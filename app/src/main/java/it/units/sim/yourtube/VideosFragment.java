@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,8 +27,8 @@ public class VideosFragment extends Fragment {
     private VideosAdapter adapter;
     private Calendar calendar;
     private Button datePicker;
-    private ImageButton previousDateButton;
-    private ImageButton nextDateButton;
+    private Button previousDateButton;
+    private Button nextDateButton;
     private Date date;
     private Date currentDateReference;
 

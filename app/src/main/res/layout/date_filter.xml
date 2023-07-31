@@ -5,31 +5,27 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <ImageButton
+    <Button
+        style="?attr/materialIconButtonStyle"
         android:id="@+id/date_filter_previous"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/icon_keyboard_arrow_left_24"
-        app:tint="?attr/colorPrimary"
-        android:background="?attr/colorOnPrimary"
+        app:icon="@drawable/icon_keyboard_arrow_left_24"
         android:contentDescription="@string/previous_day" />
 
     <Button
+        style="@style/Widget.Material3.Button.TextButton"
         android:id="@+id/date_filter_pick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/current_date"
-        android:textColor="?attr/colorPrimary"
-        android:theme="@style/Theme.YourTube"
-        android:backgroundTint="?attr/colorOnPrimary" />
+        android:text="@string/current_date" />
 
-    <ImageButton
+    <Button
+        style="?attr/materialIconButtonStyle"
         android:id="@+id/date_filter_next"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/icon_keyboard_arrow_right_24"
-        app:tint="?attr/colorPrimary"
-        android:background="?attr/colorOnPrimary"
+        app:icon="@drawable/icon_keyboard_arrow_right_24"
         android:contentDescription="@string/next_day"  />
 
 </LinearLayout>
