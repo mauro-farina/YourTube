@@ -36,5 +36,6 @@
     <string name="create_new_category">Create new category</string>
     <string name="chosen_category_icon">Chosen category icon</string>
     <string name="category_icon">Category icon</string>
+    <string name="options">Options</string>
 
 </resources>
