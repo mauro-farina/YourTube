@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class NewCategoryFragment extends Fragment {
     private List<UserSubscription> selectedChannels;
     private MainViewModel subscriptionsViewModel;
     private CategoriesViewModel categoriesViewModel;
+    private String categoryIcon;
 
     public NewCategoryFragment() {
         // Required empty public constructor
@@ -89,10 +91,8 @@ public class NewCategoryFragment extends Fragment {
         Button expandSubscriptionRecyclerView = view.findViewById(R.id.new_category_subscriptions_list_expand);
         expandSubscriptionRecyclerView.setOnClickListener(expandBtn -> {
             if (recyclerView.getVisibility() == View.GONE) {
-                recyclerView.setVisibility(View.VISIBLE);
                 chipGroup.removeAllViews();
             } else {
-                recyclerView.setVisibility(View.GONE);
                 for (UserSubscription sub : selectedChannels) {
                     Chip chip = new Chip(requireContext());
                     chip.setText(sub.getChannelName());
@@ -101,18 +101,23 @@ public class NewCategoryFragment extends Fragment {
                     chipGroup.addView(chip);
                 }
             }
+            toggleVisibility(recyclerView);
         });
 
         // Icon picker
         GridLayout iconsGridLayout = view.findViewById(R.id.category_icons);
+        for (int i = 0; i < iconsGridLayout.getChildCount(); i++) {
+            View childView = iconsGridLayout.getChildAt(i);
+            if (!(childView instanceof ImageView)) continue;
+            ImageView imageView = (ImageView) childView;
+            imageView.setOnClickListener(v -> {
+                categoryIcon = v.getTag().toString();
+                toggleVisibility(iconsGridLayout);
+            });
+        }
+
         Button expandIconPicker = view.findViewById(R.id.new_category_icons_list_expand);
-        expandIconPicker.setOnClickListener(expandBtn -> {
-            if (iconsGridLayout.getVisibility() == View.GONE) {
-                iconsGridLayout.setVisibility(View.VISIBLE);
-            } else {
-                iconsGridLayout.setVisibility(View.GONE);
-            }
-        });
+        expandIconPicker.setOnClickListener(expandBtn -> toggleVisibility(iconsGridLayout));
 
         recyclerView.setAdapter(subscriptionsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -140,8 +145,16 @@ public class NewCategoryFragment extends Fragment {
                 .stream()
                 .map(UserSubscription::getChannelId)
                 .collect(Collectors.toList());
-        Category newCategory = new Category(name, selectedChannelsId);
+        Category newCategory = new Category(name, selectedChannelsId, "");
         categoriesViewModel.addCategory(newCategory);
+    }
+
+    private void toggleVisibility(View view) {
+        if (view.getVisibility() == View.VISIBLE) {
+            view.setVisibility(View.GONE);
+        } else {
+            view.setVisibility(View.VISIBLE);
+        }
     }
 
 }

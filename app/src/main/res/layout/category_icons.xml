@@ -12,8 +12,8 @@
         android:layout_margin="@dimen/category_icon_margin"
         app:tint="?attr/colorAccent"
         android:src="@drawable/icon_category_basketball"
-        android:contentDescription="@string/category_basketball"
-        />
+        android:tag="icon_category_basketball"
+        android:contentDescription="@string/category_basketball" />
 
     <ImageView
         android:layout_width="@dimen/category_icon"
@@ -21,6 +21,7 @@
         android:layout_margin="@dimen/category_icon_margin"
         app:tint="?attr/colorAccent"
         android:src="@drawable/icon_category_car"
+        android:tag="icon_category_car"
         android:contentDescription="@string/category_car" />
 
     <ImageView
@@ -29,6 +30,7 @@
         android:layout_margin="@dimen/category_icon_margin"
         app:tint="?attr/colorAccent"
         android:src="@drawable/icon_category_travel"
+        android:tag="icon_category_travel"
         android:contentDescription="@string/category_travel" />
 
     <ImageView
@@ -37,6 +39,7 @@
         android:layout_margin="@dimen/category_icon_margin"
         app:tint="?attr/colorAccent"
         android:src="@drawable/icon_category_videogame"
+        android:tag="icon_category_videogame"
         android:contentDescription="@string/category_videogame" />
 
     <ImageView
@@ -45,6 +48,7 @@
         android:layout_margin="@dimen/category_icon_margin"
         app:tint="?attr/colorAccent"
         android:src="@drawable/icon_category_computer"
+        android:tag="icon_category_computer"
         android:contentDescription="@string/category_computer" />
 
     <ImageView
@@ -53,6 +57,7 @@
         android:layout_margin="@dimen/category_icon_margin"
         app:tint="?attr/colorAccent"
         android:src="@drawable/icon_category_podcast"
+        android:tag="icon_category_podcast"
         android:contentDescription="@string/category_podcast" />
 
 </GridLayout>
