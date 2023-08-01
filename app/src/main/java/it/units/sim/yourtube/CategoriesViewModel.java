@@ -53,4 +53,8 @@ public class CategoriesViewModel extends AndroidViewModel {
         executor.submit(() -> categoryDao.insertAll(category));
     }
 
+    public void deleteCategory(Category category) {
+        executor.submit(() -> categoryDao.delete(category));
+    }
+
 }
