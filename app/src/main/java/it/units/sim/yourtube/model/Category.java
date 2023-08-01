@@ -3,15 +3,18 @@ package it.units.sim.yourtube.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(tableName = "categories")
+@Entity(tableName = "categories", indices = {@Index(value = {"name"}, unique = true)})
 public class Category {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
     @NonNull
     public String name;
     @ColumnInfo(name = "channels")
