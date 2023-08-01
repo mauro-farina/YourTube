@@ -17,9 +17,11 @@ import it.units.sim.yourtube.model.Category;
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
 
     private List<Category> categories;
+    private final View.OnClickListener onItemClickListener;
 
-    public CategoriesAdapter(List<Category> categories) {
+    public CategoriesAdapter(List<Category> categories, View.OnClickListener onItemClickListener) {
         this.categories = categories;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -50,13 +52,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         return categories.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView categoryNameTextView;
         private final ImageView categoryIconimageView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryNameTextView = itemView.findViewById(R.id.list_item_category_name);
             categoryIconimageView = itemView.findViewById(R.id.list_item_category_icon);
+            itemView.setOnClickListener(onItemClickListener);
         }
 
         public TextView getCategoryNameTextView() {
