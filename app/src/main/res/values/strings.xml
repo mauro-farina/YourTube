@@ -37,5 +37,7 @@
     <string name="chosen_category_icon">Chosen category icon</string>
     <string name="category_icon">Category icon</string>
     <string name="options">Options</string>
+    <string name="modify">Modify</string>
+    <string name="delete">Delete</string>
 
 </resources>

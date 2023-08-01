@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_category_option_modify"
+        android:text="@string/modify"
+        android:textSize="18sp"
+        android:paddingVertical="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_category_option_delete"
+        android:text="@string/delete"
+        android:textSize="18sp"
+        android:paddingVertical="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp" />
+
+
+</LinearLayout>
