@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.model.Category;
@@ -49,7 +50,6 @@ public class NewCategoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
-        categoriesViewModel.fetchCategories();
         subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         selectedChannels = new ArrayList<>();
     }
@@ -161,6 +161,14 @@ public class NewCategoryFragment extends Fragment {
             Toast.makeText(requireContext(), "You need to pick an icon", Toast.LENGTH_SHORT).show();
             return false;
         }
+        System.out.println(Objects.requireNonNull(categoriesViewModel.getCategoriesList().getValue()));
+        for (Category c : Objects.requireNonNull(categoriesViewModel.getCategoriesList().getValue())) {
+            if (c.name.equals(name)) {
+                Toast.makeText(requireContext(), "This category already exists", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
         List<String> selectedChannelsId = selectedChannels
                 .stream()
                 .map(UserSubscription::getChannelId)
