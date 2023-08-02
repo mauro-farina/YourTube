@@ -49,7 +49,12 @@ public class CategoriesFragment extends Fragment {
             if (clickedCategory == null) {
                 return;
             }
-            DialogCategoryOptions dialog = new DialogCategoryOptions(requireContext(), clickedCategory, categoriesViewModel);
+            DialogCategoryOptions dialog = new DialogCategoryOptions(
+                    requireContext(),
+                    clickedCategory,
+                    categoriesViewModel,
+                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+            );
             dialog.show();
         });
     }

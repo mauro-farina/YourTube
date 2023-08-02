@@ -1,6 +1,7 @@
 package it.units.sim.yourtube;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -8,8 +9,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.ArrayList;
 
 import it.units.sim.yourtube.model.Category;
 
@@ -18,14 +23,22 @@ public class DialogCategoryOptions {
     private final MaterialAlertDialogBuilder dialogBuilder;
     private AlertDialog dialog;
 
-    public DialogCategoryOptions(@NonNull Context context, Category category, CategoriesViewModel categoriesViewModel) {
+    public DialogCategoryOptions(@NonNull Context context,
+                                 Category category,
+                                 CategoriesViewModel categoriesViewModel,
+                                 NavController navController) {
         dialogBuilder = new MaterialAlertDialogBuilder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_category_options, null);
         dialogBuilder.setView(dialogView);
         TextView modifyTextView = dialogView.findViewById(R.id.dialog_category_option_modify);
         modifyTextView.setOnClickListener(v -> {
-            Toast.makeText(context, "MODIFY", Toast.LENGTH_SHORT).show();
+            Bundle extras = new Bundle();
+            extras.putInt("categoryId", category.id);
+            extras.putString("categoryName", category.name);
+            extras.putInt("categoryIcon", category.drawableIconResId);
+            extras.putStringArrayList("categoryChannels", new ArrayList<>(category.channelIds));
+            navController.navigate(R.id.newCategoryFragment, extras);
             dismiss();
         });
         TextView deleteTextView = dialogView.findViewById(R.id.dialog_category_option_delete);
