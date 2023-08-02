@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         MainViewModel viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        CategoriesViewModel categoriesViewModel = new ViewModelProvider(this).get(CategoriesViewModel.class);
         viewModel.fetchUserSubscriptions();
+        categoriesViewModel.fetchCategories();
     }
 
     @Override

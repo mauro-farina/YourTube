@@ -5,25 +5,35 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import it.units.sim.yourtube.model.Category;
 
 public class VideosFragment extends Fragment {
 
     private SimpleDateFormat dateFormat;
     private MainViewModel viewModel;
+    private CategoriesViewModel categoriesViewModel;
     private VideosAdapter adapter;
     private Calendar calendar;
     private Button datePicker;
@@ -31,6 +41,8 @@ public class VideosFragment extends Fragment {
     private Button nextDateButton;
     private Date date;
     private Date currentDateReference;
+    private LiveData<List<Category>> categoriesList;
+    private Button categoryFilterButton;
 
     public VideosFragment() {
         super(R.layout.fragment_videos);
@@ -40,6 +52,8 @@ public class VideosFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
+        categoriesList = categoriesViewModel.getCategoriesList();
         calendar = Calendar.getInstance();
         date = calendar.getTime();
         currentDateReference = new Date();
@@ -58,6 +72,7 @@ public class VideosFragment extends Fragment {
         adapter = new VideosAdapter(viewModel.getVideosList().getValue());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        categoryFilterButton = view.findViewById(R.id.category_filter_button);
         return view;
     }
 
@@ -87,6 +102,22 @@ public class VideosFragment extends Fragment {
             date = calendar.getTime();
             viewModel.fetchVideos(date);
             datePicker.setText(dateFormat.format(date));
+        });
+
+        categoryFilterButton.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireContext());
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_videos_category_filter, null);
+            RecyclerView categoriesRecyclerView = dialogView.findViewById(R.id.dialog_videos_category_filter_list);
+            CategoriesAdapter adapter = new CategoriesAdapter(
+                    categoriesViewModel.getCategoriesList().getValue(),
+                    clickedCategoryView -> {
+                        TextView categoryNameTextView = clickedCategoryView.findViewById(R.id.list_item_category_name);
+                        System.out.println(categoryNameTextView.getText().toString());
+                    });
+            categoriesRecyclerView.setAdapter(adapter);
+            categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            dialog.setView(dialogView);
+            dialog.show();
         });
     }
 
