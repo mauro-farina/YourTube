@@ -57,4 +57,8 @@ public class CategoriesViewModel extends AndroidViewModel {
         executor.submit(() -> categoryDao.delete(category));
     }
 
+    public void updateCategory(Category category) {
+        executor.submit(() -> categoryDao.updateAll(category));
+    }
+
 }
