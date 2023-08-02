@@ -6,11 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.model.Category;
 
@@ -43,6 +44,7 @@ public class VideosFragment extends Fragment {
     private Date currentDateReference;
     private LiveData<List<Category>> categoriesList;
     private Button categoryFilterButton;
+    private MutableLiveData<Category> filterCategory;
 
     public VideosFragment() {
         super(R.layout.fragment_videos);
@@ -61,6 +63,7 @@ public class VideosFragment extends Fragment {
         if (Objects.requireNonNull(viewModel.getSubscriptionsList().getValue()).size() > 0) {
             viewModel.fetchVideos(date);
         }
+        filterCategory = new MutableLiveData<>();
     }
 
     @Override
@@ -80,6 +83,15 @@ public class VideosFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         viewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> viewModel.fetchVideos(date));
         viewModel.getVideosList().observe(getViewLifecycleOwner(), adapter::setVideosList);
+
+        filterCategory.observe(getViewLifecycleOwner(), category -> {
+            adapter.setVideosList(
+                    Objects.requireNonNull(viewModel.getVideosList().getValue())
+                            .stream()
+                            .filter(v -> category.channelIds.contains(v.getChannel().getChannelId()))
+                            .collect(Collectors.toList())
+            );
+        });
 
         datePicker = view.findViewById(R.id.date_filter_pick);
         previousDateButton = view.findViewById(R.id.date_filter_previous);
@@ -108,14 +120,22 @@ public class VideosFragment extends Fragment {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireContext());
             View dialogView = getLayoutInflater().inflate(R.layout.dialog_videos_category_filter, null);
             RecyclerView categoriesRecyclerView = dialogView.findViewById(R.id.dialog_videos_category_filter_list);
-            CategoriesAdapter adapter = new CategoriesAdapter(
-                    categoriesViewModel.getCategoriesList().getValue(),
+            CategoriesAdapter categoriesAdapter = new CategoriesAdapter(
+                    new ArrayList<>(),
                     clickedCategoryView -> {
                         TextView categoryNameTextView = clickedCategoryView.findViewById(R.id.list_item_category_name);
-                        System.out.println(categoryNameTextView.getText().toString());
+                        String categoryName = categoryNameTextView.getText().toString();
+                        filterCategory.setValue(
+                                Objects.requireNonNull(categoriesList.getValue())
+                                        .stream()
+                                        .filter(c -> c.name.equals(categoryName))
+                                        .findFirst()
+                                        .orElse(null)
+                        );
                     });
-            categoriesRecyclerView.setAdapter(adapter);
+            categoriesRecyclerView.setAdapter(categoriesAdapter);
             categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            categoriesList.observe(getViewLifecycleOwner(), categoriesAdapter::setCategoriesList);
             dialog.setView(dialogView);
             dialog.show();
         });
