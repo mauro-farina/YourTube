@@ -172,6 +172,7 @@ public class NewCategoryFragment extends Fragment {
             categoryNameInput.setText(modifyCategoryName);
         }
         if (modifyCategoryIcon != 0) {
+            chosenCategoryResId = modifyCategoryIcon;
             categoryIconPreview.setImageResource(modifyCategoryIcon);
         }
         if (modifyCategoryChannels != null) {
