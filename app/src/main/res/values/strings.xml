@@ -39,5 +39,6 @@
     <string name="options">Options</string>
     <string name="modify">Modify</string>
     <string name="delete">Delete</string>
+    <string name="category">Category</string>
 
 </resources>
