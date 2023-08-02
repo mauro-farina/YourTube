@@ -34,7 +34,6 @@ public class CategoriesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
-        categoriesViewModel.fetchCategories();
         adapter = new CategoriesAdapter(new ArrayList<>(), view -> {
             TextView clickedCategoryNameTextView = view.findViewById(R.id.list_item_category_name);
             String clickedCategoryName = clickedCategoryNameTextView.getText().toString();
