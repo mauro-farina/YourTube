@@ -43,7 +43,6 @@ public class NewCategoryFragment extends Fragment {
     private CategoriesViewModel categoriesViewModel;
     private int chosenCategoryResId;
     private ImageView categoryIconPreview;
-    private TextInputLayout categoryNameInputLayout;
     private int modifyCategoryId;
     private String modifyCategoryName;
     private int modifyCategoryIcon;
