@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -41,6 +43,11 @@ public class NewCategoryFragment extends Fragment {
     private CategoriesViewModel categoriesViewModel;
     private int chosenCategoryResId;
     private ImageView categoryIconPreview;
+    private TextInputLayout categoryNameInputLayout;
+    private int modifyCategoryId;
+    private String modifyCategoryName;
+    private int modifyCategoryIcon;
+    private List<String> modifyCategoryChannels;
 
     public NewCategoryFragment() {
         // Required empty public constructor
@@ -52,6 +59,12 @@ public class NewCategoryFragment extends Fragment {
         categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
         subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         selectedChannels = new ArrayList<>();
+        if (getArguments() != null) {
+            modifyCategoryId = getArguments().getInt("categoryId");
+            modifyCategoryName = getArguments().getString("categoryName");
+            modifyCategoryIcon = getArguments().getInt("categoryIcon");
+            modifyCategoryChannels = getArguments().getStringArrayList("categoryChannels");
+        }
     }
 
     @SuppressLint("DiscouragedApi")
@@ -132,15 +145,22 @@ public class NewCategoryFragment extends Fragment {
 
         recyclerView.setAdapter(subscriptionsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        TextInputLayout categoryNameInputLayout = view.findViewById(R.id.new_category_name);
+        EditText categoryNameInput = categoryNameInputLayout.getEditText();
+
+        assert categoryNameInput != null;
 
         Button createCategoryBtn = view.findViewById(R.id.new_category_create);
         createCategoryBtn.setOnClickListener(btn -> {
-            TextInputLayout categoryNameInputLayout = view.findViewById(R.id.new_category_name);
-            EditText categoryNameInput = categoryNameInputLayout.getEditText();
-            if (categoryNameInput == null)
-                return;
+//            if (categoryNameInput == null)
+//                return;
             String categoryName = categoryNameInput.getText().toString().trim();
-            if (addCategory(categoryName)) {
+            if (modifyCategoryId != 0) {
+                updateCategory(categoryName);
+                Snackbar.make(view, "Category " + categoryName + " modified!", Snackbar.LENGTH_SHORT).show();
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.categoriesFragment);
+            } else if (addCategory(categoryName)) {
                 Snackbar.make(view, "Category " + categoryName + " created!", Snackbar.LENGTH_SHORT).show();
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.categoriesFragment);
@@ -149,7 +169,32 @@ public class NewCategoryFragment extends Fragment {
 
         categoryIconPreview = view.findViewById(R.id.new_category_icons_preview);
 
+        if (modifyCategoryName != null) {
+            categoryNameInput.setText(modifyCategoryName);
+        }
+        if (modifyCategoryIcon != 0) {
+            categoryIconPreview.setImageResource(modifyCategoryIcon);
+        }
+        if (modifyCategoryChannels != null) {
+            selectedChannels = Objects.requireNonNull(subscriptions)
+                    .stream()
+                    .filter(s -> modifyCategoryChannels.contains(s.getChannelId()))
+                    .collect(Collectors.toList());
+            for (UserSubscription sub : selectedChannels) {
+                Chip chip = new Chip(requireContext());
+                chip.setText(sub.getChannelName());
+                chip.setClickable(false);
+                chip.setCheckable(false);
+                chipGroup.addView(chip);
+            }
+        }
+
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private boolean addCategory(String name) {
@@ -161,7 +206,7 @@ public class NewCategoryFragment extends Fragment {
             Toast.makeText(requireContext(), "You need to pick an icon", Toast.LENGTH_SHORT).show();
             return false;
         }
-        System.out.println(Objects.requireNonNull(categoriesViewModel.getCategoriesList().getValue()));
+
         for (Category c : Objects.requireNonNull(categoriesViewModel.getCategoriesList().getValue())) {
             if (c.name.equals(name)) {
                 Toast.makeText(requireContext(), "This category already exists", Toast.LENGTH_SHORT).show();
@@ -176,6 +221,25 @@ public class NewCategoryFragment extends Fragment {
         Category newCategory = new Category(name, selectedChannelsId, chosenCategoryResId);
         categoriesViewModel.addCategory(newCategory);
         return true;
+    }
+
+    private void updateCategory(String name) {
+        Category toUpdateCategory = Objects
+                .requireNonNull(categoriesViewModel.getCategoriesList().getValue())
+                .stream()
+                .filter(c -> c.id == modifyCategoryId)
+                .findFirst()
+                .orElse(null);
+        if (toUpdateCategory == null) {
+            return;
+        }
+        toUpdateCategory.name = name;
+        toUpdateCategory.channelIds = selectedChannels
+                .stream()
+                .map(UserSubscription::getChannelId)
+                .collect(Collectors.toList());
+        toUpdateCategory.drawableIconResId = chosenCategoryResId;
+        categoriesViewModel.updateCategory(toUpdateCategory);
     }
 
     private void toggleVisibility(View view) {
