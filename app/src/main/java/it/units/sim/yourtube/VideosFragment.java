@@ -79,7 +79,20 @@ public class VideosFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         viewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> viewModel.fetchVideos(date));
-        viewModel.getVideosList().observe(getViewLifecycleOwner(), adapter::setVideosList);
+        viewModel.getVideosList().observe(getViewLifecycleOwner(), list -> {
+            Category filterCategory = viewModel.getCategoryFilter().getValue();
+            if (filterCategory != null) {
+                adapter.setVideosList(
+                        Objects.requireNonNull(viewModel.getVideosList().getValue())
+                                .stream()
+                                .filter(v -> filterCategory.channelIds.contains(v.getChannel().getChannelId()))
+                                .collect(Collectors.toList())
+                );
+            } else {
+                adapter.setVideosList(list);
+            }
+
+        });
 
         viewModel.getCategoryFilter().observe(
                 getViewLifecycleOwner(),
@@ -91,7 +104,7 @@ public class VideosFragment extends Fragment {
                             .collect(Collectors.toList())
                     );
             });
-        
+
         datePicker = view.findViewById(R.id.date_filter_pick);
         previousDateButton = view.findViewById(R.id.date_filter_previous);
         nextDateButton = view.findViewById(R.id.date_filter_next);
