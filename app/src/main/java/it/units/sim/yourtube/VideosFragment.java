@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +43,6 @@ public class VideosFragment extends Fragment {
     private Date currentDateReference;
     private LiveData<List<Category>> categoriesList;
     private Button categoryFilterButton;
-    private MutableLiveData<Category> filterCategory;
 
     public VideosFragment() {
         super(R.layout.fragment_videos);
@@ -63,7 +61,6 @@ public class VideosFragment extends Fragment {
         if (Objects.requireNonNull(viewModel.getSubscriptionsList().getValue()).size() > 0) {
             viewModel.fetchVideos(date);
         }
-        filterCategory = new MutableLiveData<>();
     }
 
     @Override
@@ -84,15 +81,17 @@ public class VideosFragment extends Fragment {
         viewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> viewModel.fetchVideos(date));
         viewModel.getVideosList().observe(getViewLifecycleOwner(), adapter::setVideosList);
 
-        filterCategory.observe(getViewLifecycleOwner(), category -> {
-            adapter.setVideosList(
-                    Objects.requireNonNull(viewModel.getVideosList().getValue())
+        viewModel.getCategoryFilter().observe(
+                getViewLifecycleOwner(),
+                category -> {
+                    adapter.setVideosList(
+                        Objects.requireNonNull(viewModel.getVideosList().getValue())
                             .stream()
                             .filter(v -> category.channelIds.contains(v.getChannel().getChannelId()))
                             .collect(Collectors.toList())
-            );
-        });
-
+                    );
+            });
+        
         datePicker = view.findViewById(R.id.date_filter_pick);
         previousDateButton = view.findViewById(R.id.date_filter_previous);
         nextDateButton = view.findViewById(R.id.date_filter_next);
@@ -125,7 +124,7 @@ public class VideosFragment extends Fragment {
                     clickedCategoryView -> {
                         TextView categoryNameTextView = clickedCategoryView.findViewById(R.id.list_item_category_name);
                         String categoryName = categoryNameTextView.getText().toString();
-                        filterCategory.setValue(
+                        viewModel.setCategoryFilter(
                                 Objects.requireNonNull(categoriesList.getValue())
                                         .stream()
                                         .filter(c -> c.name.equals(categoryName))

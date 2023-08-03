@@ -15,6 +15,7 @@ import it.units.sim.yourtube.api.RequestCallback;
 import it.units.sim.yourtube.api.RequestThread;
 import it.units.sim.yourtube.api.SubscriptionListRequest;
 import it.units.sim.yourtube.api.VideoUploadsRequest;
+import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
 
@@ -24,6 +25,8 @@ public class MainViewModel extends ViewModel {
             subscriptionsList = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<List<VideoData>>
             videosList = new MutableLiveData<>(new ArrayList<>());
+
+    private final MutableLiveData<Category> categoryFilter = new MutableLiveData<>();
 
     public void fetchUserSubscriptions() {
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
@@ -53,12 +56,20 @@ public class MainViewModel extends ViewModel {
         }
     }
 
+    public void setCategoryFilter(Category category) {
+        categoryFilter.setValue(category);
+    }
+
     public LiveData<List<UserSubscription>> getSubscriptionsList() {
         return subscriptionsList;
     }
 
     public LiveData<List<VideoData>> getVideosList() {
         return videosList;
+    }
+
+    public LiveData<Category> getCategoryFilter() {
+        return categoryFilter;
     }
 
 }
