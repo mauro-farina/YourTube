@@ -33,12 +33,9 @@ public class VideosFragment extends Fragment {
 
     private SimpleDateFormat dateFormat;
     private MainViewModel viewModel;
-    private CategoriesViewModel categoriesViewModel;
     private VideosAdapter adapter;
     private Calendar calendar;
     private Button datePicker;
-    private Button previousDateButton;
-    private Button nextDateButton;
     private Date date;
     private Date currentDateReference;
     private LiveData<List<Category>> categoriesList;
@@ -52,15 +49,15 @@ public class VideosFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-        categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
-        categoriesList = categoriesViewModel.getCategoriesList();
         calendar = Calendar.getInstance();
         date = calendar.getTime();
-        currentDateReference = new Date();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         if (Objects.requireNonNull(viewModel.getSubscriptionsList().getValue()).size() > 0) {
             viewModel.fetchVideos(date);
         }
+        currentDateReference = new Date();
+        CategoriesViewModel categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
+        categoriesList = categoriesViewModel.getCategoriesList();
     }
 
     @Override
@@ -82,12 +79,7 @@ public class VideosFragment extends Fragment {
         viewModel.getVideosList().observe(getViewLifecycleOwner(), list -> {
             Category filterCategory = viewModel.getCategoryFilter().getValue();
             if (filterCategory != null) {
-                adapter.setVideosList(
-                        Objects.requireNonNull(viewModel.getVideosList().getValue())
-                                .stream()
-                                .filter(v -> filterCategory.channelIds.contains(v.getChannel().getChannelId()))
-                                .collect(Collectors.toList())
-                );
+                setFilteredVideosListInAdapter(filterCategory);
             } else {
                 adapter.setVideosList(list);
             }
@@ -96,21 +88,15 @@ public class VideosFragment extends Fragment {
 
         viewModel.getCategoryFilter().observe(
                 getViewLifecycleOwner(),
-                category -> {
-                    adapter.setVideosList(
-                        Objects.requireNonNull(viewModel.getVideosList().getValue())
-                            .stream()
-                            .filter(v -> category.channelIds.contains(v.getChannel().getChannelId()))
-                            .collect(Collectors.toList())
-                    );
-            });
+                this::setFilteredVideosListInAdapter
+        );
 
+//        datePicker = view.findViewById(R.id.date_filter_pick);
+        Button previousDateButton = view.findViewById(R.id.date_filter_previous);
+        Button nextDateButton = view.findViewById(R.id.date_filter_next);
         datePicker = view.findViewById(R.id.date_filter_pick);
-        previousDateButton = view.findViewById(R.id.date_filter_previous);
-        nextDateButton = view.findViewById(R.id.date_filter_next);
-        datePicker = view.findViewById(R.id.date_filter_pick);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        datePicker.setText(sdf.format(calendar.getTime()));
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        datePicker.setText(dateFormat.format(calendar.getTime()));
         datePicker.setOnClickListener(v -> showDatePickerDialog());
         previousDateButton.setOnClickListener(view1 -> {
             calendar.add(Calendar.DAY_OF_MONTH, -1);
@@ -151,6 +137,15 @@ public class VideosFragment extends Fragment {
             dialog.setView(dialogView);
             dialog.show();
         });
+    }
+
+    private void setFilteredVideosListInAdapter(Category filterCategory) {
+            adapter.setVideosList(
+                    Objects.requireNonNull(viewModel.getVideosList().getValue())
+                            .stream()
+                            .filter(v -> filterCategory.channelIds.contains(v.getChannel().getChannelId()))
+                            .collect(Collectors.toList())
+            );
     }
 
     private void showDatePickerDialog() {
