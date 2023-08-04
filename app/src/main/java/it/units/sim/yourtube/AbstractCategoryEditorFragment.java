@@ -88,9 +88,9 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
         );
 
         //expand subscriptions button
-        RecyclerView subscriptionsRecyclerView = view.findViewById(R.id.new_category_subscriptions_list);
-        selectedChannelsChipGroup = view.findViewById(R.id.new_category_subscriptions_chips);
-        Button expandSubscriptionsRecyclerView = view.findViewById(R.id.new_category_subscriptions_list_expand);
+        RecyclerView subscriptionsRecyclerView = view.findViewById(R.id.category_editor_subscriptions_list);
+        selectedChannelsChipGroup = view.findViewById(R.id.category_editor_subscriptions_chipgroup);
+        Button expandSubscriptionsRecyclerView = view.findViewById(R.id.category_editor_subscriptions_list_expand);
         expandSubscriptionsRecyclerView.setOnClickListener(expandBtn -> {
             if (subscriptionsRecyclerView.getVisibility() == View.GONE) {
                 selectedChannelsChipGroup.removeAllViews();
@@ -107,9 +107,9 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
         });
 
         // Icon picker
-        GridLayout iconsGridLayout = view.findViewById(R.id.category_icons);
+        GridLayout iconsGridLayout = view.findViewById(R.id.category_editor_icons);
 
-        Button expandIconPicker = view.findViewById(R.id.new_category_icons_list_expand);
+        Button expandIconPicker = view.findViewById(R.id.category_editor_icons_list_expand);
         expandIconPicker.setOnClickListener(expandBtn -> toggleVisibility(iconsGridLayout));
 
         for (int i = 0; i < iconsGridLayout.getChildCount(); i++) {
@@ -130,7 +130,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
 
         subscriptionsRecyclerView.setAdapter(subscriptionsAdapter);
         subscriptionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        TextInputLayout categoryNameInputLayout = view.findViewById(R.id.new_category_name);
+        TextInputLayout categoryNameInputLayout = view.findViewById(R.id.category_editor_name);
         categoryNameEditText = categoryNameInputLayout.getEditText();
 
         if (categoryNameEditText == null) {
@@ -138,7 +138,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
             categoryNameInputLayout.addView(categoryNameEditText);
         }
 
-        Button createCategoryBtn = view.findViewById(R.id.new_category_create);
+        Button createCategoryBtn = view.findViewById(R.id.category_editor_action_button);
         createCategoryBtn.setOnClickListener(btn -> {
             categoryName = categoryNameEditText.getText().toString().trim();
             if (createOrModifyCategory()) {
@@ -150,7 +150,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
             }
         });
 
-        categoryIconPreview = view.findViewById(R.id.new_category_icons_preview);
+        categoryIconPreview = view.findViewById(R.id.category_editor_icons_preview);
     }
 
     private void toggleVisibility(View view) {
