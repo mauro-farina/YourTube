@@ -36,7 +36,7 @@ public class DialogCategoryOptions {
             extras.putString("categoryName", category.name);
             extras.putInt("categoryIcon", category.drawableIconResId);
             extras.putStringArrayList("categoryChannels", new ArrayList<>(category.channelIds));
-            navController.navigate(R.id.newCategoryFragment, extras);
+            navController.navigate(R.id.categoryEditFragment, extras);
             dismiss();
         });
         TextView deleteTextView = dialogView.findViewById(R.id.dialog_category_option_delete);
