@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_categories_to_categoryEdit"
             app:destination="@id/categoryEditFragment" />
+        <action
+            android:id="@+id/action_categories_to_categoryNew"
+            app:destination="@id/categoryNewFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryEditFragment"
@@ -51,6 +54,16 @@
         tools:layout="@layout/fragment_category_edit" >
         <action
             android:id="@+id/action_categoryEdit_to_categories"
+            app:destination="@id/categoriesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/categoryNewFragment"
+        android:name="it.units.sim.yourtube.CategoryNewFragment"
+        android:label="fragment_category_new"
+        tools:layout="@layout/fragment_category_new" >
+        <action
+            android:id="@+id/action_categoryNew_to_categories"
             app:destination="@id/categoriesFragment" />
     </fragment>
 

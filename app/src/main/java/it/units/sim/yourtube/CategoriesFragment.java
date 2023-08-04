@@ -72,7 +72,7 @@ public class CategoriesFragment extends Fragment {
         FloatingActionButton fab = view.findViewById(R.id.categories_add_category_fab);
         fab.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            navController.navigate(R.id.newCategoryFragment);
+            navController.navigate(R.id.categoryNewFragment);
         });
         return view;
     }
