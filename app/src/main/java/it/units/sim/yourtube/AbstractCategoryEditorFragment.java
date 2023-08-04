@@ -33,7 +33,7 @@ import it.units.sim.yourtube.model.UserSubscription;
 
 public abstract class AbstractCategoryEditorFragment extends Fragment {
 
-    List<UserSubscription> subscriptions;
+    protected List<UserSubscription> subscriptions;
     protected List<UserSubscription> selectedChannels;
     protected ChipGroup selectedChannelsChipGroup;
     protected EditText categoryNameEditText;
