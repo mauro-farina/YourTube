@@ -40,5 +40,6 @@
     <string name="modify">Modify</string>
     <string name="delete">Delete</string>
     <string name="category">Category</string>
+    <string name="confirm">Confirm</string>
 
 </resources>
