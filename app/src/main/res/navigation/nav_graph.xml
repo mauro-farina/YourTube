@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homepage_to_categories"
             app:destination="@id/categoriesFragment" />
+        <action
+            android:id="@+id/action_videos_to_videoPlayer"
+            app:destination="@id/videoPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/subscriptionsFragment"
@@ -65,6 +68,15 @@
         <action
             android:id="@+id/action_categoryNew_to_categories"
             app:destination="@id/categoriesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoPlayerFragment"
+        android:name="it.units.sim.yourtube.VideoPlayerFragment"
+        android:label="fragment_video_player"
+        tools:layout="@layout/fragment_video_player" >
+        <action
+            android:id="@+id/action_videoPlayer_to_videos"
+            app:destination="@id/videosFragment" />
     </fragment>
 
 </navigation>

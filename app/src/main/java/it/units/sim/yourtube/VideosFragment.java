@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,7 +68,13 @@ public class VideosFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_videos, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.videos_recycler_view);
-        adapter = new VideosAdapter(viewModel.getVideosList().getValue());
+        adapter = new VideosAdapter(viewModel.getVideosList().getValue(), clickedView -> {
+            String videoId = clickedView.getTag().toString();
+            Bundle extras = new Bundle();
+            extras.putString("videoId", videoId);
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.videoPlayerFragment, extras);
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         categoryFilterButton = view.findViewById(R.id.category_filter_button);
