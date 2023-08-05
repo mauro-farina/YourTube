@@ -44,9 +44,8 @@ dependencies {
     }
 
     // YouTube Player
-    dependencies {
-        implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
-    }
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:custom-ui:12.1.0'
 
     // Room Persistence Library
     def room_version = "2.5.2"
