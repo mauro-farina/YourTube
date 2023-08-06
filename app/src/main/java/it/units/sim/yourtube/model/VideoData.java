@@ -14,6 +14,7 @@ public class VideoData implements Parcelable {
     private final String videoId;
     private final String thumbnailUrl;
     private final DateTime publishedAt;
+    private final String description;
     private final UserSubscription subscription;
 
     public VideoData(PlaylistItemSnippet playlistItemSnippet, UserSubscription subscription) {
@@ -21,6 +22,7 @@ public class VideoData implements Parcelable {
         this.videoId = playlistItemSnippet.getResourceId().getVideoId();
         this.thumbnailUrl = getHighestResThumbnailUrl(playlistItemSnippet.getThumbnails());
         this.publishedAt = playlistItemSnippet.getPublishedAt();
+        this.description = playlistItemSnippet.getDescription();
         this.subscription = subscription;
     }
 
@@ -29,6 +31,7 @@ public class VideoData implements Parcelable {
         videoId = in.readString();
         thumbnailUrl = in.readString();
         publishedAt = (DateTime) in.readSerializable();
+        description = in.readString();
         subscription = in.readParcelable(UserSubscription.class.getClassLoader());
     }
 
@@ -81,6 +84,10 @@ public class VideoData implements Parcelable {
         return publishedAt;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public String getReadablePublishedDate() {
         StringBuilder sb = new StringBuilder();
         String dateString = publishedAt.toString().split("T")[0];
@@ -111,6 +118,7 @@ public class VideoData implements Parcelable {
         parcel.writeString(videoId);
         parcel.writeString(thumbnailUrl);
         parcel.writeSerializable(publishedAt);
+        parcel.writeString(description);
         parcel.writeParcelable(subscription, i);
     }
 
