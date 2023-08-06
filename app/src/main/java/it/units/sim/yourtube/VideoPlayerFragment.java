@@ -20,6 +20,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.You
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import it.units.sim.yourtube.model.VideoData;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 
@@ -38,7 +39,8 @@ public class VideoPlayerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            videoId = getArguments().getString("videoId");
+            VideoData video = getArguments().getParcelable("video");
+            videoId = video.getVideoId();
         }
         toggleBottomNav();
     }

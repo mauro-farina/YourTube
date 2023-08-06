@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.model.Category;
+import it.units.sim.yourtube.model.VideoData;
 
 public class VideosFragment extends Fragment {
 
@@ -69,9 +70,9 @@ public class VideosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_videos, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.videos_recycler_view);
         adapter = new VideosAdapter(viewModel.getVideosList().getValue(), clickedView -> {
-            String videoId = clickedView.getTag().toString();
+            VideoData video = (VideoData) clickedView.getTag();
             Bundle extras = new Bundle();
-            extras.putString("videoId", videoId);
+            extras.putParcelable("video", video);
             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.videoPlayerFragment, extras);
         });
