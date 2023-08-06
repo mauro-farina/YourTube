@@ -75,8 +75,8 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
             super(itemView);
             videoTitleTextView = itemView.findViewById(R.id.list_item_video_title);
             thumbnailImageView = itemView.findViewById(R.id.list_item_video_thumbnail);
-            channelImageView = itemView.findViewById(R.id.list_item_video_channel_thumbnail);
-            channelTextView = itemView.findViewById(R.id.list_item_video_channel_name);
+            channelImageView = itemView.findViewById(R.id.list_item_subscription_thumbnail);
+            channelTextView = itemView.findViewById(R.id.list_item_subscription_channel_name);
             itemView.setOnClickListener(onVideoClick);
         }
 
