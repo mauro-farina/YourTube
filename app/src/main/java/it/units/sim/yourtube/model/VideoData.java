@@ -84,9 +84,6 @@ public class VideoData implements Parcelable {
     public String getReadablePublishedDate() {
         StringBuilder sb = new StringBuilder();
         String dateString = publishedAt.toString().split("T")[0];
-        if (dateString.length() != 2) {
-            return publishedAt.toString();
-        }
         String[] yearMonthDay = dateString.split("-"); // 2023-12-25
         if (yearMonthDay.length != 3) {
             return publishedAt.toString();
