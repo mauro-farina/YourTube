@@ -55,6 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/icon_thumb_up_off"
+            android:contentDescription="@string/like_button"
             app:layout_constraintTop_toBottomOf="@+id/video_player_views_counter"
             app:layout_constraintEnd_toStartOf="@+id/video_player_btn_dislike" />
 
@@ -64,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/icon_thumb_down_off"
+            android:contentDescription="@string/dislike_button"
             app:layout_constraintTop_toBottomOf="@+id/video_player_views_counter"
             app:layout_constraintEnd_toEndOf="parent" />
 

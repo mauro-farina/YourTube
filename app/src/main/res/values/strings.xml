@@ -42,5 +42,7 @@
     <string name="category">Category</string>
     <string name="confirm">Confirm</string>
     <string name="edit">Edit</string>
+    <string name="like_button">Like button</string>
+    <string name="dislike_button">Dislike button</string>
 
 </resources>
