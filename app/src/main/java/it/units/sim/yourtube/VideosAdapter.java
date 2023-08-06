@@ -43,7 +43,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull VideosAdapter.ViewHolder holder, int position) {
-        holder.itemView.setTag(videosList.get(position).getVideoId());
+        holder.itemView.setTag(videosList.get(position));
         TextView videoTitleTextView = holder.getVideoTitleTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
         ImageView channelImageView = holder.getChannelImageView();
