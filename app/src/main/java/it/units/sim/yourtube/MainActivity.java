@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
             BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
+
+        Toolbar toolbar = findViewById(R.id.top_app_bar);
+        setSupportActionBar(toolbar);
 
         MainViewModel viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         CategoriesViewModel categoriesViewModel = new ViewModelProvider(this).get(CategoriesViewModel.class);
