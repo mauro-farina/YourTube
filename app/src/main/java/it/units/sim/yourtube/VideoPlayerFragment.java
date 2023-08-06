@@ -121,11 +121,13 @@ public class VideoPlayerFragment extends Fragment {
         TextView videoDate = view.findViewById(R.id.video_player_date);
         TextView videoChannelName = view.findViewById(R.id.list_item_subscription_channel_name);
         ImageView videoChannelThumbnail = view.findViewById(R.id.list_item_subscription_thumbnail);
+        TextView videoDescription = view.findViewById(R.id.video_player_description);
 
         videoTitle.setText(video.getTitle());
         videoViewCount.setText("ViewCount");
         videoDate.setText(video.getReadablePublishedDate());
         videoChannelName.setText(video.getChannel().getChannelName());
+        videoDescription.setText((video.getDescription()));
         Picasso
                 .get()
                 .load(video.getChannel().getThumbnailUrl())
