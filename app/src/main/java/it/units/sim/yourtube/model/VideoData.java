@@ -1,10 +1,15 @@
 package it.units.sim.yourtube.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.api.client.util.DateTime;
 import com.google.api.services.youtube.model.PlaylistItemSnippet;
 import com.google.api.services.youtube.model.ThumbnailDetails;
 
-public class VideoData {
+public class VideoData implements Parcelable {
     private final String title;
     private final String videoId;
     private final String thumbnailUrl;
@@ -19,6 +24,26 @@ public class VideoData {
         this.subscription = subscription;
     }
 
+    protected VideoData(Parcel in) {
+        title = in.readString();
+        videoId = in.readString();
+        thumbnailUrl = in.readString();
+        publishedAt = (DateTime) in.readSerializable();
+        subscription = in.readParcelable(UserSubscription.class.getClassLoader());
+    }
+
+    public static final Creator<VideoData> CREATOR = new Creator<>() {
+        @Override
+        public VideoData createFromParcel(Parcel in) {
+            return new VideoData(in);
+        }
+
+        @Override
+        public VideoData[] newArray(int size) {
+            return new VideoData[size];
+        }
+    };
+
     private String getHighestResThumbnailUrl(ThumbnailDetails thumbnails) {
         String url = "";
         if (thumbnails.getDefault() != null)
@@ -32,6 +57,12 @@ public class VideoData {
         if (thumbnails.getMaxres() != null)
             url = thumbnails.getMaxres().getUrl();
         return url;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return title + " by " + getChannel().getChannelName();
     }
 
     public String getTitle() {
@@ -52,5 +83,19 @@ public class VideoData {
 
     public UserSubscription getChannel(){
         return subscription;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(videoId);
+        parcel.writeString(thumbnailUrl);
+        parcel.writeSerializable(publishedAt);
+        parcel.writeParcelable(subscription, i);
     }
 }
