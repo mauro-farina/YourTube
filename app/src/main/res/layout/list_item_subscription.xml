@@ -27,6 +27,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_item_subscription_channel_name"
         android:textSize="18sp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:paddingStart="20dp"
         android:paddingEnd="0dp" />
 
