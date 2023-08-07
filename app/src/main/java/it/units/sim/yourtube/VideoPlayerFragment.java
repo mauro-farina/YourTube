@@ -1,5 +1,6 @@
 package it.units.sim.yourtube;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -15,7 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.customui.DefaultPlayerUiController;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener;
@@ -63,14 +63,12 @@ public class VideoPlayerFragment extends Fragment {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                 youTubePlayerWhenReady = youTubePlayer;
-                DefaultPlayerUiController defaultPlayerUiController = new DefaultPlayerUiController(youTubePlayerView, youTubePlayer);
-                youTubePlayerView.setCustomPlayerUi(defaultPlayerUiController.getRootView());
                 youTubePlayer.loadVideo(video.getVideoId(), 0);
             }
         };
 
         IFramePlayerOptions playerOptions = new IFramePlayerOptions.Builder()
-                .controls(0)
+                .controls(1)
                 .fullscreen(1)
                 .build();
 
