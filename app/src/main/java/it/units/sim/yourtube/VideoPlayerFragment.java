@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -41,10 +42,12 @@ public class VideoPlayerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             video = getArguments().getParcelable("video");
         }
-        toggleBottomNav();
+
+        toggleToolbarAndBottomNav();
     }
 
     @Override
@@ -97,7 +100,7 @@ public class VideoPlayerFragment extends Fragment {
                 if (isFullscreen) {
                     youTubePlayerWhenReady.toggleFullscreen();
                 } else {
-                    toggleBottomNav();
+                    toggleToolbarAndBottomNav();
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     fragmentManager.popBackStack();
                 }
@@ -134,12 +137,18 @@ public class VideoPlayerFragment extends Fragment {
                 .into(videoChannelThumbnail);
     }
 
-    private void toggleBottomNav() {
+    private void toggleToolbarAndBottomNav() {
+        Toolbar topToolbar = requireActivity().findViewById(R.id.top_app_bar);
+        if (topToolbar.getVisibility() == View.VISIBLE) {
+            topToolbar.setVisibility(View.GONE);
+        } else {
+            topToolbar.setVisibility(View.VISIBLE);
+        }
         View bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
         if (bottomNav.getVisibility() == View.VISIBLE) {
-            requireActivity().findViewById(R.id.bottom_navigation).setVisibility(View.GONE);
+            bottomNav.setVisibility(View.GONE);
         } else {
-            requireActivity().findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
+            bottomNav.setVisibility(View.VISIBLE);
         }
     }
 
