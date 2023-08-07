@@ -1,5 +1,7 @@
 package it.units.sim.yourtube;
 
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -12,6 +14,8 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +34,8 @@ import kotlin.jvm.functions.Function0;
 
 public class VideoPlayerFragment extends Fragment {
 
+    private Window window;
+    private int originalSystemUiVisibility;
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayerWhenReady;
     private VideoData video;
@@ -42,12 +48,37 @@ public class VideoPlayerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        window = requireActivity().getWindow();
+        originalSystemUiVisibility = window.getDecorView().getSystemUiVisibility();
 
         if (getArguments() != null) {
             video = getArguments().getParcelable("video");
         }
 
         toggleToolbarAndBottomNav();
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        toggleToolbarAndBottomNav();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        turnImmersionModeOff();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE
+                && !isFullscreen
+                && youTubePlayerWhenReady != null) {
+            youTubePlayerWhenReady.toggleFullscreen();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT
+                && isFullscreen
+                && youTubePlayerWhenReady != null) {
+            youTubePlayerWhenReady.toggleFullscreen();
+        }
     }
 
     @Override
@@ -64,6 +95,9 @@ public class VideoPlayerFragment extends Fragment {
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                 youTubePlayerWhenReady = youTubePlayer;
                 youTubePlayer.loadVideo(video.getVideoId(), 0);
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    youTubePlayer.toggleFullscreen();
+                }
             }
         };
 
@@ -79,16 +113,19 @@ public class VideoPlayerFragment extends Fragment {
                 youTubePlayerView.setVisibility(View.GONE);
                 fullscreenViewContainer.setVisibility(View.VISIBLE);
                 fullscreenViewContainer.addView(fullscreenView);
-//                optionally request landscape orientation
-//                requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                turnImmersionModeOn();
             }
 
+            @SuppressLint("SourceLockedOrientationActivity")
             @Override
             public void onExitFullscreen() {
                 isFullscreen = false;
                 youTubePlayerView.setVisibility(View.VISIBLE);
                 fullscreenViewContainer.setVisibility(View.GONE);
                 fullscreenViewContainer.removeAllViews();
+                requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                turnImmersionModeOff();
             }
         });
 
@@ -98,7 +135,6 @@ public class VideoPlayerFragment extends Fragment {
                 if (isFullscreen) {
                     youTubePlayerWhenReady.toggleFullscreen();
                 } else {
-                    toggleToolbarAndBottomNav();
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     fragmentManager.popBackStack();
                 }
@@ -148,6 +184,17 @@ public class VideoPlayerFragment extends Fragment {
         } else {
             bottomNav.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void turnImmersionModeOn() {
+        int immersiveModeFlags = View.SYSTEM_UI_FLAG_IMMERSIVE
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        window.getDecorView().setSystemUiVisibility(immersiveModeFlags);
+    }
+
+    private void turnImmersionModeOff() {
+        window.getDecorView().setSystemUiVisibility(originalSystemUiVisibility);
     }
 
 }
