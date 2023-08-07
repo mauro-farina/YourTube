@@ -54,7 +54,11 @@ public class VideoPlayerFragment extends Fragment {
         if (getArguments() != null) {
             video = getArguments().getParcelable("video");
         }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         toggleToolbarAndBottomNav();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
