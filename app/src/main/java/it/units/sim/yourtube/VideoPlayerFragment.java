@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class VideoPlayerFragment extends Fragment {
     private YouTubePlayer youTubePlayerWhenReady;
     private VideoData video;
     private boolean isFullscreen;
+    private final Handler handler = new Handler();
 
     public VideoPlayerFragment() {
         // Required empty public constructor
@@ -117,7 +119,13 @@ public class VideoPlayerFragment extends Fragment {
                 youTubePlayerView.setVisibility(View.GONE);
                 fullscreenViewContainer.setVisibility(View.VISIBLE);
                 fullscreenViewContainer.addView(fullscreenView);
-                requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    handler.postDelayed(
+                            () -> requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED),
+                            3*1000
+                    );
+                }
                 turnImmersionModeOn();
             }
 
@@ -128,7 +136,13 @@ public class VideoPlayerFragment extends Fragment {
                 youTubePlayerView.setVisibility(View.VISIBLE);
                 fullscreenViewContainer.setVisibility(View.GONE);
                 fullscreenViewContainer.removeAllViews();
-                requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    handler.postDelayed(
+                            () -> requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED),
+                            3*1000
+                    );
+                }
                 turnImmersionModeOff();
             }
         });
