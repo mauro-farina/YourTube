@@ -53,6 +53,18 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        toggleBottomNav();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        toggleBottomNav();
+    }
+
+    @Override
     public abstract View onCreateView(@NonNull LayoutInflater inflater,
                                       ViewGroup container,
                                       Bundle savedInstanceState);
@@ -167,6 +179,15 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
 
     private void showFailureToastMessage(String failureReason) {
         Toast.makeText(requireContext(), failureReason, Toast.LENGTH_SHORT).show();
+    }
+
+    private void toggleBottomNav() {
+        View bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
+        if (bottomNav.getVisibility() == View.VISIBLE) {
+            bottomNav.setVisibility(View.GONE);
+        } else {
+            bottomNav.setVisibility(View.VISIBLE);
+        }
     }
 
 
