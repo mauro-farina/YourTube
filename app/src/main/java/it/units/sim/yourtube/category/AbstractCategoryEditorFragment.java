@@ -1,8 +1,8 @@
 package it.units.sim.yourtube.category;
 
 import android.annotation.SuppressLint;
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -31,7 +29,6 @@ import java.util.List;
 
 import it.units.sim.yourtube.MainViewModel;
 import it.units.sim.yourtube.R;
-import it.units.sim.yourtube.subscription.SubscriptionsAdapter;
 import it.units.sim.yourtube.model.UserSubscription;
 
 public abstract class AbstractCategoryEditorFragment extends Fragment {
@@ -78,49 +75,35 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rootView = view;
-        SubscriptionsAdapter subscriptionsAdapter = new SubscriptionsAdapter(
-                subscriptions,
-                clickedView -> {
-                    if (subscriptions == null || subscriptions.size() == 0)
-                        return;
-                    TextView selectedChannelTextView = clickedView.findViewById(R.id.list_item_subscription_channel_name);
-                    String selectedChannelName = selectedChannelTextView.getText().toString();
-                    UserSubscription selectedChannel = subscriptions
-                            .stream()
-                            .filter(sub -> sub.getChannelName().equals(selectedChannelName))
-                            .findFirst()
-                            .orElse(null);
-                    if (selectedChannel == null) {
-                        showFailureFeedbackMessage("Error: channel not found");
-                        return;
-                    }
-                    if (selectedChannels.contains(selectedChannel)) {
-                        selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.ITALIC);
-                        selectedChannels.remove(selectedChannel);
-                    } else {
-                        selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.BOLD);
-                        selectedChannels.add(selectedChannel);
-                    }
-                }
-        );
 
-        //expand subscriptions button
-        RecyclerView subscriptionsRecyclerView = view.findViewById(R.id.category_editor_subscriptions_list);
         selectedChannelsChipGroup = view.findViewById(R.id.category_editor_subscriptions_chipgroup);
-        Button expandSubscriptionsRecyclerView = view.findViewById(R.id.category_editor_subscriptions_list_expand);
-        expandSubscriptionsRecyclerView.setOnClickListener(expandBtn -> {
-            if (subscriptionsRecyclerView.getVisibility() == View.GONE) {
-                selectedChannelsChipGroup.removeAllViews();
-            } else {
-                for (UserSubscription sub : selectedChannels) {
-                    Chip chip = new Chip(requireContext());
-                    chip.setText(sub.getChannelName());
-                    chip.setClickable(false);
-                    chip.setCheckable(false);
-                    selectedChannelsChipGroup.addView(chip);
-                }
-            }
-            toggleVisibility(subscriptionsRecyclerView);
+        Button selectChannelsButton = view.findViewById(R.id.category_editor_subscriptions_list_expand);
+        selectChannelsButton.setOnClickListener(btn -> {
+            Bundle pickChannelsExtra = new Bundle();
+            pickChannelsExtra.putParcelableArrayList("subscriptions", (ArrayList<? extends Parcelable>) subscriptions);
+            pickChannelsExtra.putParcelableArrayList("selectedChannels", (ArrayList<? extends Parcelable>) selectedChannels);
+
+            FragmentManager fragmentManager = getChildFragmentManager();
+            fragmentManager.setFragmentResultListener(
+                    "updateSelectedChannels",
+                    getViewLifecycleOwner(),
+                    (requestKey, result) -> {
+                        if (requestKey.equals("updateSelectedChannels")) {
+                            selectedChannels = result.getParcelableArrayList("selectedChannels");
+                            System.out.println(selectedChannels);
+                            selectedChannelsChipGroup.removeAllViews();
+                            for (UserSubscription sub : selectedChannels) {
+                                Chip chip = new Chip(requireContext());
+                                chip.setText(sub.getChannelName());
+                                chip.setClickable(false);
+                                chip.setCheckable(false);
+                                selectedChannelsChipGroup.addView(chip);
+                            }
+                        }
+                    });
+
+            new CategorySelectChannelsDialog(pickChannelsExtra)
+                    .show(fragmentManager, "Tag123"); // TODO: tag
         });
 
         // Icon picker
@@ -145,8 +128,6 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
             });
         }
 
-        subscriptionsRecyclerView.setAdapter(subscriptionsAdapter);
-        subscriptionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         TextInputLayout categoryNameInputLayout = view.findViewById(R.id.category_editor_name);
         categoryNameEditText = categoryNameInputLayout.getEditText();
 
