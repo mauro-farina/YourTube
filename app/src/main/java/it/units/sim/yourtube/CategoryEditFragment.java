@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.chip.Chip;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Objects;
