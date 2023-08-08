@@ -17,5 +17,9 @@
         <item name="colorAccent">@color/white</item>
         <item name="colorPrimaryContainer">?attr/colorPrimary</item>
         <item name="colorOnPrimaryContainer">?attr/colorOnPrimary</item>
+        <item name="colorSecondaryContainer">#AA2E2E</item>
+        <item name="colorOnSurfaceVariant">#CCCCCC</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
 </resources>
