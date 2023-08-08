@@ -42,7 +42,7 @@ public class CategoriesFragment extends Fragment {
                             .getCategoriesList()
                             .getValue())
                     .stream()
-                    .filter(c -> c.name.equals(clickedCategoryName))
+                    .filter(c -> c.getName().equals(clickedCategoryName))
                     .findFirst()
                     .orElse(null);
             if (clickedCategory == null) {

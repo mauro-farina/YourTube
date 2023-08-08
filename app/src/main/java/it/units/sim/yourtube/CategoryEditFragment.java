@@ -73,19 +73,20 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
         Category categoryToUpdate = Objects
                 .requireNonNull(categoriesViewModel.getCategoriesList().getValue())
                 .stream()
-                .filter(c -> c.id == categoryId)
+                .filter(c -> c.getId() == categoryId)
                 .findFirst()
                 .orElse(null);
         if (categoryToUpdate == null) {
             failureReason = "Channel not found.";
             return false;
         }
-        categoryToUpdate.name = categoryName;
-        categoryToUpdate.channelIds = selectedChannels
+        categoryToUpdate.setName(categoryName);
+        categoryToUpdate.setChannelIds(selectedChannels
                 .stream()
                 .map(UserSubscription::getChannelId)
-                .collect(Collectors.toList());
-        categoryToUpdate.drawableIconResId = chosenCategoryResId;
+                .collect(Collectors.toList())
+        );
+        categoryToUpdate.setDrawableIconResId(chosenCategoryResId);
         categoriesViewModel.updateCategory(categoryToUpdate);
         return true;
     }

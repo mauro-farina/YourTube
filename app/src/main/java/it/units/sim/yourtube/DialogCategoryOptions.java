@@ -32,10 +32,10 @@ public class DialogCategoryOptions {
         TextView modifyTextView = dialogView.findViewById(R.id.dialog_category_option_modify);
         modifyTextView.setOnClickListener(v -> {
             Bundle extras = new Bundle();
-            extras.putInt("categoryId", category.id);
-            extras.putString("categoryName", category.name);
-            extras.putInt("categoryIcon", category.drawableIconResId);
-            extras.putStringArrayList("categoryChannels", new ArrayList<>(category.channelIds));
+            extras.putInt("categoryId", category.getId());
+            extras.putString("categoryName", category.getName());
+            extras.putInt("categoryIcon", category.getDrawableIconResId());
+            extras.putStringArrayList("categoryChannels", new ArrayList<>(category.getChannelIds()));
             navController.navigate(R.id.categoryEditFragment, extras);
             dismiss();
         });
@@ -45,7 +45,7 @@ public class DialogCategoryOptions {
             dismiss();
         });
 
-        dialogBuilder.setTitle(category.name);
+        dialogBuilder.setTitle(category.getName());
     }
 
     public void show() {

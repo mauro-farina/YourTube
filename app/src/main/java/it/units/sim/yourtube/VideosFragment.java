@@ -135,7 +135,7 @@ public class VideosFragment extends Fragment {
                         viewModel.setCategoryFilter(
                                 Objects.requireNonNull(categoriesList.getValue())
                                         .stream()
-                                        .filter(c -> c.name.equals(categoryName))
+                                        .filter(c -> c.getName().equals(categoryName))
                                         .findFirst()
                                         .orElse(null)
                         );
@@ -152,7 +152,7 @@ public class VideosFragment extends Fragment {
             adapter.setVideosList(
                     Objects.requireNonNull(viewModel.getVideosList().getValue())
                             .stream()
-                            .filter(v -> filterCategory.channelIds.contains(v.getChannel().getChannelId()))
+                            .filter(v -> filterCategory.getChannelIds().contains(v.getChannel().getChannelId()))
                             .collect(Collectors.toList())
             );
     }

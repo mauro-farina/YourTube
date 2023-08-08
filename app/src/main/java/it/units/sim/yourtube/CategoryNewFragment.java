@@ -53,7 +53,7 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
         }
 
         for (Category c : Objects.requireNonNull(categoriesViewModel.getCategoriesList().getValue())) {
-            if (c.name.equals(categoryName)) {
+            if (c.getName().equals(categoryName)) {
                 failureReason = "This category already exists";
                 return false;
             }

@@ -13,16 +13,15 @@ import java.util.List;
 public class Category {
 
     @PrimaryKey(autoGenerate = true)
-    public int id;
-
+    private int id;
     @NonNull
     @ColumnInfo
-    public String name;
+    private String name;
     @NonNull
     @ColumnInfo(name = "channels")
-    public List<String> channelIds;
+    private List<String> channelIds;
     @ColumnInfo(name = "icon_res_id")
-    public int drawableIconResId;
+    private int drawableIconResId;
 
     public Category(){
         this("", new ArrayList<>(), 0);
@@ -32,6 +31,40 @@ public class Category {
         this.name = name;
         this.channelIds = channelIds;
         this.drawableIconResId = drawableIconId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(@NonNull String name) {
+        this.name = name;
+    }
+
+    public void setChannelIds(@NonNull List<String> channelIds) {
+        this.channelIds = channelIds;
+    }
+
+    public void setDrawableIconResId(int drawableIconResId) {
+        this.drawableIconResId = drawableIconResId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @NonNull
+    public String getName() {
+        return name;
+    }
+
+    @NonNull
+    public List<String> getChannelIds() {
+        return channelIds;
+    }
+
+    public int getDrawableIconResId() {
+        return drawableIconResId;
     }
 
     @NonNull
