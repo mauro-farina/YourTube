@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.video;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -29,6 +29,10 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import it.units.sim.yourtube.MainViewModel;
+import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.category.CategoriesAdapter;
+import it.units.sim.yourtube.category.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.VideoData;
 

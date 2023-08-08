@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.subscription;
 
 import android.os.Bundle;
 
@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import it.units.sim.yourtube.MainViewModel;
+import it.units.sim.yourtube.R;
 
 public class SubscriptionsFragment extends Fragment {
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CategoryNewFragment">
+    tools:context=".category.CategoryNewFragment">
 
     <include
         layout="@layout/fragment_category_editor"

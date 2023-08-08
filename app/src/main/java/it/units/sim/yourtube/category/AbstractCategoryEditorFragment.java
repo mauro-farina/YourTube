@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.category;
 
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
@@ -29,6 +29,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.units.sim.yourtube.MainViewModel;
+import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.subscription.SubscriptionsAdapter;
 import it.units.sim.yourtube.model.UserSubscription;
 
 public abstract class AbstractCategoryEditorFragment extends Fragment {

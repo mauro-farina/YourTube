@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.subscription;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.UserSubscription;
 
 public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdapter.ViewHolder> {

@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.category;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
+import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.Category;
 
 public class DialogCategoryOptions {

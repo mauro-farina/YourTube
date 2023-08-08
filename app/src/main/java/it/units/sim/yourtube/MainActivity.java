@@ -17,6 +17,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import it.units.sim.yourtube.category.CategoriesViewModel;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

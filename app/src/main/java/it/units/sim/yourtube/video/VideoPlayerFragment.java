@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.video;
 
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
@@ -29,6 +29,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFram
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
+import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.VideoData;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;

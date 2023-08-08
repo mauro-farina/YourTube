@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.category;
 
 import android.os.Bundle;
 
@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.Category;
 
 public class CategoriesFragment extends Fragment {
