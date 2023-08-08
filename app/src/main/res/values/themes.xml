@@ -14,10 +14,12 @@
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/black</item>
         <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurfaceVariant">@color/red</item>
+        <item name="colorOnSurfaceVariant">@color/red_darker</item>
         <item name="colorOnSecondaryContainer">@color/red</item>
         <item name="colorOnSurface">@color/red</item>
         <item name="colorPrimaryContainer">?attr/colorPrimary</item>
         <item name="colorOnPrimaryContainer">?attr/colorOnPrimary</item>
+        <item name="colorSecondaryContainer">#ffeeee</item>
+        <item name="android:windowBackground">?attr/colorOnPrimary</item>
     </style>
 </resources>
