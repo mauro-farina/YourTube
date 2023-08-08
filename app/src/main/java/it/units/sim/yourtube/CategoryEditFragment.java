@@ -92,7 +92,8 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
     }
 
     @Override
-    protected void showSuccessSnackbarMessage(View parentView) {
-        Snackbar.make(parentView, "Category " + categoryName + " modified!", Snackbar.LENGTH_SHORT).show();
+    protected String getSuccessFeedbackMessage() {
+        return "Category " + categoryName + " modified!";
     }
+
 }

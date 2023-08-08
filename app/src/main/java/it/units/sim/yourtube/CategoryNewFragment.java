@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -69,7 +67,8 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
     }
 
     @Override
-    protected void showSuccessSnackbarMessage(View parentView) {
-        Snackbar.make(parentView, "Category " + categoryName + " created!", Snackbar.LENGTH_SHORT).show();
+    protected String getSuccessFeedbackMessage() {
+        return "Category " + categoryName + " created!";
     }
+
 }

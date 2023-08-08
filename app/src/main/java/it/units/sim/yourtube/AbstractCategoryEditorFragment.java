@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import it.units.sim.yourtube.model.UserSubscription;
 
 public abstract class AbstractCategoryEditorFragment extends Fragment {
 
+    private View rootView;
     protected List<UserSubscription> subscriptions;
     protected List<UserSubscription> selectedChannels;
     protected ChipGroup selectedChannelsChipGroup;
@@ -73,6 +75,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        rootView = view;
         SubscriptionsAdapter subscriptionsAdapter = new SubscriptionsAdapter(
                 subscriptions,
                 clickedView -> {
@@ -86,7 +89,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
                             .findFirst()
                             .orElse(null);
                     if (selectedChannel == null) {
-                        showFailureToastMessage("Error: channel not found");
+                        showFailureFeedbackMessage("Error: channel not found");
                         return;
                     }
                     if (selectedChannels.contains(selectedChannel)) {
@@ -154,11 +157,11 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
         createCategoryBtn.setOnClickListener(btn -> {
             categoryName = categoryNameEditText.getText().toString().trim();
             if (createOrModifyCategory()) {
-                showSuccessSnackbarMessage(view);
+                showSuccessFeedbackMessage();
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.categoriesFragment);
             } else {
-                showFailureToastMessage(failureReason);
+                showFailureFeedbackMessage(failureReason);
             }
         });
 
@@ -175,10 +178,14 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
 
     protected abstract boolean createOrModifyCategory();
 
-    protected abstract void showSuccessSnackbarMessage(View parentView);
+    protected abstract String getSuccessFeedbackMessage();
 
-    private void showFailureToastMessage(String failureReason) {
-        Toast.makeText(requireContext(), failureReason, Toast.LENGTH_SHORT).show();
+    protected void showSuccessFeedbackMessage() {
+        Snackbar.make(rootView, getSuccessFeedbackMessage(), Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void showFailureFeedbackMessage(String failureReason) {
+        Snackbar.make(rootView, failureReason, Snackbar.LENGTH_SHORT).show();
     }
 
     private void toggleBottomNav() {
