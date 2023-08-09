@@ -42,10 +42,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Category category = categories.get(position);
+        holder.itemView.setTag(category);
         TextView categoryNameTextView = holder.getCategoryNameTextView();
         ImageView categoryIconImageView = holder.getCategoryIconImageView();
-        categoryNameTextView.setText(categories.get(position).getName());
-        categoryIconImageView.setImageResource(categories.get(position).getDrawableIconResId());
+        categoryNameTextView.setText(category.getName());
+        categoryIconImageView.setImageResource(category.getDrawableIconResId());
     }
 
     @Override

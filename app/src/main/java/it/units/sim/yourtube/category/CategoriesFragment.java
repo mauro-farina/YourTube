@@ -12,12 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.Category;
@@ -36,19 +34,10 @@ public class CategoriesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
         adapter = new CategoriesAdapter(new ArrayList<>(), view -> {
-            TextView clickedCategoryNameTextView = view.findViewById(R.id.list_item_category_name);
-            String clickedCategoryName = clickedCategoryNameTextView.getText().toString();
-            Category clickedCategory = Objects
-                    .requireNonNull(categoriesViewModel
-                            .getCategoriesList()
-                            .getValue())
-                    .stream()
-                    .filter(c -> c.getName().equals(clickedCategoryName))
-                    .findFirst()
-                    .orElse(null);
-            if (clickedCategory == null) {
+            if (!(view.getTag() instanceof Category)) {
                 return;
             }
+            Category clickedCategory = (Category) view.getTag();
             DialogCategoryOptions dialog = new DialogCategoryOptions(
                     requireContext(),
                     clickedCategory,
