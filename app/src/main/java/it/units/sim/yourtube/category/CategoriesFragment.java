@@ -36,7 +36,7 @@ public class CategoriesFragment extends Fragment {
         adapter = new CategoriesAdapter(new ArrayList<>(), view -> {
             Category clickedCategory = (Category) view.getTag();
             CategoryOptionsOnClickDialog dialog = CategoryOptionsOnClickDialog.newInstance(clickedCategory);
-            dialog.show(getChildFragmentManager(), "TAG");
+            dialog.show(getChildFragmentManager(), CategoryOptionsOnClickDialog.TAG);
         });
     }
 

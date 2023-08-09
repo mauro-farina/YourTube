@@ -21,6 +21,7 @@ import it.units.sim.yourtube.model.Category;
 
 public class CategoryOptionsOnClickDialog extends DialogFragment {
 
+    public static final String TAG = "SELECT_CHANNELS_FOR_CATEGORY_DIALOG";
     private CategoriesViewModel categoriesViewModel;
     private NavController navController;
 
