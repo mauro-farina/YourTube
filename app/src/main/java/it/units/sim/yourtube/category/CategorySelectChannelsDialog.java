@@ -27,7 +27,7 @@ import it.units.sim.yourtube.subscription.SubscriptionsAdapter;
 public class CategorySelectChannelsDialog extends DialogFragment {
 
     public static final String TAG = "SELECT_CHANNELS_FOR_CATEGORY_DIALOG";
-    private Bundle results;
+    private Bundle result;
     private List<UserSubscription> subscriptions;
     private List<UserSubscription> newSelectedChannels;
 
@@ -43,7 +43,7 @@ public class CategorySelectChannelsDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        results = new Bundle();
+        result = new Bundle();
 
         if (getArguments() == null) {
             return new MaterialAlertDialogBuilder(requireContext())
@@ -60,7 +60,7 @@ public class CategorySelectChannelsDialog extends DialogFragment {
 
         List<UserSubscription> originalSelectedChannels = getArguments().getParcelableArrayList("selectedChannels");
         newSelectedChannels = new ArrayList<>(originalSelectedChannels);
-        results.putParcelableArrayList(
+        result.putParcelableArrayList(
                 "selectedChannels",
                 (ArrayList<? extends Parcelable>) originalSelectedChannels
         );
@@ -100,7 +100,7 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                 .setView(dialogView)
                 .setPositiveButton(
                         getString(R.string.confirm),
-                        (dialog, which) -> results.putParcelableArrayList(
+                        (dialog, which) -> result.putParcelableArrayList(
                                 "selectedChannels",
                                 (ArrayList<? extends Parcelable>) newSelectedChannels
                         ))
@@ -111,6 +111,6 @@ public class CategorySelectChannelsDialog extends DialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        getParentFragmentManager().setFragmentResult("updateSelectedChannels", results);
+        getParentFragmentManager().setFragmentResult("updateSelectedChannels", result);
     }
 }
