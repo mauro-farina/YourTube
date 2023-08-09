@@ -2,5 +2,5 @@
 <resources>
     <dimen name="category_icon">65dp</dimen>
     <dimen name="category_icon_margin">10dp</dimen>
-    <dimen name="category_icon_preview">32dp</dimen>
+    <dimen name="category_icon_preview">40dp</dimen>
 </resources>
