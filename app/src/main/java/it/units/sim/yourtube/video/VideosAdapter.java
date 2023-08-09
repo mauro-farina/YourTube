@@ -45,6 +45,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull VideosAdapter.ViewHolder holder, int position) {
         holder.itemView.setTag(videosList.get(position));
+        holder.itemView.setOnClickListener(onVideoClick);
         TextView videoTitleTextView = holder.getVideoTitleTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
         ImageView channelImageView = holder.getChannelImageView();
@@ -66,7 +67,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
         return videosList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         // will generate a new layout item for each list item
         private final TextView videoTitleTextView;
         private final ImageView thumbnailImageView;
@@ -78,7 +79,6 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
             thumbnailImageView = itemView.findViewById(R.id.list_item_video_thumbnail);
             channelImageView = itemView.findViewById(R.id.list_item_subscription_thumbnail);
             channelTextView = itemView.findViewById(R.id.list_item_subscription_channel_name);
-            itemView.setOnClickListener(onVideoClick);
         }
 
         public TextView getVideoTitleTextView() {
