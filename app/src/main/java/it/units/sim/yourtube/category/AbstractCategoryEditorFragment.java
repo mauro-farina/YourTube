@@ -99,7 +99,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
                     });
             CategorySelectChannelsDialog
                     .newInstance(subscriptions, selectedChannels)
-                    .show(fragmentManager, "Tag123"); // TODO: tag
+                    .show(fragmentManager, CategorySelectChannelsDialog.TAG);
         });
 
         // Icon picker

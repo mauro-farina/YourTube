@@ -26,6 +26,7 @@ import it.units.sim.yourtube.subscription.SubscriptionsAdapter;
 
 public class CategorySelectChannelsDialog extends DialogFragment {
 
+    public static final String TAG = "SELECT_CHANNELS_FOR_CATEGORY_DIALOG";
     private Bundle results;
     private List<UserSubscription> subscriptions;
     private List<UserSubscription> newSelectedChannels;
