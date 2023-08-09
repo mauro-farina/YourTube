@@ -33,9 +33,9 @@
     <Button
         style="?attr/materialIconButtonStyle"
         android:id="@+id/list_item_category_dots_menu"
-        android:layout_width="@dimen/category_icon_preview"
-        android:layout_height="@dimen/category_icon_preview"
-        app:icon="@drawable/icon_dots_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/icon_dots_menu_40"
         android:contentDescription="@string/options"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/list_item_category_icon"
