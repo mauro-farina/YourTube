@@ -2,13 +2,11 @@ package it.units.sim.yourtube.category;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -76,6 +74,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rootView = view;
 
+        // Channels selector
         selectedChannelsChipGroup = view.findViewById(R.id.category_editor_subscriptions_chipgroup);
         Button selectChannelsButton = view.findViewById(R.id.category_editor_subscriptions_list_expand);
         selectChannelsButton.setOnClickListener(btn -> {
@@ -104,27 +103,23 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
                     .show(fragmentManager, CategorySelectChannelsDialog.TAG);
         });
 
-        // Icon picker
-        GridLayout iconsGridLayout = view.findViewById(R.id.category_editor_icons);
-
-        Button expandIconPicker = view.findViewById(R.id.category_editor_icons_list_expand);
-        expandIconPicker.setOnClickListener(expandBtn -> toggleVisibility(iconsGridLayout));
-
-        for (int i = 0; i < iconsGridLayout.getChildCount(); i++) {
-            View childView = iconsGridLayout.getChildAt(i);
-            if (!(childView instanceof ImageView)) continue;
-            ImageView imageView = (ImageView) childView;
-            imageView.setOnClickListener(v -> {
-                String categoryIconName = v.getTag().toString();
-                chosenCategoryResId = getResources().getIdentifier(
-                        categoryIconName,
-                        "drawable",
-                        requireContext().getPackageName()
-                );
-                toggleVisibility(iconsGridLayout);
-                categoryIconPreview.setImageResource(chosenCategoryResId);
-            });
-        }
+        // Icon selector
+        Button selectIconButton = view.findViewById(R.id.category_editor_icons_list_expand);
+        selectIconButton.setOnClickListener(btn -> {
+            FragmentManager fragmentManager = getChildFragmentManager();
+            fragmentManager.setFragmentResultListener(
+                    "updateSelectedIcon",
+                    getViewLifecycleOwner(),
+                    (requestKey, result) -> {
+                        if (requestKey.equals("updateSelectedIcon")) {
+                            chosenCategoryResId = result.getInt("selectedIconResourceId");
+                            categoryIconPreview.setImageResource(chosenCategoryResId);
+                        }
+                    });
+            CategorySelectIconDialog
+                    .newInstance(chosenCategoryResId)
+                    .show(fragmentManager, CategorySelectIconDialog.TAG);
+        });
 
         TextInputLayout categoryNameInputLayout = view.findViewById(R.id.category_editor_name);
         categoryNameEditText = categoryNameInputLayout.getEditText();
@@ -147,14 +142,6 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
         });
 
         categoryIconPreview = view.findViewById(R.id.category_editor_icons_preview);
-    }
-
-    private void toggleVisibility(View view) {
-        if (view.getVisibility() == View.VISIBLE) {
-            view.setVisibility(View.GONE);
-        } else {
-            view.setVisibility(View.VISIBLE);
-        }
     }
 
     protected abstract boolean createOrModifyCategory();
