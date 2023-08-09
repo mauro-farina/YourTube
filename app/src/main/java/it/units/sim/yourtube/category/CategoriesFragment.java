@@ -34,17 +34,9 @@ public class CategoriesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
         adapter = new CategoriesAdapter(new ArrayList<>(), view -> {
-            if (!(view.getTag() instanceof Category)) {
-                return;
-            }
             Category clickedCategory = (Category) view.getTag();
-            DialogCategoryOptions dialog = new DialogCategoryOptions(
-                    requireContext(),
-                    clickedCategory,
-                    categoriesViewModel,
-                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-            );
-            dialog.show();
+            CategoryOptionsOnClickDialog dialog = CategoryOptionsOnClickDialog.newInstance(clickedCategory);
+            dialog.show(getChildFragmentManager(), "TAG");
         });
     }
 
