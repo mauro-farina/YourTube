@@ -4,15 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="20dp">
 
     <GridLayout
-        tools:ignore="UselessParent"
         android:id="@+id/category_select_icon_grid"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="3">
+        android:columnCount="3"
+        tools:ignore="UselessParent">
 
         <ImageView
             android:layout_width="@dimen/category_icon"
