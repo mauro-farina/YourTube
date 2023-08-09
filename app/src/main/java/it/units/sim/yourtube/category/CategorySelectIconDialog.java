@@ -47,7 +47,7 @@ public class CategorySelectIconDialog extends DialogFragment {
         int originalSelectedIconResId = getArguments().getInt("selectedIconResourceId");
         result.putInt("selectedIconResourceId", originalSelectedIconResId);
 
-        View dialogView = getLayoutInflater().inflate(R.layout.category_icons, null);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_category_select_icon, null);
         GridLayout iconsGrid = dialogView.findViewById(R.id.category_select_icon_grid);
         for (int i = 0; i < iconsGrid.getChildCount(); i++) {
             View childView = iconsGrid.getChildAt(i);
