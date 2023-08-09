@@ -1,64 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/category_select_icon_grid"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:columnCount="3"
-    android:layout_gravity="center_horizontal">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="@dimen/category_icon"
-        android:layout_height="@dimen/category_icon"
-        android:layout_margin="@dimen/category_icon_margin"
-        app:tint="?attr/colorAccent"
-        android:src="@drawable/icon_category_basketball"
-        android:tag="icon_category_basketball"
-        android:contentDescription="@string/category_basketball" />
+    <GridLayout
+        tools:ignore="UselessParent"
+        android:id="@+id/category_select_icon_grid"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3">
 
-    <ImageView
-        android:layout_width="@dimen/category_icon"
-        android:layout_height="@dimen/category_icon"
-        android:layout_margin="@dimen/category_icon_margin"
-        app:tint="?attr/colorAccent"
-        android:src="@drawable/icon_category_car"
-        android:tag="icon_category_car"
-        android:contentDescription="@string/category_car" />
+        <ImageView
+            android:layout_width="@dimen/category_icon"
+            android:layout_height="@dimen/category_icon"
+            android:layout_margin="@dimen/category_icon_margin"
+            app:tint="?attr/colorAccent"
+            android:src="@drawable/icon_category_basketball"
+            android:tag="icon_category_basketball"
+            android:contentDescription="@string/category_basketball" />
 
-    <ImageView
-        android:layout_width="@dimen/category_icon"
-        android:layout_height="@dimen/category_icon"
-        android:layout_margin="@dimen/category_icon_margin"
-        app:tint="?attr/colorAccent"
-        android:src="@drawable/icon_category_travel"
-        android:tag="icon_category_travel"
-        android:contentDescription="@string/category_travel" />
+        <ImageView
+            android:layout_width="@dimen/category_icon"
+            android:layout_height="@dimen/category_icon"
+            android:layout_margin="@dimen/category_icon_margin"
+            app:tint="?attr/colorAccent"
+            android:src="@drawable/icon_category_car"
+            android:tag="icon_category_car"
+            android:contentDescription="@string/category_car" />
 
-    <ImageView
-        android:layout_width="@dimen/category_icon"
-        android:layout_height="@dimen/category_icon"
-        android:layout_margin="@dimen/category_icon_margin"
-        app:tint="?attr/colorAccent"
-        android:src="@drawable/icon_category_videogame"
-        android:tag="icon_category_videogame"
-        android:contentDescription="@string/category_videogame" />
+        <ImageView
+            android:layout_width="@dimen/category_icon"
+            android:layout_height="@dimen/category_icon"
+            android:layout_margin="@dimen/category_icon_margin"
+            app:tint="?attr/colorAccent"
+            android:src="@drawable/icon_category_travel"
+            android:tag="icon_category_travel"
+            android:contentDescription="@string/category_travel" />
 
-    <ImageView
-        android:layout_width="@dimen/category_icon"
-        android:layout_height="@dimen/category_icon"
-        android:layout_margin="@dimen/category_icon_margin"
-        app:tint="?attr/colorAccent"
-        android:src="@drawable/icon_category_computer"
-        android:tag="icon_category_computer"
-        android:contentDescription="@string/category_computer" />
+        <ImageView
+            android:layout_width="@dimen/category_icon"
+            android:layout_height="@dimen/category_icon"
+            android:layout_margin="@dimen/category_icon_margin"
+            app:tint="?attr/colorAccent"
+            android:src="@drawable/icon_category_videogame"
+            android:tag="icon_category_videogame"
+            android:contentDescription="@string/category_videogame" />
 
-    <ImageView
-        android:layout_width="@dimen/category_icon"
-        android:layout_height="@dimen/category_icon"
-        android:layout_margin="@dimen/category_icon_margin"
-        app:tint="?attr/colorAccent"
-        android:src="@drawable/icon_category_podcast"
-        android:tag="icon_category_podcast"
-        android:contentDescription="@string/category_podcast" />
+        <ImageView
+            android:layout_width="@dimen/category_icon"
+            android:layout_height="@dimen/category_icon"
+            android:layout_margin="@dimen/category_icon_margin"
+            app:tint="?attr/colorAccent"
+            android:src="@drawable/icon_category_computer"
+            android:tag="icon_category_computer"
+            android:contentDescription="@string/category_computer" />
 
-</GridLayout>
+        <ImageView
+            android:layout_width="@dimen/category_icon"
+            android:layout_height="@dimen/category_icon"
+            android:layout_margin="@dimen/category_icon_margin"
+            app:tint="?attr/colorAccent"
+            android:src="@drawable/icon_category_podcast"
+            android:tag="icon_category_podcast"
+            android:contentDescription="@string/category_podcast" />
+
+    </GridLayout>
+
+</FrameLayout>
