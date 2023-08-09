@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +44,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category category = categories.get(position);
-        holder.itemView.setTag(category);
+        holder.getDotsMenuButton().setTag(category);
         TextView categoryNameTextView = holder.getCategoryNameTextView();
         ImageView categoryIconImageView = holder.getCategoryIconImageView();
         categoryNameTextView.setText(category.getName());
@@ -57,20 +58,25 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView categoryNameTextView;
-        private final ImageView categoryIconimageView;
+        private final ImageView categoryIconImageView;
+        private final Button dotsMenuButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryNameTextView = itemView.findViewById(R.id.list_item_category_name);
-            categoryIconimageView = itemView.findViewById(R.id.list_item_category_icon);
-            itemView.setOnClickListener(onItemClickListener);
+            categoryIconImageView = itemView.findViewById(R.id.list_item_category_icon);
+            dotsMenuButton = itemView.findViewById(R.id.list_item_category_dots_menu);
+            dotsMenuButton.setOnClickListener(onItemClickListener);
         }
 
         public TextView getCategoryNameTextView() {
             return categoryNameTextView;
         }
         public ImageView getCategoryIconImageView() {
-            return categoryIconimageView;
+            return categoryIconImageView;
+        }
+        public Button getDotsMenuButton() {
+            return dotsMenuButton;
         }
     }
 }
