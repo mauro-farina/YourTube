@@ -33,11 +33,15 @@ public class CategoriesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
-        adapter = new CategoriesAdapter(new ArrayList<>(), view -> {
-            Category clickedCategory = (Category) view.getTag();
-            CategoryOptionsOnClickDialog dialog = CategoryOptionsOnClickDialog.newInstance(clickedCategory);
-            dialog.show(getChildFragmentManager(), CategoryOptionsOnClickDialog.TAG);
-        });
+        adapter = new CategoriesAdapter(
+                new ArrayList<>(),
+                view -> {
+                    Category clickedCategory = (Category) view.getTag();
+                    CategoryOptionsOnClickDialog dialog = CategoryOptionsOnClickDialog.newInstance(clickedCategory);
+                    dialog.show(getChildFragmentManager(), CategoryOptionsOnClickDialog.TAG);
+                },
+                CategoriesAdapter.VIEW_CONTEXT_CATEGORIES_LIST
+        );
     }
 
     @Override

@@ -20,10 +20,19 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     private List<Category> categories;
     private final View.OnClickListener onItemClickListener;
+    private final int viewContext;
+    public static final int VIEW_CONTEXT_CATEGORIES_LIST = 0;
+    public static final int VIEW_CONTEXT_VIDEOS_FILTER = 1;
+    private static final int VIEW_TYPE_NORMAL = 0;
+    private static final int VIEW_TYPE_EXTRA_PADDING = 1;
 
-    public CategoriesAdapter(List<Category> categories, View.OnClickListener onItemClickListener) {
+    public CategoriesAdapter(List<Category> categories,
+                             View.OnClickListener onItemClickListener,
+                             int viewContext) {
         this.categories = categories;
         this.onItemClickListener = onItemClickListener;
+        this.viewContext = viewContext;
+        // throw illegal argument exception?
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -32,19 +41,52 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (viewContext == VIEW_CONTEXT_VIDEOS_FILTER) {
+            return VIEW_TYPE_NORMAL;
+        } else if (viewContext == VIEW_CONTEXT_CATEGORIES_LIST) {
+            if (position == categories.size()-1) {
+                return VIEW_TYPE_EXTRA_PADDING;
+            } else {
+                return VIEW_TYPE_NORMAL;
+            }
+        } else {
+            return -1;
+        }
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.list_item_category, parent, false);
+        if (viewContext == VIEW_CONTEXT_VIDEOS_FILTER) {
+            view.findViewById(R.id.list_item_category_dots_menu).setVisibility(View.GONE);
+        }
+        if (viewContext == VIEW_CONTEXT_CATEGORIES_LIST
+            && viewType == VIEW_TYPE_EXTRA_PADDING) {
+            view.setPadding(
+                    view.getPaddingLeft(),
+                    view.getPaddingTop(),
+                    view.getPaddingRight(),
+                    250
+            );
+        }
         return new CategoriesAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category category = categories.get(position);
-        holder.getDotsMenuButton().setTag(category);
+        if (viewContext == VIEW_CONTEXT_CATEGORIES_LIST) {
+            holder.getDotsMenuButton().setTag(category);
+            holder.getDotsMenuButton().setOnClickListener(onItemClickListener);
+        } else if (viewContext == VIEW_CONTEXT_VIDEOS_FILTER) {
+            holder.itemView.setTag(category);
+            holder.itemView.setOnClickListener(onItemClickListener);
+        }
         TextView categoryNameTextView = holder.getCategoryNameTextView();
         ImageView categoryIconImageView = holder.getCategoryIconImageView();
         categoryNameTextView.setText(category.getName());
@@ -56,7 +98,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         return categories.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView categoryNameTextView;
         private final ImageView categoryIconImageView;
         private final Button dotsMenuButton;
@@ -66,7 +108,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             categoryNameTextView = itemView.findViewById(R.id.list_item_category_name);
             categoryIconImageView = itemView.findViewById(R.id.list_item_category_icon);
             dotsMenuButton = itemView.findViewById(R.id.list_item_category_dots_menu);
-            dotsMenuButton.setOnClickListener(onItemClickListener);
+//            dotsMenuButton.setOnClickListener(onItemClickListener);
         }
 
         public TextView getCategoryNameTextView() {

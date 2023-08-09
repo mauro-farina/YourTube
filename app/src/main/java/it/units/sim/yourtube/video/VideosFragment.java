@@ -143,7 +143,9 @@ public class VideosFragment extends Fragment {
                                         .findFirst()
                                         .orElse(null)
                         );
-                    });
+                    },
+                    CategoriesAdapter.VIEW_CONTEXT_VIDEOS_FILTER
+            );
             categoriesRecyclerView.setAdapter(categoriesAdapter);
             categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             categoriesList.observe(getViewLifecycleOwner(), categoriesAdapter::setCategoriesList);
