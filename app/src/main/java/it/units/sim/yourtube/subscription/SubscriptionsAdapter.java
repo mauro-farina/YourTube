@@ -19,7 +19,6 @@ import it.units.sim.yourtube.model.UserSubscription;
 
 public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdapter.ViewHolder> {
 
-
     private List<UserSubscription> subscriptionsList;
     private final View.OnClickListener onItemClickListener;
 
@@ -68,7 +67,6 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // will generate a new layout item for each list item
         private final TextView channelNameTextView;
         private final ImageView thumbnailImageView;
         public ViewHolder(@NonNull View itemView) {
