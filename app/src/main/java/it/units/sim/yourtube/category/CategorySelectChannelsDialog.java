@@ -43,6 +43,8 @@ public class CategorySelectChannelsDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        results = new Bundle();
+
         if (getArguments() == null) {
             return new MaterialAlertDialogBuilder(requireContext())
                     .setMessage("Error")
@@ -58,8 +60,6 @@ public class CategorySelectChannelsDialog extends DialogFragment {
 
         List<UserSubscription> originalSelectedChannels = getArguments().getParcelableArrayList("selectedChannels");
         newSelectedChannels = new ArrayList<>(originalSelectedChannels);
-
-        results = new Bundle();
         results.putParcelableArrayList(
                 "selectedChannels",
                 (ArrayList<? extends Parcelable>) originalSelectedChannels

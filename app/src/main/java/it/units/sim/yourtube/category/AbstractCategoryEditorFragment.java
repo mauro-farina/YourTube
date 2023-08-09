@@ -85,8 +85,10 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
                     getViewLifecycleOwner(),
                     (requestKey, result) -> {
                         if (requestKey.equals("updateSelectedChannels")) {
+                            if (result.keySet().size() == 0) {
+                                return;
+                            }
                             selectedChannels = result.getParcelableArrayList("selectedChannels");
-                            System.out.println(selectedChannels);
                             selectedChannelsChipGroup.removeAllViews();
                             for (UserSubscription sub : selectedChannels) {
                                 Chip chip = new Chip(requireContext());
