@@ -30,10 +30,13 @@ public class CategorySelectChannelsDialog extends DialogFragment {
     private List<UserSubscription> subscriptions;
     private List<UserSubscription> newSelectedChannels;
 
-
-    // https://developer.android.com/reference/androidx/fragment/app/DialogFragment#DialogFragment()
-    public CategorySelectChannelsDialog(Bundle extras) {
-        setArguments(extras);
+    public static CategorySelectChannelsDialog newInstance(List<UserSubscription> subscriptions, List<UserSubscription> selectedChannels) {
+        CategorySelectChannelsDialog dialogFragment = new CategorySelectChannelsDialog();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList("subscriptions", (ArrayList<? extends Parcelable>) subscriptions);
+        args.putParcelableArrayList("selectedChannels", (ArrayList<? extends Parcelable>) selectedChannels);
+        dialogFragment.setArguments(args);
+        return dialogFragment;
     }
 
     @NonNull

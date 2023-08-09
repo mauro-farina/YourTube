@@ -79,10 +79,6 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
         selectedChannelsChipGroup = view.findViewById(R.id.category_editor_subscriptions_chipgroup);
         Button selectChannelsButton = view.findViewById(R.id.category_editor_subscriptions_list_expand);
         selectChannelsButton.setOnClickListener(btn -> {
-            Bundle pickChannelsExtra = new Bundle();
-            pickChannelsExtra.putParcelableArrayList("subscriptions", (ArrayList<? extends Parcelable>) subscriptions);
-            pickChannelsExtra.putParcelableArrayList("selectedChannels", (ArrayList<? extends Parcelable>) selectedChannels);
-
             FragmentManager fragmentManager = getChildFragmentManager();
             fragmentManager.setFragmentResultListener(
                     "updateSelectedChannels",
@@ -101,8 +97,8 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
                             }
                         }
                     });
-
-            new CategorySelectChannelsDialog(pickChannelsExtra)
+            CategorySelectChannelsDialog
+                    .newInstance(subscriptions, selectedChannels)
                     .show(fragmentManager, "Tag123"); // TODO: tag
         });
 
