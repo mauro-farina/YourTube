@@ -1,5 +1,8 @@
 package it.units.sim.yourtube.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -10,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(tableName = "categories", indices = {@Index(value = {"name"}, unique = true)})
-public class Category {
+public class Category implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -32,6 +35,25 @@ public class Category {
         this.channelIds = channelIds;
         this.drawableIconResId = drawableIconId;
     }
+
+    protected Category(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        channelIds = in.createStringArrayList();
+        drawableIconResId = in.readInt();
+    }
+
+    public static final Creator<Category> CREATOR = new Creator<>() {
+        @Override
+        public Category createFromParcel(Parcel in) {
+            return new Category(in);
+        }
+
+        @Override
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
 
     public void setId(int id) {
         this.id = id;
@@ -73,4 +95,16 @@ public class Category {
         return name;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(name);
+        parcel.writeList(channelIds);
+        parcel.writeInt(drawableIconResId);
+    }
 }
