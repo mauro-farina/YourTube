@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -21,7 +20,6 @@ import it.units.sim.yourtube.R;
 public class CategorySelectIconDialog extends DialogFragment {
 
     public static final String TAG = "SELECT_ICON_FOR_CATEGORY_DIALOG";
-    private AlertDialog dialog;
     private Bundle result;
 
     public static CategorySelectIconDialog newInstance(int selectedIconResourceId) {
@@ -60,16 +58,14 @@ public class CategorySelectIconDialog extends DialogFragment {
                         requireContext().getPackageName()
                 );
                 result.putInt("selectedIconResourceId", selectedIconResId);
-                dialog.dismiss();
+                dismiss();
             });
         }
 
-        dialog = new MaterialAlertDialogBuilder(requireContext())
+        return new MaterialAlertDialogBuilder(requireContext())
                 .setView(dialogView)
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                 .create();
-
-        return dialog;
     }
 
     @Override
