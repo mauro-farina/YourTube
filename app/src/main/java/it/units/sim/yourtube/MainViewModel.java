@@ -27,8 +27,6 @@ public class MainViewModel extends AndroidViewModel {
     private final ExecutorService executorService;
     private final MutableLiveData<List<UserSubscription>> subscriptionsList;
     private final MutableLiveData<List<VideoData>> videosList;
-    private final MutableLiveData<Category> categoryFilter;
-    private final MutableLiveData<Date> dateFilter;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -36,8 +34,6 @@ public class MainViewModel extends AndroidViewModel {
         executorService = app.getExecutorService();
         subscriptionsList = new MutableLiveData<>(new ArrayList<>());
         videosList = new MutableLiveData<>(new ArrayList<>());
-        categoryFilter = new MutableLiveData<>();
-        dateFilter = new MutableLiveData<>(new Date());
     }
 
     public void fetchUserSubscriptions() {
@@ -54,9 +50,7 @@ public class MainViewModel extends AndroidViewModel {
         }));
     }
 
-    public void fetchVideos() {
-        Date date = dateFilter.getValue();
-        Category category = categoryFilter.getValue();
+    public void fetchVideos(Date date, Category category) {
         videosList.setValue(new ArrayList<>());
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         if (category != null)  {
@@ -97,28 +91,12 @@ public class MainViewModel extends AndroidViewModel {
         }
     }
 
-    public void setCategoryFilter(Category category) {
-        categoryFilter.setValue(category);
-    }
-
-    public void setDateFilter(Date date) {
-        dateFilter.setValue(date);
-    }
-
     public LiveData<List<UserSubscription>> getSubscriptionsList() {
         return subscriptionsList;
     }
 
     public LiveData<List<VideoData>> getVideosList() {
         return videosList;
-    }
-
-    public LiveData<Category> getCategoryFilter() {
-        return categoryFilter;
-    }
-
-    public LiveData<Date> getDateFilter() {
-        return dateFilter;
     }
 
 }

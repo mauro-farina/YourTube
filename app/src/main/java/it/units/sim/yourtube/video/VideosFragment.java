@@ -39,7 +39,8 @@ import it.units.sim.yourtube.model.VideoData;
 public class VideosFragment extends Fragment {
 
     private SimpleDateFormat dateFormat;
-    private MainViewModel viewModel;
+    private MainViewModel globalViewModel;
+    private VideosViewModel localViewModel;
     private VideosAdapter adapter;
     private Calendar calendar;
     private Button datePicker;
@@ -54,12 +55,13 @@ public class VideosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        System.out.println("CREATE");
+        ViewModelProvider.AndroidViewModelFactory factory =
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication());
+        globalViewModel = new ViewModelProvider(requireActivity(), factory).get(MainViewModel.class);
+        localViewModel = new ViewModelProvider(this).get(VideosViewModel.class);
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        if (Objects.requireNonNull(viewModel.getSubscriptionsList().getValue()).size() > 0) {
-            viewModel.fetchVideos();
-        }
         currentDateReference = new Date();
         CategoriesViewModel categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
         categoriesList = categoriesViewModel.getCategoriesList();
@@ -69,9 +71,10 @@ public class VideosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
+        System.out.println("CREATE view");
         View view = inflater.inflate(R.layout.fragment_videos, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.videos_recycler_view);
-        adapter = new VideosAdapter(viewModel.getVideosList().getValue(), clickedView -> {
+        adapter = new VideosAdapter(globalViewModel.getVideosList().getValue(), clickedView -> {
             VideoData video = (VideoData) clickedView.getTag();
             Bundle extras = new Bundle();
             extras.putParcelable("video", video);
@@ -82,44 +85,49 @@ public class VideosFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         categoryFilterButton = view.findViewById(R.id.category_filter_button);
         datePicker = view.findViewById(R.id.date_filter_pick);
+        datePicker.setText(dateFormat.format(Objects.requireNonNull(localViewModel.getDateFilter().getValue())));
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        viewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> viewModel.fetchVideos());
-        viewModel.getDateFilter().observe(getViewLifecycleOwner(), date -> {
-            viewModel.fetchVideos();
+        globalViewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> globalViewModel.fetchVideos(
+                localViewModel.getDateFilter().getValue(),
+                localViewModel.getCategoryFilter().getValue()
+        ));
+        localViewModel.getDateFilter().observe(getViewLifecycleOwner(), date -> {
+            globalViewModel.fetchVideos(
+                    localViewModel.getDateFilter().getValue(),
+                    localViewModel.getCategoryFilter().getValue()
+            );
             datePicker.setText(dateFormat.format(date));
         });
-        viewModel.getVideosList().observe(getViewLifecycleOwner(), list -> {
-            Category filterCategory = viewModel.getCategoryFilter().getValue();
+        globalViewModel.getVideosList().observe(getViewLifecycleOwner(), list -> {
+            Category filterCategory = localViewModel.getCategoryFilter().getValue();
             if (filterCategory != null) {
                 setFilteredVideosListInAdapter(filterCategory);
             } else {
                 adapter.setVideosList(list);
             }
         });
-
-        viewModel.getCategoryFilter().observe(
+        localViewModel.getCategoryFilter().observe(
                 getViewLifecycleOwner(),
                 this::setFilteredVideosListInAdapter
         );
 
         Button previousDateButton = view.findViewById(R.id.date_filter_previous);
         Button nextDateButton = view.findViewById(R.id.date_filter_next);
-        datePicker.setText(dateFormat.format(Objects.requireNonNull(viewModel.getDateFilter().getValue())));
         datePicker.setOnClickListener(v -> showDatePickerDialog());
         previousDateButton.setOnClickListener(view1 -> {
             calendar.add(Calendar.DAY_OF_MONTH, -1);
-            viewModel.setDateFilter(calendar.getTime());
+            localViewModel.setDateFilter(calendar.getTime());
         });
         nextDateButton.setOnClickListener(view1 -> {
             if (currentDateReference.getTime()-10 < calendar.getTime().getTime()) {
                 return;
             }
             calendar.add(Calendar.DAY_OF_MONTH, 1);
-            viewModel.setDateFilter(calendar.getTime());
+            localViewModel.setDateFilter(calendar.getTime());
         });
 
         categoryFilterButton.setOnClickListener(v -> {
@@ -131,7 +139,7 @@ public class VideosFragment extends Fragment {
                     clickedCategoryView -> {
                         TextView categoryNameTextView = clickedCategoryView.findViewById(R.id.list_item_category_name);
                         String categoryName = categoryNameTextView.getText().toString();
-                        viewModel.setCategoryFilter(
+                        localViewModel.setCategoryFilter(
                                 Objects.requireNonNull(categoriesList.getValue())
                                         .stream()
                                         .filter(c -> c.getName().equals(categoryName))
@@ -151,7 +159,7 @@ public class VideosFragment extends Fragment {
 
     private void setFilteredVideosListInAdapter(Category filterCategory) {
             adapter.setVideosList(
-                    Objects.requireNonNull(viewModel.getVideosList().getValue())
+                    Objects.requireNonNull(globalViewModel.getVideosList().getValue())
                             .stream()
                             .filter(v -> filterCategory.getChannelIds().contains(v.getChannel().getChannelId()))
                             .collect(Collectors.toList())
@@ -165,7 +173,7 @@ public class VideosFragment extends Fragment {
                     calendar.set(Calendar.YEAR, year);
                     calendar.set(Calendar.MONTH, monthOfYear);
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    viewModel.setDateFilter(calendar.getTime());
+                    localViewModel.setDateFilter(calendar.getTime());
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
