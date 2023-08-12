@@ -1,8 +1,11 @@
 package it.units.sim.yourtube;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
@@ -10,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 
 import it.units.sim.yourtube.api.RequestCallback;
 import it.units.sim.yourtube.api.RequestThread;
@@ -19,14 +23,21 @@ import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
 
-public class MainViewModel extends ViewModel {
+public class MainViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<List<UserSubscription>>
-            subscriptionsList = new MutableLiveData<>(new ArrayList<>());
-    private final MutableLiveData<List<VideoData>>
-            videosList = new MutableLiveData<>(new ArrayList<>());
+    private final ExecutorService executorService;
+    private final MutableLiveData<List<UserSubscription>> subscriptionsList;
+    private final MutableLiveData<List<VideoData>> videosList;
+    private final MutableLiveData<Category> categoryFilter;
 
-    private final MutableLiveData<Category> categoryFilter = new MutableLiveData<>();
+    public MainViewModel(@NonNull Application application) {
+        super(application);
+        YourTubeApp app = getApplication();
+        executorService = app.getExecutorService();
+        subscriptionsList = new MutableLiveData<>(new ArrayList<>());
+        videosList = new MutableLiveData<>(new ArrayList<>());
+        categoryFilter = new MutableLiveData<>();
+    }
 
     public void fetchUserSubscriptions() {
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
