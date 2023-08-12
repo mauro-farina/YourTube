@@ -84,7 +84,6 @@ public class VideoUploadsRequest extends AbstractYouTubeRequest<List<VideoData>>
                 .filter(i -> i.getSnippet().getPublishedAt().getValue() > publishedAfter.getValue())
                 .filter(i -> i.getSnippet().getPublishedAt().getValue() < publishedBefore.getValue())
                 .map(i -> new VideoData(i.getSnippet(), subscription))
-                .peek(System.out::println)
                 .collect(Collectors.toList());
 
         return new Result.Success<>(fetchedVideos);
