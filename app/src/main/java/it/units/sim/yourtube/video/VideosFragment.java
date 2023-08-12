@@ -55,7 +55,6 @@ public class VideosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("CREATE");
         ViewModelProvider.AndroidViewModelFactory factory =
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication());
         globalViewModel = new ViewModelProvider(requireActivity(), factory).get(MainViewModel.class);
@@ -71,7 +70,6 @@ public class VideosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        System.out.println("CREATE view");
         View view = inflater.inflate(R.layout.fragment_videos, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.videos_recycler_view);
         adapter = new VideosAdapter(globalViewModel.getVideosList().getValue(), clickedView -> {
