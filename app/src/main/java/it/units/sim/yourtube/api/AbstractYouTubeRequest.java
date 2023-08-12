@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.api;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -8,6 +8,7 @@ import com.google.api.services.youtube.YouTube;
 
 import java.io.IOException;
 
+import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.api.Result;
 
 public abstract class AbstractYouTubeRequest<T> implements Runnable {

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import it.units.sim.yourtube.AbstractYouTubeRequest;
 import it.units.sim.yourtube.model.UserSubscription;
 
 public class SubscriptionListRequest extends AbstractYouTubeRequest<List<UserSubscription>> {

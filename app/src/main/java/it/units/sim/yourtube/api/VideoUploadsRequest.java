@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import it.units.sim.yourtube.AbstractYouTubeRequest;
 import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
 
