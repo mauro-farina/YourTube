@@ -15,6 +15,12 @@ public class YourTubeApp extends Application {
         executorService = Executors.newFixedThreadPool(NUM_THREADS);
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        executorService.shutdown();
+    }
+
     public ExecutorService getExecutorService() {
         return executorService;
     }
