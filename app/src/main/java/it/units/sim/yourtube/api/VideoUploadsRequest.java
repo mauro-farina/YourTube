@@ -13,26 +13,27 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import it.units.sim.yourtube.AbstractYouTubeRequest;
 import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
 
-public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
+public class VideoUploadsRequest extends AbstractYouTubeRequest<List<VideoData>> {
 
     private static final long MAX_RESULTS = 35;
-
     private final UserSubscription subscription;
     private final Date publishedOn;
 
     public VideoUploadsRequest(GoogleAccountCredential credential,
+                               Callback<List<VideoData>> callback,
                                UserSubscription subscription,
                                Date publishedOn) {
-        super(credential);
+        super(credential, callback);
         this.subscription = subscription;
         this.publishedOn = publishedOn;
     }
 
     @Override
-    public List<VideoData> call() throws Exception {
+    protected Result<List<VideoData>> performRequest() throws IOException {
         String playlistId = subscription.getUploadsPlaylistId();
 
         YouTube.PlaylistItems.List videosRequest = youtubeService
@@ -46,7 +47,7 @@ public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
         List<PlaylistItem> playlistItems = response.getItems();
         int results = playlistItems.size();
         if (results == 0) {
-            return new ArrayList<>();
+            return new Result.Success<>(new ArrayList<>());
         }
 
         Calendar calendar = Calendar.getInstance();
@@ -72,19 +73,22 @@ public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
                 .getPublishedAt();
 
         if (firstPlaylistItemPublishDateTime.getValue() < publishedAfter.getValue()) {
-            return new ArrayList<>();
+            return new Result.Success<>(new ArrayList<>());
         }
 
         if (lastPlaylistItemPublishDateTime.getValue() > publishedAfter.getValue()) {
             recursiveWorker(playlistItems, response.getNextPageToken(), publishedAfter);
         }
 
-        return playlistItems
+        List<VideoData> fetchedVideos = playlistItems
                 .stream()
                 .filter(i -> i.getSnippet().getPublishedAt().getValue() > publishedAfter.getValue())
                 .filter(i -> i.getSnippet().getPublishedAt().getValue() < publishedBefore.getValue())
                 .map(i -> new VideoData(i.getSnippet(), subscription))
+                .peek(System.out::println)
                 .collect(Collectors.toList());
+
+        return new Result.Success<>(fetchedVideos);
     }
 
     private void recursiveWorker(List<PlaylistItem> list, String nextPageToken, DateTime publishedAfter) throws IOException {
@@ -115,4 +119,5 @@ public class VideoUploadsRequest extends YouTubeApiRequest<List<VideoData>> {
             recursiveWorker(list, response.getNextPageToken(), publishedAfter);
         }
     }
+
 }

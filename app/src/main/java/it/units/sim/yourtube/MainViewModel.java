@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
-import it.units.sim.yourtube.api.RequestCallback;
 import it.units.sim.yourtube.api.Result;
-import it.units.sim.yourtube.api.RequestThread;
 import it.units.sim.yourtube.api.SubscriptionListRequest;
 import it.units.sim.yourtube.api.VideoUploadsRequest;
 import it.units.sim.yourtube.model.Category;
@@ -45,7 +43,7 @@ public class MainViewModel extends AndroidViewModel {
         executorService.submit(new SubscriptionListRequest(credential, result -> {
             if (result instanceof Result.Success) {
                 List<UserSubscription> fetchedSubscriptions = ((Result.Success<List<UserSubscription>>) result).getData();
-                subscriptionsList.postValue(fetchedSubscriptions); // Does not work (with no exceptions thrown)
+                subscriptionsList.postValue(fetchedSubscriptions);
             } else {
                 // error
                 System.out.println("Request Failed");
@@ -58,17 +56,20 @@ public class MainViewModel extends AndroidViewModel {
         videosList.setValue(new ArrayList<>());
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
-            VideoUploadsRequest subscriptionRequest = new VideoUploadsRequest(credential, sub, date);
-            RequestCallback<List<VideoData>> subscriptionListCallback = list -> {
-                List<VideoData> videos = videosList.getValue();
-                if (videos != null) {
-                    videos.addAll(list);
-                    videosList.setValue(videos);
+            executorService.submit(new VideoUploadsRequest(credential, result -> {
+                if (result instanceof Result.Success) {
+                    List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
+                    List<VideoData> videos = videosList.getValue();
+                    if (videos != null) {
+                        videos.addAll(fetchedVideos);
+                        videosList.postValue(videos);
+                    }
+                } else {
+                    // error
+                    System.out.println("Request Failed");
+                    System.out.println(((Result.Error<List<VideoData>>) result).getException().getMessage());
                 }
-            };
-            RequestThread<List<VideoData>> rThread =
-                    new RequestThread<>(subscriptionRequest, subscriptionListCallback);
-            rThread.start();
+            }, sub, date));
         }
     }
 
