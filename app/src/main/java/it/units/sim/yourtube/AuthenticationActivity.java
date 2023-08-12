@@ -22,7 +22,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTubeScopes;
@@ -33,7 +32,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.Arrays;
 
-public class GoogleAuthActivity extends AppCompatActivity {
+public class AuthenticationActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -47,7 +46,7 @@ public class GoogleAuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_google_auth);
+        setContentView(R.layout.activity_authentication);
         defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         credentialManager = GoogleCredentialManager.getInstance();
         credential = GoogleAccountCredential

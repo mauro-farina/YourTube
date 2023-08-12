@@ -18,7 +18,7 @@
         android:theme="@style/Theme.YourTube"
         tools:targetApi="31">
         <activity
-            android:name=".GoogleAuthActivity"
+            android:name=".AuthenticationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

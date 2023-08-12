@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openAuthenticationActivity() {
         finish();
-        Intent intent = new Intent(this, GoogleAuthActivity.class);
+        Intent intent = new Intent(this, AuthenticationActivity.class);
         startActivity(intent);
     }
 
