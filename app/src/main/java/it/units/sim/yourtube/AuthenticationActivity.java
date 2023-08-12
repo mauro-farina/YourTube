@@ -34,14 +34,14 @@ import java.util.Arrays;
 
 public class AuthenticationActivity extends AppCompatActivity {
 
+    private static final String PREF_ACCOUNT_NAME = "accountName";
+    private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
+    public static final String INTENT_LOGOUT_FLAG = "logout";
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleAccountCredential credential;
-    private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
     private GoogleCredentialManager credentialManager;
-    private static final String PREF_ACCOUNT_NAME = "accountName";
     private SharedPreferences defaultSharedPreferences;
-    public static final String INTENT_LOGOUT_FLAG = "logout";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
