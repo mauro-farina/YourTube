@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 import it.units.sim.yourtube.api.RequestCallback;
+import it.units.sim.yourtube.api.Result;
 import it.units.sim.yourtube.api.RequestThread;
 import it.units.sim.yourtube.api.SubscriptionListRequest;
 import it.units.sim.yourtube.api.VideoUploadsRequest;
@@ -41,12 +42,16 @@ public class MainViewModel extends AndroidViewModel {
 
     public void fetchUserSubscriptions() {
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
-        SubscriptionListRequest subscriptionRequest = new SubscriptionListRequest(credential);
-        RequestCallback<List<UserSubscription>> subscriptionListCallback = subscriptionsList::setValue;
-
-        RequestThread<List<UserSubscription>> rThread =
-                new RequestThread<>(subscriptionRequest, subscriptionListCallback);
-        rThread.start();
+        executorService.submit(new SubscriptionListRequest(credential, result -> {
+            if (result instanceof Result.Success) {
+                List<UserSubscription> fetchedSubscriptions = ((Result.Success<List<UserSubscription>>) result).getData();
+                subscriptionsList.postValue(fetchedSubscriptions); // Does not work (with no exceptions thrown)
+            } else {
+                // error
+                System.out.println("Request Failed");
+                System.out.println(((Result.Error<List<UserSubscription>>) result).getException().getMessage());
+            }
+        }));
     }
 
     public void fetchVideos(Date date) {

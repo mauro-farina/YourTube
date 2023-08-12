@@ -5,31 +5,34 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Subscription;
 import com.google.api.services.youtube.model.SubscriptionListResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import it.units.sim.yourtube.AbstractYouTubeRequest;
 import it.units.sim.yourtube.model.UserSubscription;
 
-public class SubscriptionListRequest extends YouTubeApiRequest<List<UserSubscription>> {
+public class SubscriptionListRequest extends AbstractYouTubeRequest<List<UserSubscription>> {
 
-    public SubscriptionListRequest(GoogleAccountCredential credential) {
-        super(credential);
+    public SubscriptionListRequest(GoogleAccountCredential credential,
+                                   Callback<List<UserSubscription>> callback) {
+        super(credential, callback);
     }
 
     @Override
-    public List<UserSubscription> call() throws Exception {
-        YouTube.Subscriptions.List subscriptionsRequest = youtubeService
-                .subscriptions()
-                .list("snippet");
-
-        String nextPageToken = "";
+    protected Result<List<UserSubscription>> performRequest() throws IOException {
         List<UserSubscription> userSubscriptions = new ArrayList<>();
 
+        YouTube.Subscriptions.List subscriptionsRequest = youtubeService
+                .subscriptions()
+                .list("snippet")
+                .setMaxResults(50L)
+                .setMine(true);
+
+        String nextPageToken = "";
         do {
             SubscriptionListResponse response = subscriptionsRequest
-                    .setMaxResults(50L)
-                    .setMine(true)
                     .setPageToken(nextPageToken)
                     .execute();
 
@@ -37,13 +40,13 @@ public class SubscriptionListRequest extends YouTubeApiRequest<List<UserSubscrip
             List<Subscription> subscriptions = response.getItems();
 
             userSubscriptions.addAll(
-                    subscriptions.stream()
+                    subscriptions
+                            .stream()
                             .map(UserSubscription::new)
                             .collect(Collectors.toList())
             );
-
         } while(nextPageToken != null);
 
-        return userSubscriptions;
+        return new Result.Success<>(userSubscriptions);
     }
 }
