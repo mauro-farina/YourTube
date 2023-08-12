@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.top_app_bar);
         setSupportActionBar(toolbar);
 
-//        MainViewModel viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         ViewModelProvider.AndroidViewModelFactory factory =
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication());
         MainViewModel viewModel = new ViewModelProvider(this, factory).get(MainViewModel.class);
