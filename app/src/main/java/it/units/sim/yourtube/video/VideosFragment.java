@@ -43,7 +43,6 @@ public class VideosFragment extends Fragment {
     private VideosAdapter adapter;
     private Calendar calendar;
     private Button datePicker;
-    private Date date;
     private Date currentDateReference;
     private LiveData<List<Category>> categoriesList;
     private Button categoryFilterButton;
@@ -57,10 +56,9 @@ public class VideosFragment extends Fragment {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         calendar = Calendar.getInstance();
-        date = calendar.getTime();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         if (Objects.requireNonNull(viewModel.getSubscriptionsList().getValue()).size() > 0) {
-            viewModel.fetchVideos(date);
+            viewModel.fetchVideos();
         }
         currentDateReference = new Date();
         CategoriesViewModel categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
@@ -83,12 +81,17 @@ public class VideosFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         categoryFilterButton = view.findViewById(R.id.category_filter_button);
+        datePicker = view.findViewById(R.id.date_filter_pick);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        viewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> viewModel.fetchVideos(date));
+        viewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> viewModel.fetchVideos());
+        viewModel.getDateFilter().observe(getViewLifecycleOwner(), date -> {
+            viewModel.fetchVideos();
+            datePicker.setText(dateFormat.format(date));
+        });
         viewModel.getVideosList().observe(getViewLifecycleOwner(), list -> {
             Category filterCategory = viewModel.getCategoryFilter().getValue();
             if (filterCategory != null) {
@@ -96,7 +99,6 @@ public class VideosFragment extends Fragment {
             } else {
                 adapter.setVideosList(list);
             }
-
         });
 
         viewModel.getCategoryFilter().observe(
@@ -104,27 +106,20 @@ public class VideosFragment extends Fragment {
                 this::setFilteredVideosListInAdapter
         );
 
-//        datePicker = view.findViewById(R.id.date_filter_pick);
         Button previousDateButton = view.findViewById(R.id.date_filter_previous);
         Button nextDateButton = view.findViewById(R.id.date_filter_next);
-        datePicker = view.findViewById(R.id.date_filter_pick);
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        datePicker.setText(dateFormat.format(calendar.getTime()));
+        datePicker.setText(dateFormat.format(Objects.requireNonNull(viewModel.getDateFilter().getValue())));
         datePicker.setOnClickListener(v -> showDatePickerDialog());
         previousDateButton.setOnClickListener(view1 -> {
             calendar.add(Calendar.DAY_OF_MONTH, -1);
-            date = calendar.getTime();
-            viewModel.fetchVideos(date);
-            datePicker.setText(dateFormat.format(date));
+            viewModel.setDateFilter(calendar.getTime());
         });
         nextDateButton.setOnClickListener(view1 -> {
             if (currentDateReference.getTime()-10 < calendar.getTime().getTime()) {
                 return;
             }
             calendar.add(Calendar.DAY_OF_MONTH, 1);
-            date = calendar.getTime();
-            viewModel.fetchVideos(date);
-            datePicker.setText(dateFormat.format(date));
+            viewModel.setDateFilter(calendar.getTime());
         });
 
         categoryFilterButton.setOnClickListener(v -> {
@@ -170,9 +165,7 @@ public class VideosFragment extends Fragment {
                     calendar.set(Calendar.YEAR, year);
                     calendar.set(Calendar.MONTH, monthOfYear);
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    date = calendar.getTime();
-                    viewModel.fetchVideos(calendar.getTime());
-                    datePicker.setText(dateFormat.format(calendar.getTime()));
+                    viewModel.setDateFilter(calendar.getTime());
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),

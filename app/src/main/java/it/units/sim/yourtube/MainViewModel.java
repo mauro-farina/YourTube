@@ -28,6 +28,7 @@ public class MainViewModel extends AndroidViewModel {
     private final MutableLiveData<List<UserSubscription>> subscriptionsList;
     private final MutableLiveData<List<VideoData>> videosList;
     private final MutableLiveData<Category> categoryFilter;
+    private final MutableLiveData<Date> dateFilter;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -36,6 +37,7 @@ public class MainViewModel extends AndroidViewModel {
         subscriptionsList = new MutableLiveData<>(new ArrayList<>());
         videosList = new MutableLiveData<>(new ArrayList<>());
         categoryFilter = new MutableLiveData<>();
+        dateFilter = new MutableLiveData<>(new Date());
     }
 
     public void fetchUserSubscriptions() {
@@ -52,29 +54,55 @@ public class MainViewModel extends AndroidViewModel {
         }));
     }
 
-    public void fetchVideos(Date date) {
+    public void fetchVideos() {
+        Date date = dateFilter.getValue();
+        Category category = categoryFilter.getValue();
         videosList.setValue(new ArrayList<>());
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
-        for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
-            executorService.submit(new VideoUploadsRequest(credential, result -> {
-                if (result instanceof Result.Success) {
-                    List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
-                    List<VideoData> videos = videosList.getValue();
-                    if (videos != null) {
-                        videos.addAll(fetchedVideos);
-                        videosList.postValue(videos);
+        if (category != null)  {
+            Objects.requireNonNull(subscriptionsList.getValue())
+                    .stream()
+                    .filter(s -> category.getChannelIds().contains(s.getChannelId()))
+                    .forEach(sub -> executorService.submit(new VideoUploadsRequest(credential, result -> {
+                        if (result instanceof Result.Success) {
+                            List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
+                            List<VideoData> videos = videosList.getValue();
+                            if (videos != null) {
+                                videos.addAll(fetchedVideos);
+                                videosList.postValue(videos);
+                            }
+                        } else {
+                            // error
+                            System.out.println("Request Failed");
+                            System.out.println(((Result.Error<List<VideoData>>) result).getException().getMessage());
+                        }
+                    }, sub, date)));
+        } else {
+            for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
+                executorService.submit(new VideoUploadsRequest(credential, result -> {
+                    if (result instanceof Result.Success) {
+                        List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
+                        List<VideoData> videos = videosList.getValue();
+                        if (videos != null) {
+                            videos.addAll(fetchedVideos);
+                            videosList.postValue(videos);
+                        }
+                    } else {
+                        // error
+                        System.out.println("Request Failed");
+                        System.out.println(((Result.Error<List<VideoData>>) result).getException().getMessage());
                     }
-                } else {
-                    // error
-                    System.out.println("Request Failed");
-                    System.out.println(((Result.Error<List<VideoData>>) result).getException().getMessage());
-                }
-            }, sub, date));
+                }, sub, date));
+            }
         }
     }
 
     public void setCategoryFilter(Category category) {
         categoryFilter.setValue(category);
+    }
+
+    public void setDateFilter(Date date) {
+        dateFilter.setValue(date);
     }
 
     public LiveData<List<UserSubscription>> getSubscriptionsList() {
@@ -87,6 +115,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public LiveData<Category> getCategoryFilter() {
         return categoryFilter;
+    }
+
+    public LiveData<Date> getDateFilter() {
+        return dateFilter;
     }
 
 }
