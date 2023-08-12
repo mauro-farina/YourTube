@@ -2,6 +2,7 @@ package it.units.sim.yourtube;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.firebase.auth.FirebaseAuth;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logout() {
+        FirebaseAuth.getInstance().signOut();
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
         editor.remove("accountName");
         editor.apply();
@@ -74,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openAuthenticationActivity() {
-        finish();
         Intent intent = new Intent(this, AuthenticationActivity.class);
+        intent.putExtra(AuthenticationActivity.INTENT_LOGOUT_FLAG, true);
+        finish();
         startActivity(intent);
     }
 

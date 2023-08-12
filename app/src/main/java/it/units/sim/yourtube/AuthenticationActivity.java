@@ -36,41 +36,49 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-//    private static final int RC_SIGN_IN = 3;
     private GoogleAccountCredential credential;
     private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
     private GoogleCredentialManager credentialManager;
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private SharedPreferences defaultSharedPreferences;
+    public static final String INTENT_LOGOUT_FLAG = "logout";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
-        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        credentialManager = GoogleCredentialManager.getInstance();
-        credential = GoogleAccountCredential
-                .usingOAuth2(getApplicationContext(), Arrays.asList(YOUTUBE_API_SCOPES))
-                .setBackOff(new ExponentialBackOff());
+
+        mAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestScopes(new Scope(YouTubeScopes.YOUTUBE_READONLY))
                 .build();
-
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         ActivityResultLauncher<Intent> signInActivityLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 this::handleSignInResult
         );
 
-        mAuth = FirebaseAuth.getInstance();
+        if (getIntent().getExtras() != null
+                && getIntent().getExtras().getBoolean(INTENT_LOGOUT_FLAG)) {
+            mAuth.signOut();
+            mGoogleSignInClient.signOut().addOnFailureListener(runnable -> {
+
+            });
+        }
+
         findViewById(R.id.newGoogleSignInButton).setOnClickListener(v -> {
-            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             signInActivityLauncher.launch(signInIntent);
-//            startActivityForResult(signInIntent, RC_SIGN_IN);
         });
+
+        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        credentialManager = GoogleCredentialManager.getInstance();
+        credential = GoogleAccountCredential
+                .usingOAuth2(getApplicationContext(), Arrays.asList(YOUTUBE_API_SCOPES))
+                .setBackOff(new ExponentialBackOff());
 
     }
 
