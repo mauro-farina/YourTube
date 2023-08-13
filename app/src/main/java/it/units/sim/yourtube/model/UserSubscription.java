@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.youtube.model.Subscription;
@@ -74,6 +75,15 @@ public class UserSubscription implements Parcelable {
 
     public DateTime getSubscribedSince() {
         return subscribedSince;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof UserSubscription) {
+            return ((UserSubscription) obj).getChannelId().equals(this.getChannelId());
+        } else {
+            return false;
+        }
     }
 
     @Override
