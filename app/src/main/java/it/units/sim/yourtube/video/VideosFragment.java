@@ -34,6 +34,7 @@ import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.category.CategoriesAdapter;
 import it.units.sim.yourtube.category.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
+import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
 
 public class VideosFragment extends Fragment {
@@ -48,6 +49,7 @@ public class VideosFragment extends Fragment {
     private LiveData<List<Category>> categoriesList;
     private Button categoryFilterButton;
     private Date dateObserverBypass;
+    private List<UserSubscription> subscriptionsObserverBypass;
 
     public VideosFragment() {
         super(R.layout.fragment_videos);
@@ -61,6 +63,7 @@ public class VideosFragment extends Fragment {
         globalViewModel = new ViewModelProvider(requireActivity(), factory).get(MainViewModel.class);
         localViewModel = new ViewModelProvider(this).get(VideosViewModel.class);
         dateObserverBypass = localViewModel.getDateFilter().getValue();
+        subscriptionsObserverBypass = globalViewModel.getSubscriptionsList().getValue();
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         currentDateReference = new Date();
@@ -72,6 +75,7 @@ public class VideosFragment extends Fragment {
     public void onStop() {
         super.onStop();
         dateObserverBypass = localViewModel.getDateFilter().getValue();
+        subscriptionsObserverBypass = globalViewModel.getSubscriptionsList().getValue();
     }
 
     @Override
@@ -98,16 +102,16 @@ public class VideosFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         globalViewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> {
-            System.out.println("fetch: SUBS");
+            if (subscriptionsObserverBypass.equals(list))
+                return;
             globalViewModel.fetchVideos(
                     localViewModel.getDateFilter().getValue(),
                     localViewModel.getCategoryFilter().getValue()
             );
         });
         localViewModel.getDateFilter().observe(getViewLifecycleOwner(), date -> {
-            if ((this.dateObserverBypass != null) && this.dateObserverBypass.equals(date)) {
+            if ((this.dateObserverBypass != null) && this.dateObserverBypass.equals(date))
                 return;
-            }
             globalViewModel.fetchVideos(
                     localViewModel.getDateFilter().getValue(),
                     localViewModel.getCategoryFilter().getValue()

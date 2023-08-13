@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import it.units.sim.yourtube.api.Result;
 import it.units.sim.yourtube.api.SubscriptionListRequest;
@@ -37,6 +38,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void fetchUserSubscriptions() {
+        System.out.println("fetch userSubscriptions! ***************");
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         executorService.submit(new SubscriptionListRequest(credential, result -> {
             if (result instanceof Result.Success) {
@@ -50,8 +52,14 @@ public class MainViewModel extends AndroidViewModel {
         }));
     }
 
+    private final List<Future<?>> ongoingFetchTasks = new ArrayList<>();
+
     public void fetchVideos(Date date, Category category) {
         videosList.setValue(new ArrayList<>());
+        for (Future<?> task : ongoingFetchTasks) {
+            task.cancel(true); // Cancel the task
+        }
+        ongoingFetchTasks.clear(); // Clear the list of ongoing tasks
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         if (category != null)  {
             Objects.requireNonNull(subscriptionsList.getValue())
@@ -73,7 +81,7 @@ public class MainViewModel extends AndroidViewModel {
                     }, sub, date)));
         } else {
             for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
-                executorService.submit(new VideoUploadsRequest(credential, result -> {
+                Future<?> task = executorService.submit(new VideoUploadsRequest(credential, result -> {
                     if (result instanceof Result.Success) {
                         List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
                         List<VideoData> videos = videosList.getValue();
@@ -87,6 +95,7 @@ public class MainViewModel extends AndroidViewModel {
                         System.out.println(((Result.Error<List<VideoData>>) result).getException().getMessage());
                     }
                 }, sub, date));
+                ongoingFetchTasks.add(task); // Add the task to the list of ongoing tasks
             }
         }
     }
