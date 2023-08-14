@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.units.sim.yourtube.R;
@@ -23,18 +24,22 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
     private List<UserSubscription> subscriptionsList;
     private final View.OnClickListener onItemClickListener;
     private final boolean selectable;
+    @NonNull
+    private final List<UserSubscription> selectedChannels;
 
     public SubscriptionsAdapter(List<UserSubscription> subscriptionsList,
                                 View.OnClickListener onListItemClickListener) {
-        this(subscriptionsList, onListItemClickListener, false);
+        this(subscriptionsList, onListItemClickListener, false, new ArrayList<>());
     }
 
     public SubscriptionsAdapter(List<UserSubscription> subscriptionsList,
                                 View.OnClickListener onListItemClickListener,
-                                boolean selectable) {
+                                boolean selectable,
+                                @NonNull List<UserSubscription> selectedChannels) {
         this.subscriptionsList = subscriptionsList;
         this.onItemClickListener = onListItemClickListener;
         this.selectable = selectable;
+        this.selectedChannels = selectedChannels;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -56,9 +61,13 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
     public void onBindViewHolder(@NonNull SubscriptionsAdapter.ViewHolder holder, int position) {
         UserSubscription sub = subscriptionsList.get(position);
         if (selectable) {
-            holder.getCheckBox().setVisibility(View.VISIBLE);
-            holder.getCheckBox().setOnClickListener(onItemClickListener);
-            holder.getCheckBox().setTag(sub);
+            CheckBox checkBox = holder.getCheckBox();
+            checkBox.setVisibility(View.VISIBLE);
+            checkBox.setOnClickListener(onItemClickListener);
+            checkBox.setTag(sub);
+            if (selectedChannels.contains(sub)) {
+                checkBox.setChecked(true);
+            }
         } else {
             holder.itemView.setOnClickListener(onItemClickListener);
             holder.itemView.setTag(sub);

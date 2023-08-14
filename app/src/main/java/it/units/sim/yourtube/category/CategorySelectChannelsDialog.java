@@ -97,7 +97,8 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                     }
 
                 },
-                true
+                true,
+                newSelectedChannels
         );
 
         subscriptionsRecyclerView.setAdapter(subscriptionsAdapter);
