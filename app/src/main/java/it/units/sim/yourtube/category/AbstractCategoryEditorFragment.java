@@ -22,7 +22,6 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import it.units.sim.yourtube.MainViewModel;
@@ -33,7 +32,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
 
     private View rootView;
     protected List<UserSubscription> subscriptions;
-    protected List<UserSubscription> selectedChannels;
+    protected CategoryEditorViewModel localViewModel;
     protected ChipGroup selectedChannelsChipGroup;
     protected EditText categoryNameEditText;
     protected ImageView categoryIconPreview;
@@ -45,10 +44,10 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MainViewModel subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        localViewModel = new ViewModelProvider(this).get(CategoryEditorViewModel.class);
         subscriptions = subscriptionsViewModel
                 .getSubscriptionsList()
                 .getValue();
-        selectedChannels = new ArrayList<>();
     }
 
     @Override
@@ -87,22 +86,17 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
                             return;
                         if (result.keySet().size() == 0)
                             return;
-                        selectedChannels = result.getParcelableArrayList(CategorySelectChannelsDialog.RESULT_KEY);
-                        selectedChannelsChipGroup.removeAllViews();
-                        for (UserSubscription sub : selectedChannels) {
-                            Chip chip = new Chip(requireContext());
-                            chip.setText(sub.getChannelName());
-                            chip.setClickable(false);
-                            chip.setCheckable(false);
-                            selectedChannelsChipGroup.addView(chip);
-                        }
+                        localViewModel.setSelectedChannels(
+                                result.getParcelableArrayList(CategorySelectChannelsDialog.RESULT_KEY)
+                        );
                     });
             CategorySelectChannelsDialog
-                    .newInstance(subscriptions, selectedChannels)
+                    .newInstance(subscriptions, localViewModel.getSelectedChannels().getValue())
                     .show(fragmentManager, CategorySelectChannelsDialog.TAG);
         });
 
         // Icon selector
+        categoryIconPreview = view.findViewById(R.id.category_editor_icons_preview);
         Button selectIconButton = view.findViewById(R.id.category_editor_icons_list_expand);
         selectIconButton.setOnClickListener(btn -> {
             FragmentManager fragmentManager = getChildFragmentManager();
@@ -142,7 +136,16 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
             }
         });
 
-        categoryIconPreview = view.findViewById(R.id.category_editor_icons_preview);
+        localViewModel.getSelectedChannels().observe(getViewLifecycleOwner(), list -> {
+            selectedChannelsChipGroup.removeAllViews();
+            for (UserSubscription sub : list) {
+                Chip chip = new Chip(requireContext());
+                chip.setText(sub.getChannelName());
+                chip.setClickable(false);
+                chip.setCheckable(false);
+                selectedChannelsChipGroup.addView(chip);
+            }
+        });
     }
 
     protected abstract boolean createOrModifyCategory();
@@ -165,6 +168,5 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
             bottomNav.setVisibility(View.VISIBLE);
         }
     }
-
 
 }

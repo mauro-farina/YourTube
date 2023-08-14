@@ -60,7 +60,8 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
             }
         }
 
-        List<String> selectedChannelsId = selectedChannels
+        List<String> selectedChannelsId = Objects
+                .requireNonNull(localViewModel.getSelectedChannels().getValue())
                 .stream()
                 .map(UserSubscription::getChannelId)
                 .collect(Collectors.toList());

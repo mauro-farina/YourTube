@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.chip.Chip;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,9 +35,11 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
             categoryName = getArguments().getString("categoryName");
             chosenCategoryResId = getArguments().getInt("categoryIcon");
             previouslySelectedChannelIds = getArguments().getStringArrayList("categoryChannels");
-            selectedChannels = subscriptions.stream()
-                    .filter(s -> previouslySelectedChannelIds.contains(s.getChannelId()))
-                    .collect(Collectors.toList());
+            localViewModel.setSelectedChannels(
+                    subscriptions.stream()
+                        .filter(s -> previouslySelectedChannelIds.contains(s.getChannelId()))
+                        .collect(Collectors.toList())
+            );
         }
     }
 
@@ -60,13 +60,6 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
         if (chosenCategoryResId != 0) {
             categoryIconPreview.setImageResource(chosenCategoryResId);
         }
-        for (UserSubscription sub : selectedChannels) {
-            Chip chip = new Chip(requireContext());
-            chip.setText(sub.getChannelName());
-            chip.setClickable(false);
-            chip.setCheckable(false);
-            selectedChannelsChipGroup.addView(chip);
-        }
     }
 
     @Override
@@ -82,7 +75,8 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
             return false;
         }
         categoryToUpdate.setName(categoryName);
-        categoryToUpdate.setChannelIds(selectedChannels
+        categoryToUpdate.setChannelIds(Objects
+                .requireNonNull(localViewModel.getSelectedChannels().getValue())
                 .stream()
                 .map(UserSubscription::getChannelId)
                 .collect(Collectors.toList())
