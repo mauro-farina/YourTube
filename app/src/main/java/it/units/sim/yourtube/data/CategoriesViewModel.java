@@ -1,4 +1,4 @@
-package it.units.sim.yourtube.category;
+package it.units.sim.yourtube.data;
 
 import android.app.Application;
 

@@ -18,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.data.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
 
 public class CategoriesFragment extends Fragment {

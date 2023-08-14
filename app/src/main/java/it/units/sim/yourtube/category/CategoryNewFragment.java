@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.GoogleCredentialManager;
 import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.data.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.UserSubscription;
 
