@@ -20,14 +20,12 @@ import it.units.sim.yourtube.R;
 public class CategorySelectIconDialog extends DialogFragment {
 
     public static final String TAG = "SELECT_ICON_FOR_CATEGORY_DIALOG";
+    public static final String REQUEST_KEY = "updateSelectedIcon";
+    public static final String RESULT_KEY = "selectedIconResourceId";
     private Bundle result;
 
-    public static CategorySelectIconDialog newInstance(int selectedIconResourceId) {
-        CategorySelectIconDialog dialogFragment = new CategorySelectIconDialog();
-        Bundle args = new Bundle();
-        args.putInt("selectedIconResourceId", selectedIconResourceId);
-        dialogFragment.setArguments(args);
-        return dialogFragment;
+    public static CategorySelectIconDialog newInstance() {
+        return new CategorySelectIconDialog();
     }
 
     @SuppressLint("DiscouragedApi")
@@ -35,15 +33,6 @@ public class CategorySelectIconDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         result = new Bundle();
-
-        if (getArguments() == null) {
-            return new MaterialAlertDialogBuilder(requireContext())
-                    .setMessage("Error")
-                    .create();
-        }
-
-        int originalSelectedIconResId = getArguments().getInt("selectedIconResourceId");
-        result.putInt("selectedIconResourceId", originalSelectedIconResId);
 
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_category_select_icon, null);
         GridLayout iconsGrid = dialogView.findViewById(R.id.category_select_icon_grid);
@@ -57,7 +46,7 @@ public class CategorySelectIconDialog extends DialogFragment {
                         "drawable",
                         requireContext().getPackageName()
                 );
-                result.putInt("selectedIconResourceId", selectedIconResId);
+                result.putInt(RESULT_KEY, selectedIconResId);
                 dismiss();
             });
         }
@@ -71,6 +60,6 @@ public class CategorySelectIconDialog extends DialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        getParentFragmentManager().setFragmentResult("updateSelectedIcon", result);
+        getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
     }
 }

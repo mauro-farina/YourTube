@@ -107,16 +107,18 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
         selectIconButton.setOnClickListener(btn -> {
             FragmentManager fragmentManager = getChildFragmentManager();
             fragmentManager.setFragmentResultListener(
-                    "updateSelectedIcon",
+                    CategorySelectIconDialog.REQUEST_KEY,
                     getViewLifecycleOwner(),
                     (requestKey, result) -> {
-                        if (requestKey.equals("updateSelectedIcon")) {
-                            chosenCategoryResId = result.getInt("selectedIconResourceId");
-                            categoryIconPreview.setImageResource(chosenCategoryResId);
-                        }
+                        if (!requestKey.equals(CategorySelectIconDialog.REQUEST_KEY))
+                            return;
+                        if (result.keySet().size() == 0)
+                            return;
+                        chosenCategoryResId = result.getInt(CategorySelectIconDialog.RESULT_KEY);
+                        categoryIconPreview.setImageResource(chosenCategoryResId);
                     });
             CategorySelectIconDialog
-                    .newInstance(chosenCategoryResId)
+                    .newInstance()
                     .show(fragmentManager, CategorySelectIconDialog.TAG);
         });
 
