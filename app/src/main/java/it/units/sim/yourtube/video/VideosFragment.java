@@ -158,12 +158,16 @@ public class VideosFragment extends Fragment {
     }
 
     private void setFilteredVideosListInAdapter(Category filterCategory) {
-            adapter.setVideosList(
-                    Objects.requireNonNull(globalViewModel.getVideosList().getValue())
-                            .stream()
-                            .filter(v -> filterCategory.getChannelIds().contains(v.getChannel().getChannelId()))
-                            .collect(Collectors.toList())
-            );
+        if (filterCategory == null) {
+            adapter.setVideosList(globalViewModel.getVideosList().getValue());
+            return;
+        }
+        adapter.setVideosList(
+                Objects.requireNonNull(globalViewModel.getVideosList().getValue())
+                        .stream()
+                        .filter(v -> filterCategory.getChannelIds().contains(v.getChannel().getChannelId()))
+                        .collect(Collectors.toList())
+        );
     }
 
     private void showDatePickerDialog() {

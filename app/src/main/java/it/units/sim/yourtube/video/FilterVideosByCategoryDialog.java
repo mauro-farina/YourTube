@@ -57,7 +57,11 @@ public class FilterVideosByCategoryDialog extends DialogFragment {
         return new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Category filter")
                 .setView(dialogView)
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton("Remove filter", (dialog, which) -> {
+                    result.putParcelable(RESULT_KEY, null);
+                    dialog.dismiss();
+                })
                 .create();
     }
 
