@@ -2,12 +2,10 @@ package it.units.sim.yourtube.category;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,18 +72,6 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                 clickedView -> {
                     if (subscriptions == null || subscriptions.size() == 0)
                         return;
-                    /*
-                    TextView selectedChannelTextView = clickedView.findViewById(R.id.list_item_subscription_channel_name);
-                    String selectedChannelName = selectedChannelTextView.getText().toString();
-                    UserSubscription selectedChannel = subscriptions
-                            .stream()
-                            .filter(sub -> sub.getChannelName().equals(selectedChannelName))
-                            .findFirst()
-                            .orElse(null);
-                    if (selectedChannel == null) {
-                        return;
-                    }
-                    */
                     UserSubscription selectedChannel = (UserSubscription) clickedView.getTag();
                     CheckBox checkBox = clickedView.findViewById(R.id.list_item_subscription_checkbox);
                     if (newSelectedChannels.contains(selectedChannel)) {
@@ -95,7 +81,6 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                         checkBox.setChecked(true);
                         newSelectedChannels.add(selectedChannel);
                     }
-
                 },
                 true,
                 newSelectedChannels
