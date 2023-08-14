@@ -49,15 +49,17 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
 
     @Override
     public void onBindViewHolder(@NonNull SubscriptionsAdapter.ViewHolder holder, int position) {
+        UserSubscription sub = subscriptionsList.get(position);
         if (onItemClickListener != null) {
             holder.itemView.setOnClickListener(onItemClickListener);
+            holder.itemView.setTag(sub);
         }
         TextView channelNameTextView = holder.getChannelNameTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
-        channelNameTextView.setText(subscriptionsList.get(position).getChannelName());
+        channelNameTextView.setText(sub.getChannelName());
         Picasso
                 .get()
-                .load(subscriptionsList.get(position).getThumbnailUrl())
+                .load(sub.getThumbnailUrl())
                 .into(thumbnailImageView);
     }
 
