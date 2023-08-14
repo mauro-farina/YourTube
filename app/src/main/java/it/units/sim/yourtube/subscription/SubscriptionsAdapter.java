@@ -55,11 +55,14 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
     public void onBindViewHolder(@NonNull SubscriptionsAdapter.ViewHolder holder, int position) {
         UserSubscription sub = subscriptionsList.get(position);
         if (onItemClickListener != null) {
-            holder.itemView.setOnClickListener(onItemClickListener);
-            holder.itemView.setTag(sub);
-        }
-        if (selectable) {
-            holder.getCheckBox().setVisibility(View.VISIBLE);
+            if (selectable) {
+                holder.getCheckBox().setVisibility(View.VISIBLE);
+                holder.getCheckBox().setOnClickListener(onItemClickListener);
+                holder.getCheckBox().setTag(sub);
+            } else {
+                holder.itemView.setOnClickListener(onItemClickListener);
+                holder.itemView.setTag(sub);
+            }
         }
         TextView channelNameTextView = holder.getChannelNameTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
