@@ -38,7 +38,6 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void fetchUserSubscriptions() {
-        System.out.println("fetch userSubscriptions! ***************");
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         executorService.submit(new SubscriptionListRequest(credential, result -> {
             if (result instanceof Result.Success) {
