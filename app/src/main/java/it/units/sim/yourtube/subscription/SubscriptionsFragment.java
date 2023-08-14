@@ -36,7 +36,10 @@ public class SubscriptionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_subscriptions, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.subscriptions_recycler_view);
-        adapter = new SubscriptionsAdapter(viewModel.getSubscriptionsList().getValue());
+        adapter = new SubscriptionsAdapter(
+                viewModel.getSubscriptionsList().getValue(),
+                v -> {}
+        );
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;

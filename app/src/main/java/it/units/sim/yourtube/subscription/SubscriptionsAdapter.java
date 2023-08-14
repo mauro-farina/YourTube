@@ -24,8 +24,9 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
     private final View.OnClickListener onItemClickListener;
     private final boolean selectable;
 
-    public SubscriptionsAdapter(List<UserSubscription> subscriptionsList) {
-        this(subscriptionsList, null, false);
+    public SubscriptionsAdapter(List<UserSubscription> subscriptionsList,
+                                View.OnClickListener onListItemClickListener) {
+        this(subscriptionsList, onListItemClickListener, false);
     }
 
     public SubscriptionsAdapter(List<UserSubscription> subscriptionsList,
@@ -54,15 +55,13 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
     @Override
     public void onBindViewHolder(@NonNull SubscriptionsAdapter.ViewHolder holder, int position) {
         UserSubscription sub = subscriptionsList.get(position);
-        if (onItemClickListener != null) {
-            if (selectable) {
-                holder.getCheckBox().setVisibility(View.VISIBLE);
-                holder.getCheckBox().setOnClickListener(onItemClickListener);
-                holder.getCheckBox().setTag(sub);
-            } else {
-                holder.itemView.setOnClickListener(onItemClickListener);
-                holder.itemView.setTag(sub);
-            }
+        if (selectable) {
+            holder.getCheckBox().setVisibility(View.VISIBLE);
+            holder.getCheckBox().setOnClickListener(onItemClickListener);
+            holder.getCheckBox().setTag(sub);
+        } else {
+            holder.itemView.setOnClickListener(onItemClickListener);
+            holder.itemView.setTag(sub);
         }
         TextView channelNameTextView = holder.getChannelNameTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
