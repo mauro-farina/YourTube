@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -16,12 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -31,8 +27,6 @@ import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.MainViewModel;
 import it.units.sim.yourtube.R;
-import it.units.sim.yourtube.category.CategoriesAdapter;
-import it.units.sim.yourtube.category.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
@@ -46,7 +40,6 @@ public class VideosFragment extends Fragment {
     private Calendar calendar;
     private Button datePicker;
     private Date currentDateReference;
-    private LiveData<List<Category>> categoriesList;
     private Button categoryFilterButton;
     private Date dateObserverBypass;
     private List<UserSubscription> subscriptionsObserverBypass;
@@ -67,8 +60,6 @@ public class VideosFragment extends Fragment {
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         currentDateReference = new Date();
-        CategoriesViewModel categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
-        categoriesList = categoriesViewModel.getCategoriesList();
     }
 
     @Override
@@ -147,29 +138,22 @@ public class VideosFragment extends Fragment {
         });
 
         categoryFilterButton.setOnClickListener(v -> {
-            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireContext());
-            View dialogView = getLayoutInflater().inflate(R.layout.dialog_videos_category_filter, null);
-            RecyclerView categoriesRecyclerView = dialogView.findViewById(R.id.dialog_videos_category_filter_list);
-            CategoriesAdapter categoriesAdapter = new CategoriesAdapter(
-                    new ArrayList<>(),
-                    clickedCategoryView -> {
-                        TextView categoryNameTextView = clickedCategoryView.findViewById(R.id.list_item_category_name);
-                        String categoryName = categoryNameTextView.getText().toString();
+            FragmentManager fragmentManager = getChildFragmentManager();
+            fragmentManager.setFragmentResultListener(
+                    FilterVideosByCategoryDialog.REQUEST_KEY,
+                    getViewLifecycleOwner(),
+                    (requestKey, result) -> {
+                        if (!requestKey.equals(FilterVideosByCategoryDialog.REQUEST_KEY))
+                            return;
+                        if (result.keySet().size() == 0)
+                            return;
                         localViewModel.setCategoryFilter(
-                                Objects.requireNonNull(categoriesList.getValue())
-                                        .stream()
-                                        .filter(c -> c.getName().equals(categoryName))
-                                        .findFirst()
-                                        .orElse(null)
+                                result.getParcelable(FilterVideosByCategoryDialog.RESULT_KEY)
                         );
-                    },
-                    CategoriesAdapter.VIEW_CONTEXT_VIDEOS_FILTER
-            );
-            categoriesRecyclerView.setAdapter(categoriesAdapter);
-            categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            categoriesList.observe(getViewLifecycleOwner(), categoriesAdapter::setCategoriesList);
-            dialog.setView(dialogView);
-            dialog.show();
+                    });
+            FilterVideosByCategoryDialog
+                    .newInstance()
+                    .show(fragmentManager, FilterVideosByCategoryDialog.TAG);
         });
     }
 
