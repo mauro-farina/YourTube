@@ -73,6 +73,7 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                 clickedView -> {
                     if (subscriptions == null || subscriptions.size() == 0)
                         return;
+                    /*
                     TextView selectedChannelTextView = clickedView.findViewById(R.id.list_item_subscription_channel_name);
                     String selectedChannelName = selectedChannelTextView.getText().toString();
                     UserSubscription selectedChannel = subscriptions
@@ -83,15 +84,18 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                     if (selectedChannel == null) {
                         return;
                     }
+                    */
+                    UserSubscription selectedChannel = (UserSubscription) clickedView.getTag();
                     if (newSelectedChannels.contains(selectedChannel)) {
-                        selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.ITALIC);
+//                        selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.ITALIC);
                         newSelectedChannels.remove(selectedChannel);
                     } else {
-                        selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.BOLD);
+//                        selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.BOLD);
                         newSelectedChannels.add(selectedChannel);
                     }
 
-                }
+                },
+                true
         );
 
         subscriptionsRecyclerView.setAdapter(subscriptionsAdapter);

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,15 +22,18 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
 
     private List<UserSubscription> subscriptionsList;
     private final View.OnClickListener onItemClickListener;
+    private final boolean selectable;
 
     public SubscriptionsAdapter(List<UserSubscription> subscriptionsList) {
-        this(subscriptionsList, null);
+        this(subscriptionsList, null, false);
     }
 
     public SubscriptionsAdapter(List<UserSubscription> subscriptionsList,
-                                View.OnClickListener onListItemClickListener) {
+                                View.OnClickListener onListItemClickListener,
+                                boolean selectable) {
         this.subscriptionsList = subscriptionsList;
         this.onItemClickListener = onListItemClickListener;
+        this.selectable = selectable;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -54,6 +58,9 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
             holder.itemView.setOnClickListener(onItemClickListener);
             holder.itemView.setTag(sub);
         }
+        if (selectable) {
+            holder.getCheckBox().setVisibility(View.VISIBLE);
+        }
         TextView channelNameTextView = holder.getChannelNameTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
         channelNameTextView.setText(sub.getChannelName());
@@ -71,10 +78,13 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView channelNameTextView;
         private final ImageView thumbnailImageView;
+        private final CheckBox checkBox;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             channelNameTextView = itemView.findViewById(R.id.list_item_subscription_channel_name);
             thumbnailImageView = itemView.findViewById(R.id.list_item_subscription_thumbnail);
+            checkBox = itemView.findViewById(R.id.list_item_subscription_checkbox);
         }
 
         public TextView getChannelNameTextView() {
@@ -82,6 +92,9 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
         }
         public ImageView getThumbnailImageView() {
             return thumbnailImageView;
+        }
+        public CheckBox getCheckBox() {
+            return checkBox;
         }
 
     }
