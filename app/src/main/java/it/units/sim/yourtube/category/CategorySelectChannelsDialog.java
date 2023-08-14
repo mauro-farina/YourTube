@@ -31,7 +31,8 @@ public class CategorySelectChannelsDialog extends DialogFragment {
     private List<UserSubscription> subscriptions;
     private List<UserSubscription> newSelectedChannels;
 
-    public static CategorySelectChannelsDialog newInstance(List<UserSubscription> subscriptions, List<UserSubscription> selectedChannels) {
+    public static CategorySelectChannelsDialog newInstance(List<UserSubscription> subscriptions,
+                                                           List<UserSubscription> selectedChannels) {
         CategorySelectChannelsDialog dialogFragment = new CategorySelectChannelsDialog();
         Bundle args = new Bundle();
         args.putParcelableArrayList("subscriptions", (ArrayList<? extends Parcelable>) subscriptions);
@@ -113,4 +114,5 @@ public class CategorySelectChannelsDialog extends DialogFragment {
         super.onDismiss(dialog);
         getParentFragmentManager().setFragmentResult("updateSelectedChannels", result);
     }
+
 }
