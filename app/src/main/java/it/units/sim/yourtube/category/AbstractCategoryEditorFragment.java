@@ -80,22 +80,21 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
         selectChannelsButton.setOnClickListener(btn -> {
             FragmentManager fragmentManager = getChildFragmentManager();
             fragmentManager.setFragmentResultListener(
-                    "updateSelectedChannels",
+                    CategorySelectChannelsDialog.REQUEST_KEY,
                     getViewLifecycleOwner(),
                     (requestKey, result) -> {
-                        if (requestKey.equals("updateSelectedChannels")) {
-                            if (result.keySet().size() == 0) {
-                                return;
-                            }
-                            selectedChannels = result.getParcelableArrayList("selectedChannels");
-                            selectedChannelsChipGroup.removeAllViews();
-                            for (UserSubscription sub : selectedChannels) {
-                                Chip chip = new Chip(requireContext());
-                                chip.setText(sub.getChannelName());
-                                chip.setClickable(false);
-                                chip.setCheckable(false);
-                                selectedChannelsChipGroup.addView(chip);
-                            }
+                        if (!requestKey.equals(CategorySelectChannelsDialog.REQUEST_KEY))
+                            return;
+                        if (result.keySet().size() == 0)
+                            return;
+                        selectedChannels = result.getParcelableArrayList(CategorySelectChannelsDialog.RESULT_KEY);
+                        selectedChannelsChipGroup.removeAllViews();
+                        for (UserSubscription sub : selectedChannels) {
+                            Chip chip = new Chip(requireContext());
+                            chip.setText(sub.getChannelName());
+                            chip.setClickable(false);
+                            chip.setCheckable(false);
+                            selectedChannelsChipGroup.addView(chip);
                         }
                     });
             CategorySelectChannelsDialog
