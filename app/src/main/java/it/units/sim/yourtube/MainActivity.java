@@ -18,8 +18,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import it.units.sim.yourtube.category.CategoriesViewModel;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -45,9 +43,7 @@ public class MainActivity extends AppCompatActivity {
         ViewModelProvider.AndroidViewModelFactory factory =
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication());
         MainViewModel viewModel = new ViewModelProvider(this, factory).get(MainViewModel.class);
-        CategoriesViewModel categoriesViewModel = new ViewModelProvider(this).get(CategoriesViewModel.class);
         viewModel.fetchUserSubscriptions();
-        categoriesViewModel.fetchCategories();
     }
 
     @Override
