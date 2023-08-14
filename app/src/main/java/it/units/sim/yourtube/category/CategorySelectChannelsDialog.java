@@ -26,6 +26,10 @@ import it.units.sim.yourtube.subscription.SubscriptionsAdapter;
 public class CategorySelectChannelsDialog extends DialogFragment {
 
     public static final String TAG = "SELECT_CHANNELS_FOR_CATEGORY_DIALOG";
+    public static final String REQUEST_KEY = "updateSelectedChannels";
+    public static final String RESULT_KEY = "selectedChannels";
+    private static final String ARG_SUBSCRIPTIONS_KEY = "subscriptions";
+    private static final String ARG_SELECTED_CHANNELS_KEY = "selectedChannels";
     private Bundle result;
     private List<UserSubscription> subscriptions;
     private List<UserSubscription> newSelectedChannels;
@@ -34,8 +38,8 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                                                            List<UserSubscription> selectedChannels) {
         CategorySelectChannelsDialog dialogFragment = new CategorySelectChannelsDialog();
         Bundle args = new Bundle();
-        args.putParcelableArrayList("subscriptions", (ArrayList<? extends Parcelable>) subscriptions);
-        args.putParcelableArrayList("selectedChannels", (ArrayList<? extends Parcelable>) selectedChannels);
+        args.putParcelableArrayList(ARG_SUBSCRIPTIONS_KEY, (ArrayList<? extends Parcelable>) subscriptions);
+        args.putParcelableArrayList(ARG_SELECTED_CHANNELS_KEY, (ArrayList<? extends Parcelable>) selectedChannels);
         dialogFragment.setArguments(args);
         return dialogFragment;
     }
@@ -51,14 +55,14 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                     .create();
         }
 
-        subscriptions = getArguments().getParcelableArrayList("subscriptions");
+        subscriptions = getArguments().getParcelableArrayList(ARG_SUBSCRIPTIONS_KEY);
         if (subscriptions == null || subscriptions.size() == 0) {
             return new MaterialAlertDialogBuilder(requireContext())
                     .setMessage("You are not subscribed to any channel")
                     .create();
         }
 
-        List<UserSubscription> originalSelectedChannels = getArguments().getParcelableArrayList("selectedChannels");
+        List<UserSubscription> originalSelectedChannels = getArguments().getParcelableArrayList(ARG_SELECTED_CHANNELS_KEY);
         newSelectedChannels = new ArrayList<>(originalSelectedChannels);
         result.putParcelableArrayList(
                 "selectedChannels",
@@ -94,7 +98,7 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                 .setPositiveButton(
                         getString(R.string.confirm),
                         (dialog, which) -> result.putParcelableArrayList(
-                                "selectedChannels",
+                                RESULT_KEY,
                                 (ArrayList<? extends Parcelable>) newSelectedChannels
                         ))
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
@@ -104,7 +108,7 @@ public class CategorySelectChannelsDialog extends DialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        getParentFragmentManager().setFragmentResult("updateSelectedChannels", result);
+        getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
     }
 
 }
