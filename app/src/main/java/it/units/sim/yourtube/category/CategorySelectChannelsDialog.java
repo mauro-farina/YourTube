@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -86,11 +87,12 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                     }
                     */
                     UserSubscription selectedChannel = (UserSubscription) clickedView.getTag();
+                    CheckBox checkBox = clickedView.findViewById(R.id.list_item_subscription_checkbox);
                     if (newSelectedChannels.contains(selectedChannel)) {
-//                        selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.ITALIC);
+                        checkBox.setChecked(false);
                         newSelectedChannels.remove(selectedChannel);
                     } else {
-//                        selectedChannelTextView.setTypeface(selectedChannelTextView.getTypeface(), Typeface.BOLD);
+                        checkBox.setChecked(true);
                         newSelectedChannels.add(selectedChannel);
                     }
 
