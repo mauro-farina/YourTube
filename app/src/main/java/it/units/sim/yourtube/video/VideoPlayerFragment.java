@@ -156,7 +156,7 @@ public class VideoPlayerFragment extends Fragment {
                     youTubePlayerWhenReady.toggleFullscreen();
                 } else {
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-                    navController.navigate(R.id.videosFragment);
+                    navController.popBackStack();
                 }
             }
         };
