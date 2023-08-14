@@ -25,15 +25,18 @@ public class Category implements Parcelable {
     private List<String> channelIds;
     @ColumnInfo(name = "icon_res_id")
     private int drawableIconResId;
+    @ColumnInfo(name = "owner")
+    private String ownerEmail;
 
     public Category(){
-        this("", new ArrayList<>(), 0);
+        this("", new ArrayList<>(), 0, "");
     }
 
-    public Category(@NonNull String name, @NonNull List<String> channelIds, int drawableIconId) {
+    public Category(@NonNull String name, @NonNull List<String> channelIds, int drawableIconId, @NonNull String ownerEmail) {
         this.name = name;
         this.channelIds = channelIds;
         this.drawableIconResId = drawableIconId;
+        this.ownerEmail = ownerEmail;
     }
 
     protected Category(Parcel in) {
@@ -41,6 +44,7 @@ public class Category implements Parcelable {
         name = in.readString();
         channelIds = in.createStringArrayList();
         drawableIconResId = in.readInt();
+        ownerEmail = in.readString();
     }
 
     public static final Creator<Category> CREATOR = new Creator<>() {
@@ -71,6 +75,10 @@ public class Category implements Parcelable {
         this.drawableIconResId = drawableIconResId;
     }
 
+    public void setOwnerEmail(@NonNull String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
+
     public int getId() {
         return id;
     }
@@ -90,6 +98,11 @@ public class Category implements Parcelable {
     }
 
     @NonNull
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return name;
@@ -106,5 +119,6 @@ public class Category implements Parcelable {
         parcel.writeString(name);
         parcel.writeList(channelIds);
         parcel.writeInt(drawableIconResId);
+        parcel.writeString(ownerEmail);
     }
 }

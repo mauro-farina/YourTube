@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import it.units.sim.yourtube.GoogleCredentialManager;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.UserSubscription;
@@ -62,7 +63,8 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
                 .stream()
                 .map(UserSubscription::getChannelId)
                 .collect(Collectors.toList());
-        Category newCategory = new Category(categoryName, selectedChannelsId, chosenCategoryResId);
+        String owner = GoogleCredentialManager.getInstance().getCredential().getSelectedAccountName();
+        Category newCategory = new Category(categoryName, selectedChannelsId, chosenCategoryResId, owner);
         categoriesViewModel.addCategory(newCategory);
         return true;
     }

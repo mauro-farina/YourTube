@@ -14,8 +14,8 @@ import it.units.sim.yourtube.model.Category;
 @Dao
 public interface CategoryDAO {
 
-    @Query("SELECT * FROM categories")
-    LiveData<List<Category>> getAll();
+    @Query("SELECT * FROM categories WHERE owner LIKE :owner")
+    LiveData<List<Category>> getAll(String owner);
 
     @Query("SELECT * FROM categories WHERE name LIKE :name LIMIT 1")
     LiveData<Category> findByName(String name);
