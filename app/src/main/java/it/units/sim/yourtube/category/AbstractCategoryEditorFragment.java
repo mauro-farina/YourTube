@@ -130,7 +130,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
             if (createOrModifyCategory()) {
                 showSuccessFeedbackMessage();
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-                navController.navigate(R.id.categoriesFragment);
+                navController.popBackStack();
             } else {
                 showFailureFeedbackMessage(failureReason);
             }
