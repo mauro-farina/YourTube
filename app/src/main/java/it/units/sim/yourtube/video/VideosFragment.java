@@ -119,7 +119,14 @@ public class VideosFragment extends Fragment {
         });
         localViewModel.getCategoryFilter().observe(
                 getViewLifecycleOwner(),
-                this::setFilteredVideosListInAdapter
+                category -> {
+                    setFilteredVideosListInAdapter(category);
+                    if (category != null) {
+                        categoryFilterButton.setText(category.getName());
+                    } else {
+                        categoryFilterButton.setText(R.string.category);
+                    }
+                }
         );
 
         Button previousDateButton = view.findViewById(R.id.date_filter_previous);
