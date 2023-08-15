@@ -33,7 +33,6 @@ import it.units.sim.yourtube.model.UserSubscription;
 public abstract class AbstractCategoryEditorFragment extends Fragment {
 
     private ActionBar toolbar;
-    private View rootView;
     protected List<UserSubscription> subscriptions;
     protected CategoryEditorViewModel localViewModel;
     protected ChipGroup selectedChannelsChipGroup;
@@ -83,7 +82,6 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = view;
 
         // Channels selector
         selectedChannelsChipGroup = view.findViewById(R.id.category_editor_subscriptions_chipgroup);
@@ -165,11 +163,11 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     protected abstract String getSuccessFeedbackMessage();
 
     protected void showSuccessFeedbackMessage() {
-        Snackbar.make(rootView, getSuccessFeedbackMessage(), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(requireView(), getSuccessFeedbackMessage(), Snackbar.LENGTH_SHORT).show();
     }
 
     private void showFailureFeedbackMessage(String failureReason) {
-        Snackbar.make(rootView, failureReason, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(requireView(), failureReason, Snackbar.LENGTH_SHORT).show();
     }
 
     private void toggleBottomNav() {
