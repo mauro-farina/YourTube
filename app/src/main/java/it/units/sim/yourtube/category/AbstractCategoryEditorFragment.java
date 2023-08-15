@@ -11,6 +11,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -30,6 +32,7 @@ import it.units.sim.yourtube.model.UserSubscription;
 
 public abstract class AbstractCategoryEditorFragment extends Fragment {
 
+    private ActionBar toolbar;
     private View rootView;
     protected List<UserSubscription> subscriptions;
     protected CategoryEditorViewModel localViewModel;
@@ -44,6 +47,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MainViewModel subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         localViewModel = new ViewModelProvider(this).get(CategoryEditorViewModel.class);
         subscriptions = subscriptionsViewModel
                 .getSubscriptionsList()
@@ -54,12 +58,20 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     public void onResume() {
         super.onResume();
         toggleBottomNav();
+        if (toolbar != null) {
+            toolbar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setTitle(getToolbarTitle());
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
         toggleBottomNav();
+        if (toolbar != null) {
+            toolbar.setDisplayHomeAsUpEnabled(false);
+            toolbar.setTitle(R.string.app_name);
+        }
     }
 
     @Override
@@ -168,5 +180,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
             bottomNav.setVisibility(View.VISIBLE);
         }
     }
+
+    protected abstract String getToolbarTitle();
 
 }

@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/app_name"
-            app:menu="@menu/top_bar_menu" />
+            app:menu="@menu/top_bar_menu"
+            app:navigationIcon="@drawable/icon_back" />
         <!--         android:elevation="4dp"    -->
     </com.google.android.material.appbar.AppBarLayout>
 

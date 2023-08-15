@@ -91,4 +91,9 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
         return "Category " + categoryName + " modified!";
     }
 
+    @Override
+    protected String getToolbarTitle() {
+        return "Edit " + categoryName;
+    }
+
 }

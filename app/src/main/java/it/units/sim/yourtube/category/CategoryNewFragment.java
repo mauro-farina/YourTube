@@ -76,4 +76,9 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
         return "Category " + categoryName + " created!";
     }
 
+    @Override
+    protected String getToolbarTitle() {
+        return "New category";
+    }
+
 }
