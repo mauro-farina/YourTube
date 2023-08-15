@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -37,6 +39,7 @@ import kotlin.jvm.functions.Function0;
 
 public class VideoPlayerFragment extends Fragment {
 
+    private ActionBar toolbar;
     private Window window;
     private int originalSystemUiVisibility;
     private YouTubePlayerView youTubePlayerView;
@@ -54,6 +57,7 @@ public class VideoPlayerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         window = requireActivity().getWindow();
         originalSystemUiVisibility = window.getDecorView().getSystemUiVisibility();
+        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
 
         if (getArguments() != null) {
             video = getArguments().getParcelable("video");
@@ -63,14 +67,20 @@ public class VideoPlayerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        toggleToolbarAndBottomNav();
+        toggleBottomNavVisibility();
+        if (toolbar != null) {
+            toolbar.setDisplayHomeAsUpEnabled(true);
+        }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        toggleToolbarAndBottomNav();
+        toggleBottomNavVisibility();
+        if (toolbar != null) {
+            toolbar.setDisplayHomeAsUpEnabled(false);
+        }
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         turnImmersionModeOff();
     }
@@ -121,6 +131,7 @@ public class VideoPlayerFragment extends Fragment {
                 youTubePlayerView.setVisibility(View.GONE);
                 fullscreenViewContainer.setVisibility(View.VISIBLE);
                 fullscreenViewContainer.addView(fullscreenView);
+                toggleToolbarVisibility();
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     handler.postDelayed(
@@ -138,6 +149,7 @@ public class VideoPlayerFragment extends Fragment {
                 youTubePlayerView.setVisibility(View.VISIBLE);
                 fullscreenViewContainer.setVisibility(View.GONE);
                 fullscreenViewContainer.removeAllViews();
+                toggleToolbarVisibility();
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     handler.postDelayed(
@@ -191,18 +203,21 @@ public class VideoPlayerFragment extends Fragment {
                 .into(videoChannelThumbnail);
     }
 
-    private void toggleToolbarAndBottomNav() {
-        Toolbar topToolbar = requireActivity().findViewById(R.id.top_app_bar);
-        if (topToolbar.getVisibility() == View.VISIBLE) {
-            topToolbar.setVisibility(View.GONE);
-        } else {
-            topToolbar.setVisibility(View.VISIBLE);
-        }
+    private void toggleBottomNavVisibility() {
         View bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
         if (bottomNav.getVisibility() == View.VISIBLE) {
             bottomNav.setVisibility(View.GONE);
         } else {
             bottomNav.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void toggleToolbarVisibility() {
+        Toolbar toolbar = requireActivity().findViewById(R.id.top_app_bar);
+        if (toolbar.getVisibility() == View.VISIBLE) {
+            toolbar.setVisibility(View.GONE);
+        } else {
+            toolbar.setVisibility(View.VISIBLE);
         }
     }
 
