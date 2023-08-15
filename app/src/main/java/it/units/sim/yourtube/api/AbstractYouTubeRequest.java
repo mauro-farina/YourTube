@@ -20,7 +20,7 @@ public abstract class AbstractYouTubeRequest<T> implements Runnable {
     protected final YouTube youtubeService;
     private final Callback<T> callback;
 
-    public AbstractYouTubeRequest(GoogleAccountCredential credential,
+    protected AbstractYouTubeRequest(GoogleAccountCredential credential,
                                    Callback<T> callback) {
         this.callback = callback;
         NetHttpTransport netTransport = new NetHttpTransport();
