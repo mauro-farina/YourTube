@@ -65,7 +65,7 @@ public class CategorySelectChannelsDialog extends DialogFragment {
         List<UserSubscription> originalSelectedChannels = getArguments().getParcelableArrayList(ARG_SELECTED_CHANNELS_KEY);
         newSelectedChannels = new ArrayList<>(originalSelectedChannels);
         result.putParcelableArrayList(
-                "selectedChannels",
+                RESULT_KEY,
                 (ArrayList<? extends Parcelable>) originalSelectedChannels
         );
 
