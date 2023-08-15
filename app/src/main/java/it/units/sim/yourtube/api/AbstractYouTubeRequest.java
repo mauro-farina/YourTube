@@ -9,7 +9,6 @@ import com.google.api.services.youtube.YouTube;
 import java.io.IOException;
 
 import it.units.sim.yourtube.R;
-import it.units.sim.yourtube.api.Result;
 
 public abstract class AbstractYouTubeRequest<T> implements Runnable {
 
