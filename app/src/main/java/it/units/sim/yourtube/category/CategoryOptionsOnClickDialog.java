@@ -1,35 +1,33 @@
 package it.units.sim.yourtube.category;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.util.ArrayList;
-
 import it.units.sim.yourtube.R;
-import it.units.sim.yourtube.data.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
 
 public class CategoryOptionsOnClickDialog extends DialogFragment {
 
     public static final String TAG = "SELECT_CHANNELS_FOR_CATEGORY_DIALOG";
-    private CategoriesViewModel categoriesViewModel;
-    private NavController navController;
+    public static final String REQUEST_KEY = "SELECT_ACTION";
+    public static final String RESULT_KEY = "ACTION";
+    public static final int ACTION_EDIT = 0;
+    public static final int ACTION_DELETE = 1;
+    private static final String ARG = "category";
+    private Bundle result;
 
     public static CategoryOptionsOnClickDialog newInstance(Category category) {
         CategoryOptionsOnClickDialog dialogFragment = new CategoryOptionsOnClickDialog();
         Bundle args = new Bundle();
-        args.putParcelable("category", category);
+        args.putParcelable(ARG, category);
         dialogFragment.setArguments(args);
         return dialogFragment;
     }
@@ -37,35 +35,28 @@ public class CategoryOptionsOnClickDialog extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        result = new Bundle();
         if (getArguments() == null) {
             return new MaterialAlertDialogBuilder(requireContext())
                     .setMessage("Error")
                     .create();
         }
-        Category category = getArguments().getParcelable("category");
+        Category category = getArguments().getParcelable(ARG);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_category_options, null);
-        TextView modifyTextView = dialogView.findViewById(R.id.dialog_category_option_modify);
-        TextView deleteTextView = dialogView.findViewById(R.id.dialog_category_option_delete);
+        View modify = dialogView.findViewById(R.id.dialog_category_option_modify);
+        View delete = dialogView.findViewById(R.id.dialog_category_option_delete);
 
-        modifyTextView.setOnClickListener(v -> {
-            Bundle extras = new Bundle();
-            extras.putInt("categoryId", category.getId());
-            extras.putString("categoryName", category.getName());
-            extras.putInt("categoryIcon", category.getDrawableIconResId());
-            extras.putStringArrayList("categoryChannels", new ArrayList<>(category.getChannelIds()));
-            navController.navigate(R.id.categoryEditFragment, extras);
+        modify.setOnClickListener(v -> {
+            result.putInt(RESULT_KEY, ACTION_EDIT);
             dismiss();
         });
-
-        deleteTextView.setOnClickListener(v -> {
-            categoriesViewModel.deleteCategory(category);
+        delete.setOnClickListener(v -> {
+            result.putInt(RESULT_KEY, ACTION_DELETE);
             dismiss();
         });
 
@@ -73,5 +64,11 @@ public class CategoryOptionsOnClickDialog extends DialogFragment {
                 .setTitle(category.getName())
                 .setView(dialogView)
                 .create();
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        getParentFragmentManager().setFragmentResult(REQUEST_KEY, result);
     }
 }
