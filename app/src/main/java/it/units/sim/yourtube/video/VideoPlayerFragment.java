@@ -11,6 +11,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -185,6 +186,11 @@ public class VideoPlayerFragment extends Fragment {
     }
 
     private void initVideoInfoUi(View view) {
+        ViewModelProvider.AndroidViewModelFactory factory =
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication());
+        VideoPlayerViewModel viewModel = new ViewModelProvider(requireActivity(), factory).get(VideoPlayerViewModel.class);
+        viewModel.setVideoId(video.getVideoId());
+
         TextView videoTitle = view.findViewById(R.id.video_player_title);
         TextView videoViewCount = view.findViewById(R.id.video_player_views_counter);
         TextView videoDate = view.findViewById(R.id.video_player_date);
@@ -193,10 +199,10 @@ public class VideoPlayerFragment extends Fragment {
         TextView videoDescription = view.findViewById(R.id.video_player_description);
 
         videoTitle.setText(video.getTitle());
-        videoViewCount.setText("ViewCount");
         videoDate.setText(video.getReadablePublishedDate());
         videoChannelName.setText(video.getChannel().getChannelName());
         videoDescription.setText((video.getDescription()));
+        viewModel.getViewsCount().observe(getViewLifecycleOwner(), views -> videoViewCount.setText(views + " views"));
         Picasso
                 .get()
                 .load(video.getChannel().getThumbnailUrl())
