@@ -71,6 +71,7 @@ public class VideoPlayerFragment extends Fragment {
         toggleBottomNavVisibility();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setTitle(video.getReadablePublishedDate());
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
@@ -81,6 +82,7 @@ public class VideoPlayerFragment extends Fragment {
         toggleBottomNavVisibility();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(false);
+            toolbar.setTitle(R.string.app_name);
         }
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         turnImmersionModeOff();
@@ -192,17 +194,19 @@ public class VideoPlayerFragment extends Fragment {
         viewModel.setVideoId(video.getVideoId());
 
         TextView videoTitle = view.findViewById(R.id.video_player_title);
-        TextView videoViewCount = view.findViewById(R.id.video_player_views_counter);
-        TextView videoDate = view.findViewById(R.id.video_player_date);
+        TextView videoViewsCount = view.findViewById(R.id.video_player_views_counter);
+//        TextView videoDate = view.findViewById(R.id.video_player_date);
         TextView videoChannelName = view.findViewById(R.id.list_item_subscription_channel_name);
         ImageView videoChannelThumbnail = view.findViewById(R.id.list_item_subscription_thumbnail);
         TextView videoDescription = view.findViewById(R.id.video_player_description);
+        TextView videoLikesCounter = view.findViewById(R.id.video_player_likes_counter);
 
         videoTitle.setText(video.getTitle());
-        videoDate.setText(video.getReadablePublishedDate());
+//        videoDate.setText(video.getReadablePublishedDate());
         videoChannelName.setText(video.getChannel().getChannelName());
         videoDescription.setText((video.getDescription()));
-        viewModel.getViewsCount().observe(getViewLifecycleOwner(), views -> videoViewCount.setText(views + " views"));
+        viewModel.getViewsCount().observe(getViewLifecycleOwner(), views -> videoViewsCount.setText(views + " Views"));
+        viewModel.getLikesCount().observe(getViewLifecycleOwner(), likes -> videoLikesCounter.setText(likes + " Likes"));
         Picasso
                 .get()
                 .load(video.getChannel().getThumbnailUrl())
