@@ -1,6 +1,7 @@
 package it.units.sim.yourtube.video;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +50,8 @@ public class VideoPlayerFragment extends Fragment {
     private VideoData video;
     private boolean isFullscreen;
     private final Handler handler = new Handler();
+    private ContentResolver contentResolver;
+    private AutomaticRotationObserver rotationObserver;
 
     public VideoPlayerFragment() {
         // Required empty public constructor
@@ -63,17 +67,35 @@ public class VideoPlayerFragment extends Fragment {
         if (getArguments() != null) {
             video = getArguments().getParcelable("video");
         }
+
+        contentResolver = requireContext().getContentResolver();
+        rotationObserver = new AutomaticRotationObserver(
+                new Handler(),
+                contentResolver,
+                () -> {
+                    if (rotationObserver.isAutoRotationEnabled() && isFullscreen) {
+                        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                    }
+                }
+        );
     }
 
     @Override
     public void onResume() {
         super.onResume();
         toggleBottomNavVisibility();
+        registerRotationObserver();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setTitle(video.getReadablePublishedDate());
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterRotationObserver();
     }
 
     @Override
@@ -138,7 +160,10 @@ public class VideoPlayerFragment extends Fragment {
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     handler.postDelayed(
-                            () -> requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED),
+                            () -> {
+                                if (rotationObserver.isAutoRotationEnabled())
+                                    requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                            },
                             3*1000
                     );
                 }
@@ -156,7 +181,10 @@ public class VideoPlayerFragment extends Fragment {
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     handler.postDelayed(
-                            () -> requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED),
+                            () -> {
+                                if (!isFullscreen)
+                                    requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                            },
                             3*1000
                     );
                 }
@@ -240,6 +268,18 @@ public class VideoPlayerFragment extends Fragment {
 
     private void turnImmersionModeOff() {
         window.getDecorView().setSystemUiVisibility(originalSystemUiVisibility);
+    }
+
+    private void registerRotationObserver() {
+        contentResolver.registerContentObserver(
+                Settings.System.getUriFor(Settings.System.ACCELEROMETER_ROTATION),
+                true,
+                rotationObserver
+        );
+    }
+
+    private void unregisterRotationObserver() {
+        contentResolver.unregisterContentObserver(rotationObserver);
     }
 
 }
