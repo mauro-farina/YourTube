@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import it.units.sim.yourtube.MainViewModel;
 import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.model.UserSubscription;
 
 public class SubscriptionsFragment extends Fragment {
 
@@ -38,7 +39,9 @@ public class SubscriptionsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.subscriptions_recycler_view);
         adapter = new SubscriptionsAdapter(
                 viewModel.getSubscriptionsList().getValue(),
-                v -> {}
+                v -> SubscriptionInfoDialog
+                            .newInstance((UserSubscription) v.getTag())
+                            .show(getChildFragmentManager(), SubscriptionInfoDialog.TAG)
         );
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
