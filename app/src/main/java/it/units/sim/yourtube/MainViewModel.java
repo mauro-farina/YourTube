@@ -98,6 +98,7 @@ public class MainViewModel extends AndroidViewModel {
                             }
                         } else {
                             handleResultError(result);
+                            cancelOngoingTasks();
                         }
                     }, sub, date)));
         } else {
