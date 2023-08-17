@@ -28,6 +28,8 @@ public class MainViewModel extends AndroidViewModel {
     private final ExecutorService executorService;
     private final MutableLiveData<List<UserSubscription>> subscriptionsList;
     private final MutableLiveData<List<VideoData>> videosList;
+    private final MutableLiveData<Boolean> missingYouTubeDataAuthorization;
+    private final MutableLiveData<Boolean> quotaExceeded;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -35,6 +37,8 @@ public class MainViewModel extends AndroidViewModel {
         executorService = app.getExecutorService();
         subscriptionsList = new MutableLiveData<>(new ArrayList<>());
         videosList = new MutableLiveData<>(new ArrayList<>());
+        missingYouTubeDataAuthorization = new MutableLiveData<>();
+        quotaExceeded = new MutableLiveData<>();
     }
 
     public void fetchUserSubscriptions() {
@@ -44,11 +48,27 @@ public class MainViewModel extends AndroidViewModel {
                 List<UserSubscription> fetchedSubscriptions = ((Result.Success<List<UserSubscription>>) result).getData();
                 subscriptionsList.postValue(fetchedSubscriptions);
             } else {
-                // error
-                System.out.println("Request Failed");
-                System.out.println(((Result.Error<List<UserSubscription>>) result).getException().getMessage());
+                handleResultError(result);
             }
         }));
+    }
+
+    private void handleResultError(Result<?> result) {
+        System.out.println("Request Failed");
+        Exception exception = ((Result.Error<?>) result).getException();
+        Throwable cause = exception.getCause();
+        if (exception.getMessage() != null) {
+            if (exception.getMessage().contains("quotaExceeded")) {
+                System.out.println("Quota Exceeded");
+                quotaExceeded.postValue(true);
+            }
+        }
+        if (cause != null && cause.getMessage() != null) {
+            if (cause.getMessage().equals("NeedRemoteConsent")) {
+                System.out.println("Need consent to access user's YouTube data");
+                missingYouTubeDataAuthorization.postValue(true);
+            }
+        }
     }
 
     private final List<Future<?>> ongoingFetchTasks = new ArrayList<>();
@@ -73,9 +93,7 @@ public class MainViewModel extends AndroidViewModel {
                                 videosList.postValue(videos);
                             }
                         } else {
-                            // error
-                            System.out.println("Request Failed");
-                            System.out.println(((Result.Error<List<VideoData>>) result).getException().getMessage());
+                            handleResultError(result);
                         }
                     }, sub, date)));
         } else {
@@ -89,9 +107,7 @@ public class MainViewModel extends AndroidViewModel {
                             videosList.postValue(videos);
                         }
                     } else {
-                        // error
-                        System.out.println("Request Failed");
-                        System.out.println(((Result.Error<List<VideoData>>) result).getException().getMessage());
+                        handleResultError(result);
                     }
                 }, sub, date));
                 ongoingFetchTasks.add(task); // Add the task to the list of ongoing tasks
@@ -105,6 +121,14 @@ public class MainViewModel extends AndroidViewModel {
 
     public LiveData<List<VideoData>> getVideosList() {
         return videosList;
+    }
+
+    public LiveData<Boolean> getMissingYouTubeDataAuthorization() {
+        return missingYouTubeDataAuthorization;
+    }
+
+    public LiveData<Boolean> getQuotaExceeded() {
+        return quotaExceeded;
     }
 
 }
