@@ -95,9 +95,9 @@ public class VideoData implements Parcelable {
         if (yearMonthDay.length != 3) {
             return publishedAt.toString();
         }
-        sb.append(yearMonthDay[2]);
-        sb.append(" ");
         sb.append(monthNumberToString(yearMonthDay[1]));
+        sb.append(" ");
+        sb.append(yearMonthDay[2]);
         sb.append(", ");
         sb.append(yearMonthDay[0]);
         return sb.toString();
