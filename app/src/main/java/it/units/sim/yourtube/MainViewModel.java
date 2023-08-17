@@ -73,12 +73,16 @@ public class MainViewModel extends AndroidViewModel {
 
     private final List<Future<?>> ongoingFetchTasks = new ArrayList<>();
 
+    private void cancelOngoingTasks() {
+        for (Future<?> task : ongoingFetchTasks) {
+            task.cancel(true);
+        }
+        ongoingFetchTasks.clear();
+    }
+
     public void fetchVideos(Date date, Category category) {
         videosList.setValue(new ArrayList<>());
-        for (Future<?> task : ongoingFetchTasks) {
-            task.cancel(true); // Cancel the task
-        }
-        ongoingFetchTasks.clear(); // Clear the list of ongoing tasks
+        cancelOngoingTasks();
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         if (category != null)  {
             Objects.requireNonNull(subscriptionsList.getValue())
