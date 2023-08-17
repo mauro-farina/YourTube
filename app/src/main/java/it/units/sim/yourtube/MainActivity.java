@@ -1,6 +1,7 @@
 package it.units.sim.yourtube;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -48,6 +50,23 @@ public class MainActivity extends AppCompatActivity {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication());
         MainViewModel viewModel = new ViewModelProvider(this, factory).get(MainViewModel.class);
         viewModel.fetchUserSubscriptions();
+        viewModel.getMissingYouTubeDataAuthorization().observe(this, isMissing -> {
+            if (isMissing) {
+                new MaterialAlertDialogBuilder(this)
+                        .setMessage("YourTube requires access to your YouTube personal data" +
+                                "in order to retrieve the list of channels you are subscribed to. " +
+                                "Please log in again, and make sure to authorize YourTube to " +
+                                "access your YouTube account information")
+                        .setNeutralButton("Ok", (dialog, which) -> dialog.dismiss())
+                        .setOnDismissListener(dialog -> logout())
+                        .show();
+            }
+        });
+        viewModel.getQuotaExceeded().observe(this, isQuotaExceeded -> {
+            if (isQuotaExceeded) {
+                findViewById(R.id.quota_exceeded_message).setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override

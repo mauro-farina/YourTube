@@ -44,5 +44,6 @@
     <string name="edit">Edit</string>
     <string name="like_button">Like button</string>
     <string name="dislike_button">Dislike button</string>
+    <string name="quota_exceeded">YouTube API Quota Exceeded. \nCome back tomorrow for more!</string>
 
 </resources>
