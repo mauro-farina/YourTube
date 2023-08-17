@@ -17,6 +17,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -93,7 +95,12 @@ public class MainActivity extends AppCompatActivity {
             logout();
             return true;
         } else if (id == R.id.settingsButton) {
-            // TODO: Navigate to Settings fragment
+            SettingsFragment settingsFragment = new SettingsFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.nav_host_fragment, settingsFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
             return true;
         } else if (id == android.R.id.home) {
             if (navController != null)
