@@ -47,7 +47,7 @@ public class SubscriptionInfoDialog extends DialogFragment {
         ImageView channelThumbnail = dialogView.findViewById(R.id.dialog_subscription_info_channel_thumbnail);
 
         channelName.setText("@" + subscription.getChannelName());
-        subscribedSince.setText(subscription.getSubscribedSince().toString());
+        subscribedSince.setText("Subscribed since " + subscription.getReadableSubscribedSince());
         Picasso
                 .get()
                 .load(subscription.getThumbnailUrl())
