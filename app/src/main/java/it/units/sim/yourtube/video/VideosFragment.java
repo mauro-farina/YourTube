@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toolbar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -60,6 +63,14 @@ public class VideosFragment extends Fragment {
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         currentDateReference = new Date();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ActionBar toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        if (toolbar != null)
+            toolbar.setDisplayHomeAsUpEnabled(false);
     }
 
     @Override

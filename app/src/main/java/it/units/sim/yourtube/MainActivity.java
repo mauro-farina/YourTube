@@ -22,8 +22,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import java.util.Objects;
-
 public class MainActivity extends AppCompatActivity {
 
     private NavController navController;
@@ -85,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_bar_menu, menu);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         return true;
     }
 
@@ -96,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             logout();
             return true;
         } else if (id == R.id.settingsButton) {
-            // Transaction to Settings fragment
+            // TODO: Navigate to Settings fragment
             return true;
         } else if (id == android.R.id.home) {
             if (navController != null)
