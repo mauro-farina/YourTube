@@ -1,0 +1,40 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/settings_category_ui">
+
+        <!--
+        <EditTextPreference
+            app:key="signature"
+            app:title="@string/signature_title"
+            app:useSimpleSummaryProvider="true" />
+            -->
+
+        <ListPreference
+            app:defaultValue="reply"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:key="theme"
+            app:title="@string/theme_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/backup_category">
+
+        <Preference
+            app:key="backup"
+            app:title="Backup categories" />
+<!--
+        <SwitchPreferenceCompat
+            app:key="sync"
+            app:title="@string/sync_title" />
+
+        <SwitchPreferenceCompat
+            app:dependency="sync"
+            app:key="attachment"
+            app:summaryOff="@string/attachment_summary_off"
+            app:summaryOn="@string/attachment_summary_on"
+            app:title="@string/attachment_title" />
+-->
+    </PreferenceCategory>
+
+</PreferenceScreen>

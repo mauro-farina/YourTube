@@ -45,5 +45,9 @@
     <string name="like_button">Like button</string>
     <string name="dislike_button">Dislike button</string>
     <string name="quota_exceeded">YouTube API Quota Exceeded. \nCome back tomorrow for more!</string>
+    <!-- Settings -->
+    <string name="settings_category_ui">User Interface</string>
+    <string name="backup_category">Backup</string>
+    <string name="theme_title">Theme</string>
 
 </resources>
