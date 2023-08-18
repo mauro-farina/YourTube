@@ -2,6 +2,7 @@ package it.units.sim.yourtube;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -57,21 +58,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         androidx.preference.Preference backupPreference = findPreference("backup");
         if (backupPreference != null) {
-
             backupPreference.setOnPreferenceClickListener(preference -> {
-                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
                 CategoriesViewModel viewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
+                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
                 String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                 LiveData<List<Category>> categoriesLiveData = viewModel.getCategoriesList();
 
-                if (categoriesLiveData.getValue() == null) {
-                    return true;
-                }
-
-                Map<String, List<Category>> backup = new HashMap<>();
-                backup.put("categories", categoriesLiveData.getValue());
-                CollectionReference userCategoriesBackupCollection = firestore.collection(uid);
-                userCategoriesBackupCollection.add(backup);
+                categoriesLiveData.observe(getViewLifecycleOwner(), list -> {
+                    if (list == null) {
+                        Toast.makeText(requireContext(), "No data to backup", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Map<String, List<Category>> backup = new HashMap<>();
+                    backup.put("categories", categoriesLiveData.getValue());
+                    CollectionReference userCategoriesBackupCollection = firestore.collection(uid);
+                    userCategoriesBackupCollection
+                            .add(backup)
+                            .addOnSuccessListener(runnable -> {
+                                Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show();
+                                // TODO: Remove old backup
+                            });
+                });
                 return true;
             });
         }
