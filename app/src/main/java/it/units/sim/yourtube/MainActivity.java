@@ -1,9 +1,13 @@
 package it.units.sim.yourtube;
 
+import static it.units.sim.yourtube.AuthenticationActivity.INTENT_ALREADY_LOGGED_FLAG;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -22,6 +26,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     private NavController navController;
@@ -35,6 +41,18 @@ public class MainActivity extends AppCompatActivity {
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         if (credential.getSelectedAccountName() == null) {
             openAuthenticationActivity();
+        }
+
+        if (getIntent().getExtras() != null
+                && !getIntent().getExtras().getBoolean(INTENT_ALREADY_LOGGED_FLAG)) {
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+            CollectionReference userCategoriesBackupCollection = firestore.collection(uid);
+            userCategoriesBackupCollection.get()
+                    .addOnSuccessListener(result -> {
+                        if (result.getDocuments().size() != 0)
+                            System.out.println("+++++ found backup +++++");
+                    });
         }
 
         networkChangeReceiver = new NetworkChangeReceiver();
