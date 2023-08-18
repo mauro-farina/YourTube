@@ -17,6 +17,7 @@ public abstract class AbstractYouTubeRequest<T> implements Runnable {
     }
 
     protected final YouTube youtubeService;
+    protected final YouTube youtubeServiceNoCredential;
     private final Callback<T> callback;
 
     protected AbstractYouTubeRequest(GoogleAccountCredential credential,
@@ -26,6 +27,10 @@ public abstract class AbstractYouTubeRequest<T> implements Runnable {
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
         youtubeService = new YouTube
                 .Builder(netTransport, jsonFactory, credential)
+                .setApplicationName(String.valueOf(R.string.app_name))
+                .build();
+        youtubeServiceNoCredential = new YouTube
+                .Builder(netTransport, jsonFactory, null)
                 .setApplicationName(String.valueOf(R.string.app_name))
                 .build();
     }
