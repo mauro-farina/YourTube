@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.provider.Settings;
@@ -25,8 +27,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener;
@@ -228,6 +232,7 @@ public class VideoPlayerFragment extends Fragment {
         ImageView videoChannelThumbnail = view.findViewById(R.id.list_item_subscription_thumbnail);
         TextView videoDescription = view.findViewById(R.id.video_player_description);
         TextView videoLikesCounter = view.findViewById(R.id.video_player_likes_counter);
+        ScrollView descriptionScrollview = view.findViewById(R.id.video_player_description_scroll_view);
 
         videoTitle.setText(video.getTitle());
 //        videoDate.setText(video.getReadablePublishedDate());
@@ -239,6 +244,39 @@ public class VideoPlayerFragment extends Fragment {
                 .get()
                 .load(video.getChannel().getThumbnailUrl())
                 .into(videoChannelThumbnail);
+
+        RecyclerView commentsRecyclerView = view.findViewById(R.id.video_player_comments_recycler_view);
+        CommentsAdapter adapter = new CommentsAdapter(viewModel.getComments().getValue());
+        commentsRecyclerView.setAdapter(adapter);
+        commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        viewModel.getComments().observe(getViewLifecycleOwner(), adapter::setCommentsList);
+
+        TabLayout tabLayout = view.findViewById(R.id.video_player_tab_layout);
+        tabLayout.addOnTabSelectedListener(
+                new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        if (tab.equals(tabLayout.getTabAt(0)))      // Description
+                            descriptionScrollview.setVisibility(View.VISIBLE);
+                        else                                             // Comments
+                            commentsRecyclerView.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                        if (tab.equals(tabLayout.getTabAt(0)))      // Description
+                            descriptionScrollview.setVisibility(View.GONE);
+                        else                                             // Comments
+                            commentsRecyclerView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+                        // nothing
+                    }
+                }
+        );
+
     }
 
     private void toggleBottomNavVisibility() {
