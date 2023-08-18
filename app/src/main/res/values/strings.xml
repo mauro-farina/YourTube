@@ -49,5 +49,7 @@
     <string name="settings_category_ui">User Interface</string>
     <string name="backup_category">Backup</string>
     <string name="theme_title">Theme</string>
+    <string name="description">Description</string>
+    <string name="comments">Comments</string>
 
 </resources>

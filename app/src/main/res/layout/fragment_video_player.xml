@@ -86,9 +86,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/video_player_tab_layout">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/description" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/comments" />
+
+    </com.google.android.material.tabs.TabLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/video_player_description_scroll_view"
         android:paddingVertical="10dp"
         android:paddingHorizontal="10dp"
         android:scrollbars="none" >
@@ -98,5 +116,13 @@
             android:layout_height="wrap_content" />
 
     </ScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/video_player_comments_recycler_view"
+        android:paddingTop="10dp"
+        android:paddingHorizontal="10dp"
+        android:visibility="gone" />
 
 </LinearLayout>
