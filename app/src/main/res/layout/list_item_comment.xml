@@ -3,13 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="10dp"
+    android:paddingBottom="15dp"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_comment_author"
+        android:paddingHorizontal="10dp"
+        android:textColor="?android:textColorSecondaryNoDisable"
         android:maxLines="1"
         android:ellipsize="end" />
 
@@ -17,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_comment_text"
+        android:textColor="?android:textColorPrimary"
         android:paddingVertical="5dp" />
 
 </LinearLayout>
