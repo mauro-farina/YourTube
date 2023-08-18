@@ -74,11 +74,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     backup.put("categories", categoriesLiveData.getValue());
                     CollectionReference userCategoriesBackupCollection = firestore.collection(uid);
                     userCategoriesBackupCollection
-                            .add(backup)
-                            .addOnSuccessListener(runnable -> {
-                                Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show();
-                                // TODO: Remove old backup
-                            });
+                            .document("categoriesBackup")
+                            .set(backup)
+                            .addOnSuccessListener(runnable ->
+                                    Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show())
+                            .addOnFailureListener(runnable ->
+                                Toast.makeText(requireContext(), "Backup failed.", Toast.LENGTH_SHORT).show()
+                            );
                 });
                 return true;
             });
