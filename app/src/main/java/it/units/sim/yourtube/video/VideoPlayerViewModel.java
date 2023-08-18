@@ -12,19 +12,25 @@ import com.google.api.services.youtube.model.VideoStatistics;
 
 import java.math.BigInteger;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 
 import it.units.sim.yourtube.GoogleCredentialManager;
+import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.YourTubeApp;
 import it.units.sim.yourtube.api.Result;
+import it.units.sim.yourtube.api.VideoCommentsRequest;
 import it.units.sim.yourtube.api.VideoStatsRequest;
+import it.units.sim.yourtube.model.VideoComment;
 
 public class VideoPlayerViewModel extends AndroidViewModel {
 
     private final ExecutorService executorService;
     private final MutableLiveData<String> viewsCount;
     private final MutableLiveData<String> likesCount;
+    private final MutableLiveData<List<VideoComment>> comments;
 
     public VideoPlayerViewModel(@NonNull Application application) {
         super(application);
@@ -32,6 +38,7 @@ public class VideoPlayerViewModel extends AndroidViewModel {
         executorService = app.getExecutorService();
         viewsCount = new MutableLiveData<>();
         likesCount = new MutableLiveData<>();
+        comments = new MutableLiveData<>(new ArrayList<>());
     }
 
     public void setVideoId(String videoId) {
@@ -54,6 +61,19 @@ public class VideoPlayerViewModel extends AndroidViewModel {
                 },
                 videoId
         ));
+        executorService.submit(new VideoCommentsRequest(
+                credential,
+                result -> {
+                    if (result instanceof Result.Success) {
+                        comments.postValue(((Result.Success<List<VideoComment>>) result).getData());
+                    } else {
+                        System.out.println("fail");
+                        System.out.println(((Result.Error<?>) result).getException().getMessage());
+                    }
+                },
+                videoId,
+                getApplication().getString(R.string.google_api_key)
+        ));
     }
 
     public LiveData<String> getViewsCount() {
@@ -62,6 +82,10 @@ public class VideoPlayerViewModel extends AndroidViewModel {
 
     public LiveData<String> getLikesCount() {
         return likesCount;
+    }
+
+    public LiveData<List<VideoComment>> getComments() {
+        return comments;
     }
 
     private String getHumanReadableNumber(BigInteger bigNumber) {
