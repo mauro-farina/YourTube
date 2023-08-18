@@ -37,6 +37,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
     public static final String INTENT_LOGOUT_FLAG = "logout";
+    public static final String INTENT_ALREADY_LOGGED_FLAG = "alreadyLogged";
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleAccountCredential credential;
@@ -123,13 +124,14 @@ public class AuthenticationActivity extends AppCompatActivity {
             String accountName = account.getEmail();
             credential.setSelectedAccountName(accountName);
             credentialManager.setCredential(credential);
-            openMainActivity();
+            openMainActivity(true);
         }
     }
 
-    private void openMainActivity() {
+    private void openMainActivity(boolean alreadyLogged) {
         finish();
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(INTENT_ALREADY_LOGGED_FLAG, alreadyLogged);
         startActivity(intent);
     }
 
@@ -146,7 +148,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         mAuth.signInWithCredential(firebaseCredential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        openMainActivity();
+                        openMainActivity(false);
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signIn : failure", task.getException());
