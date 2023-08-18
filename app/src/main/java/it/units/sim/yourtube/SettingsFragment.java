@@ -38,7 +38,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         super.onResume();
         toggleBottomNav();
         if (toolbar != null) {
-            // TODO: back navigation
+            toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setTitle("Settings");
         }
     }
@@ -48,6 +48,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         super.onPause();
         toggleBottomNav();
         if (toolbar != null) {
+            toolbar.setDisplayHomeAsUpEnabled(false);
             toolbar.setTitle(R.string.app_name);
         }
     }

@@ -95,12 +95,9 @@ public class MainActivity extends AppCompatActivity {
             logout();
             return true;
         } else if (id == R.id.settingsButton) {
-            SettingsFragment settingsFragment = new SettingsFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.nav_host_fragment, settingsFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            if (navController != null) {
+                navController.navigate(R.id.action_to_settings);
+            }
             return true;
         } else if (id == android.R.id.home) {
             if (navController != null)
