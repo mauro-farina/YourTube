@@ -51,5 +51,6 @@
     <string name="theme_title">Theme</string>
     <string name="description">Description</string>
     <string name="comments">Comments</string>
+    <string name="no_internet_connection">No Internet connection</string>
 
 </resources>
