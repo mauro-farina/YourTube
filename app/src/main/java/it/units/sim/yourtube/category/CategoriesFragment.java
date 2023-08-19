@@ -96,7 +96,7 @@ public class CategoriesFragment extends Fragment {
         categoriesViewModel.deleteCategory(category);
         Snackbar.make(
                     requireView(),
-                    "Category " + category.getName() + " deleted!",
+                    getString(R.string.category_deleted, category.getName()),
                     Snackbar.LENGTH_SHORT)
                 .show();
     }

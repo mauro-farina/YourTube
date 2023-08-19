@@ -71,7 +71,7 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
                 .findFirst()
                 .orElse(null);
         if (categoryToUpdate == null) {
-            failureReason = "Channel not found.";
+            failureReason = getString(R.string.channel_not_found);
             return false;
         }
         categoryToUpdate.setName(categoryName);
@@ -88,12 +88,12 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
 
     @Override
     protected String getSuccessFeedbackMessage() {
-        return "Category " + categoryName + " modified!";
+        return getString(R.string.category_modified, categoryName);
     }
 
     @Override
     protected String getToolbarTitle() {
-        return "Edit " + categoryName;
+        return getString(R.string.title_edit_category, categoryName);
     }
 
 }

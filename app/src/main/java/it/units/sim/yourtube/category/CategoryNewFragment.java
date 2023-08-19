@@ -45,17 +45,17 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
     @Override
     protected boolean createOrModifyCategory() {
         if (categoryName.length() == 0) {
-            failureReason = "You need to specify a name for the category";
+            failureReason = getString(R.string.new_category_fail_no_name);
             return false;
         }
         if (chosenCategoryResId == 0) {
-            failureReason = "You need to pick an icon";
+            failureReason = getString(R.string.new_category_fail_no_icon);
             return false;
         }
 
         for (Category c : Objects.requireNonNull(categoriesViewModel.getCategoriesList().getValue())) {
             if (c.getName().equals(categoryName)) {
-                failureReason = "This category already exists";
+                failureReason = getString(R.string.new_category_fail_category_exists);
                 return false;
             }
         }
@@ -73,12 +73,12 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
 
     @Override
     protected String getSuccessFeedbackMessage() {
-        return "Category " + categoryName + " created!";
+        return getString(R.string.category_created, categoryName);
     }
 
     @Override
     protected String getToolbarTitle() {
-        return "New category";
+        return getString(R.string.title_new_category);
     }
 
 }
