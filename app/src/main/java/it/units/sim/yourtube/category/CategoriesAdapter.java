@@ -32,7 +32,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         this.categories = categories;
         this.onItemClickListener = onItemClickListener;
         this.viewContext = viewContext;
-        // throw illegal argument exception?
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -108,7 +107,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             categoryNameTextView = itemView.findViewById(R.id.list_item_category_name);
             categoryIconImageView = itemView.findViewById(R.id.list_item_category_icon);
             dotsMenuButton = itemView.findViewById(R.id.list_item_category_dots_menu);
-//            dotsMenuButton.setOnClickListener(onItemClickListener);
         }
 
         public TextView getCategoryNameTextView() {
