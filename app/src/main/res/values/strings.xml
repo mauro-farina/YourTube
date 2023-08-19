@@ -1,29 +1,26 @@
 <resources>
     <string name="app_name">YourTube</string>
-    <string name="app_requires_google_play_services">
-        This app requires Google Play Services.
-        Please install Google Play Services on your device and relaunch this app.
-    </string>
-    <string name="app_requires_google_account_access">
-        This app needs to access your Google account (via Contacts).
-    </string>
-    <string name="no_network_connection">No network connection available.</string>
+    <!-- Auth -->
     <string name="welcome_text">YourTube</string>
     <string name="login_button_text">Login with Google</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Main Activity -->
     <string name="bottom_nav_videos">Videos</string>
     <string name="bottom_nav_subscriptions">Subscriptions</string>
     <string name="bottom_nav_categories">Categories</string>
-    <string name="thumbnail_img_placeholder">Thumbnail</string>
     <string name="settings">Settings</string>
     <string name="logout">Logout</string>
+    <string name="quota_exceeded">YouTube API Quota Exceeded. \nCome back tomorrow for more!</string>
+    <string name="no_internet_connection">No Internet connection</string>
+    <!-- Videos -->
+    <string name="thumbnail_img_placeholder">Thumbnail</string>
     <string name="next_day">Next day</string>
     <string name="previous_day">Previous day</string>
     <string name="current_date">Current date</string>
+    <!-- Categories -->
     <string name="new_category_dialog_title">New category</string>
     <string name="new_category_name_field">New category name</string>
     <string name="add_channels_to_the_category">Add channels</string>
+    <string name="dialog_new_category_pick_icon">Pick an icon</string>
     <string name="expand_list_button">Expand list button</string>
     <string name="category_basketball">Basketball</string>
     <string name="category_car">Car</string>
@@ -31,7 +28,6 @@
     <string name="category_videogame">Videogame</string>
     <string name="category_computer">Computer</string>
     <string name="category_podcast">Podcast</string>
-    <string name="dialog_new_category_pick_icon">Pick an icon</string>
     <string name="create">Create</string>
     <string name="create_new_category">Create new category</string>
     <string name="chosen_category_icon">Chosen category icon</string>
@@ -42,15 +38,13 @@
     <string name="category">Category</string>
     <string name="confirm">Confirm</string>
     <string name="edit">Edit</string>
+    <!-- Video Player -->
     <string name="like_button">Like button</string>
     <string name="dislike_button">Dislike button</string>
-    <string name="quota_exceeded">YouTube API Quota Exceeded. \nCome back tomorrow for more!</string>
+    <string name="description">Description</string>
+    <string name="comments">Comments</string>
     <!-- Settings -->
     <string name="settings_category_ui">User Interface</string>
     <string name="backup_category">Backup</string>
     <string name="theme_title">Theme</string>
-    <string name="description">Description</string>
-    <string name="comments">Comments</string>
-    <string name="no_internet_connection">No Internet connection</string>
-
 </resources>
