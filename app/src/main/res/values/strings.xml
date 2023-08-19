@@ -16,6 +16,9 @@
     <string name="logout">Logout</string>
     <string name="quota_exceeded">YouTube API Quota Exceeded. \nCome back tomorrow for more!</string>
     <string name="no_internet_connection">No Internet connection</string>
+    <string name="missing_youtube_authorization">YourTube requires access to your YouTube personal
+        data in order to retrieve the list of channels you are subscribed to. Please log in again,
+        and make sure to authorize YourTube to access your YouTube account information.</string>
     <!-- Videos -->
     <string name="thumbnail_img_placeholder">Thumbnail</string>
     <string name="next_day">Next day</string>
@@ -62,6 +65,9 @@
     <string name="number_views">%1$s Views</string>
     <!-- Settings -->
     <string name="settings_category_ui">User Interface</string>
-    <string name="backup_category">Backup</string>
-    <string name="theme_title">Theme</string>
+    <string name="setting_backup_category">Backup</string>
+    <string name="setting_theme_title">Theme</string>
+    <string name="backup_failed">Backup failed</string>
+    <string name="backup_no_data">No data to backup</string>
+    <string name="backup_done">Backup completed</string>
 </resources>

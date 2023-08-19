@@ -85,11 +85,8 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getMissingYouTubeDataAuthorization().observe(this, isMissing -> {
             if (isMissing) {
                 new MaterialAlertDialogBuilder(this)
-                        .setMessage("YourTube requires access to your YouTube personal data" +
-                                "in order to retrieve the list of channels you are subscribed to. " +
-                                "Please log in again, and make sure to authorize YourTube to " +
-                                "access your YouTube account information")
-                        .setNeutralButton("Ok", (dialog, which) -> dialog.dismiss())
+                        .setMessage(getString(R.string.missing_youtube_authorization))
+                        .setNeutralButton(getString(R.string.ok), (dialog, which) -> dialog.dismiss())
                         .setOnDismissListener(dialog -> logout())
                         .show();
             }

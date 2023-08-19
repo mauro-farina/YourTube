@@ -14,11 +14,11 @@
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
             app:key="theme"
-            app:title="@string/theme_title" />
+            app:title="@string/setting_theme_title" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/backup_category">
+    <PreferenceCategory app:title="@string/setting_backup_category">
 
         <Preference
             app:key="backup"

@@ -39,7 +39,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         toggleBottomNav();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setTitle("Settings");
+            toolbar.setTitle(getString(R.string.settings));
         }
     }
 
@@ -67,7 +67,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
                 categoriesLiveData.observe(getViewLifecycleOwner(), list -> {
                     if (list == null) {
-                        Toast.makeText(requireContext(), "No data to backup", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), getString(R.string.backup_no_data), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     Map<String, List<Category>> backup = new HashMap<>();
@@ -77,9 +77,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             .document("categoriesBackup")
                             .set(backup)
                             .addOnSuccessListener(runnable ->
-                                    Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show())
+                                    Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show())
                             .addOnFailureListener(runnable ->
-                                Toast.makeText(requireContext(), "Backup failed.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
                             );
                 });
                 return true;
