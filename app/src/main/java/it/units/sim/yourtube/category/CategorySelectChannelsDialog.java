@@ -101,7 +101,7 @@ public class CategorySelectChannelsDialog extends DialogFragment {
                                 RESULT_KEY,
                                 (ArrayList<? extends Parcelable>) newSelectedChannels
                         ))
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
                 .create();
     }
 

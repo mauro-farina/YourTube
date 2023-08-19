@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">YourTube</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
     <!-- Auth -->
     <string name="welcome_text">YourTube</string>
     <string name="login_button_text">Login with Google</string>
@@ -36,7 +40,6 @@
     <string name="modify">Modify</string>
     <string name="delete">Delete</string>
     <string name="category">Category</string>
-    <string name="confirm">Confirm</string>
     <string name="edit">Edit</string>
     <string name="category_deleted">Category %1$s deleted</string>
     <string name="category_created">Category %1$s created</string>

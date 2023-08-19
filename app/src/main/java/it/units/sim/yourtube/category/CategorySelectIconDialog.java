@@ -53,7 +53,7 @@ public class CategorySelectIconDialog extends DialogFragment {
 
         return new MaterialAlertDialogBuilder(requireContext())
                 .setView(dialogView)
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
                 .create();
     }
 

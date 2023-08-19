@@ -43,7 +43,7 @@ public class CategoryOptionsOnClickDialog extends DialogFragment {
         result = new Bundle();
         if (getArguments() == null) {
             return new MaterialAlertDialogBuilder(requireContext())
-                    .setMessage("Error")
+                    .setMessage(getString(R.string.something_went_wrong))
                     .create();
         }
         Category category = getArguments().getParcelable(ARG);
