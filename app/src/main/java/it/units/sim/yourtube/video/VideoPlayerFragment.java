@@ -227,7 +227,6 @@ public class VideoPlayerFragment extends Fragment {
 
         TextView videoTitle = view.findViewById(R.id.video_player_title);
         TextView videoViewsCount = view.findViewById(R.id.video_player_views_counter);
-//        TextView videoDate = view.findViewById(R.id.video_player_date);
         TextView videoChannelName = view.findViewById(R.id.list_item_subscription_channel_name);
         ImageView videoChannelThumbnail = view.findViewById(R.id.list_item_subscription_thumbnail);
         TextView videoDescription = view.findViewById(R.id.video_player_description);
@@ -235,11 +234,10 @@ public class VideoPlayerFragment extends Fragment {
         ScrollView descriptionScrollview = view.findViewById(R.id.video_player_description_scroll_view);
 
         videoTitle.setText(video.getTitle());
-//        videoDate.setText(video.getReadablePublishedDate());
         videoChannelName.setText(video.getChannel().getChannelName());
         videoDescription.setText((video.getDescription()));
-        viewModel.getViewsCount().observe(getViewLifecycleOwner(), views -> videoViewsCount.setText(views + " Views"));
-        viewModel.getLikesCount().observe(getViewLifecycleOwner(), likes -> videoLikesCounter.setText(likes + " Likes"));
+        viewModel.getViewsCount().observe(getViewLifecycleOwner(), views -> videoViewsCount.setText(getString(R.string.number_views, views)));
+        viewModel.getLikesCount().observe(getViewLifecycleOwner(), videoLikesCounter::setText);
         Picasso
                 .get()
                 .load(video.getChannel().getThumbnailUrl())

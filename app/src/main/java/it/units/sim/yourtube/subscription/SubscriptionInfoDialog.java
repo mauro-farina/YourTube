@@ -36,7 +36,7 @@ public class SubscriptionInfoDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         if (getArguments() == null || getArguments().getParcelable(ARG) == null) {
             return new MaterialAlertDialogBuilder(requireContext())
-                    .setMessage("Error")
+                    .setMessage(getString(R.string.something_went_wrong))
                     .create();
         }
 
@@ -46,8 +46,8 @@ public class SubscriptionInfoDialog extends DialogFragment {
         TextView subscribedSince = dialogView.findViewById(R.id.dialog_subscription_info_sub_since);
         ImageView channelThumbnail = dialogView.findViewById(R.id.dialog_subscription_info_channel_thumbnail);
 
-        channelName.setText("@" + subscription.getChannelName());
-        subscribedSince.setText("Subscribed since " + subscription.getReadableSubscribedSince());
+        channelName.setText(subscription.getChannelName());
+        subscribedSince.setText(getString(R.string.subscribed_since, subscription.getReadableSubscribedSince()));
         Picasso
                 .get()
                 .load(subscription.getThumbnailUrl())
@@ -55,7 +55,7 @@ public class SubscriptionInfoDialog extends DialogFragment {
 
         return new MaterialAlertDialogBuilder(requireContext())
                 .setView(dialogView)
-                .setNegativeButton("Close", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(getString(R.string.close), (dialog, which) -> dialog.dismiss())
                 .create();
     }
 }

@@ -3,6 +3,7 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
     <string name="confirm">Confirm</string>
     <!-- Auth -->
     <string name="welcome_text">YourTube</string>
@@ -20,6 +21,9 @@
     <string name="next_day">Next day</string>
     <string name="previous_day">Previous day</string>
     <string name="current_date">Current date</string>
+    <string name="remove_filter">Remove filer</string>
+    <!-- Subscriptions -->
+    <string name="subscribed_since">Subscribed since %1$s</string>
     <!-- Categories -->
     <string name="new_category_dialog_title">New category</string>
     <string name="new_category_name_field">New category name</string>
@@ -55,6 +59,7 @@
     <string name="dislike_button">Dislike button</string>
     <string name="description">Description</string>
     <string name="comments">Comments</string>
+    <string name="number_views">%1$s Views</string>
     <!-- Settings -->
     <string name="settings_category_ui">User Interface</string>
     <string name="backup_category">Backup</string>
