@@ -5,27 +5,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.widget.Toast;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
-    private static boolean first = true;
+    private final MutableLiveData<Boolean> networkAvailability = new MutableLiveData<>();
 
     @Override
     public void onReceive(Context context, Intent intent) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
 
-        if (first) {
-            first = false;
-            return;
-        }
-
         if (activeNetwork != null && activeNetwork.isConnected()) {
-            Toast.makeText(context, "Internet connection is back", Toast.LENGTH_SHORT).show();
+            networkAvailability.postValue(true);
         } else {
-            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+            networkAvailability.postValue(false);
         }
     }
 
+    public LiveData<Boolean> getNetworkAvailability() {
+        return networkAvailability;
+    }
 }

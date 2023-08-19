@@ -59,6 +59,15 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeReceiver, filter);
 
+        networkChangeReceiver.getNetworkAvailability().observe(this, isNetworkAvailable -> {
+            View noNetworkView = findViewById(R.id.no_network_message);
+            if (isNetworkAvailable)
+                noNetworkView.setVisibility(View.GONE);
+            else {
+                noNetworkView.setVisibility(View.VISIBLE);
+            }
+        });
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
