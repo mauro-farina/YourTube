@@ -61,6 +61,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         androidx.preference.Preference backupPreference = findPreference("create_backup");
         setupCreateBackupPreference(backupPreference);
+
+        androidx.preference.Preference importBackupPreference = findPreference("import_backup");
     }
 
     private void setupCreateBackupPreference(Preference backupPreference) {

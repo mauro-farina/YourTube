@@ -23,6 +23,11 @@
         <Preference
             app:key="create_backup"
             app:title="Backup categories" />
+
+        <Preference
+            app:key="import_backup"
+            app:title="Backup" />
+
 <!--
         <SwitchPreferenceCompat
             app:key="sync"
