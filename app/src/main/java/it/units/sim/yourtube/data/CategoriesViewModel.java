@@ -21,6 +21,7 @@ public class CategoriesViewModel extends AndroidViewModel {
     private final LiveData<List<Category>> categoriesList;
     private final CategoryDAO categoryDao;
     private final ExecutorService executorService;
+    private final String categoriesOwner;
 
     public CategoriesViewModel(@NonNull Application application) {
         super(application);
@@ -33,7 +34,7 @@ public class CategoriesViewModel extends AndroidViewModel {
                         "categories-db")
                 .build();
         categoryDao = db.categoryDao();
-        String categoriesOwner = GoogleCredentialManager.getInstance().getCredential().getSelectedAccountName();
+        categoriesOwner = GoogleCredentialManager.getInstance().getCredential().getSelectedAccountName();
         categoriesList = categoryDao.getAll(categoriesOwner);
     }
 
@@ -51,6 +52,10 @@ public class CategoriesViewModel extends AndroidViewModel {
 
     public void updateCategory(Category category) {
         executorService.submit(() -> categoryDao.updateAll(category));
+    }
+
+    public void deleteAll() {
+        executorService.submit(() -> categoryDao.deleteAll(categoriesOwner));
     }
 
 }
