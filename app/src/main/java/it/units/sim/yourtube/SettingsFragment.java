@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,34 +59,39 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
-        androidx.preference.Preference backupPreference = findPreference("backup");
-        if (backupPreference != null) {
-            backupPreference.setOnPreferenceClickListener(preference -> {
-                CategoriesViewModel viewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
-                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-                String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-                LiveData<List<Category>> categoriesLiveData = viewModel.getCategoriesList();
+        androidx.preference.Preference backupPreference = findPreference("create_backup");
+        setupCreateBackupPreference(backupPreference);
+    }
 
-                categoriesLiveData.observe(getViewLifecycleOwner(), list -> {
-                    if (list == null) {
-                        Toast.makeText(requireContext(), getString(R.string.backup_no_data), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    Map<String, List<Category>> backup = new HashMap<>();
-                    backup.put("categories", categoriesLiveData.getValue());
-                    CollectionReference userCategoriesBackupCollection = firestore.collection(uid);
-                    userCategoriesBackupCollection
-                            .document("categoriesBackup")
-                            .set(backup)
-                            .addOnSuccessListener(runnable ->
-                                    Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show())
-                            .addOnFailureListener(runnable ->
-                                Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
-                            );
-                });
-                return true;
-            });
+    private void setupCreateBackupPreference(Preference backupPreference) {
+        if (backupPreference == null) {
+            return;
         }
+        backupPreference.setOnPreferenceClickListener(preference -> {
+            CategoriesViewModel viewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+            LiveData<List<Category>> categoriesLiveData = viewModel.getCategoriesList();
+
+            categoriesLiveData.observe(getViewLifecycleOwner(), list -> {
+                if (list == null) {
+                    Toast.makeText(requireContext(), getString(R.string.backup_no_data), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Map<String, List<Category>> backup = new HashMap<>();
+                backup.put("categories", categoriesLiveData.getValue());
+                CollectionReference userCategoriesBackupCollection = firestore.collection(uid);
+                userCategoriesBackupCollection
+                        .document("categoriesBackup")
+                        .set(backup)
+                        .addOnSuccessListener(runnable ->
+                                Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show())
+                        .addOnFailureListener(runnable ->
+                                Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
+                        );
+            });
+            return true;
+        });
     }
 
     private void toggleBottomNav() {

@@ -21,7 +21,7 @@
     <PreferenceCategory app:title="@string/setting_backup_category">
 
         <Preference
-            app:key="backup"
+            app:key="create_backup"
             app:title="Backup categories" />
 <!--
         <SwitchPreferenceCompat
