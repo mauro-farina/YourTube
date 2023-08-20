@@ -26,6 +26,9 @@ public interface CategoryDAO {
     @Delete
     void delete(Category category);
 
+    @Query("DELETE FROM categories WHERE owner LIKE :owner")
+    void deleteAll(String owner);
+
     @Update
     void updateAll(Category... categories);
 
