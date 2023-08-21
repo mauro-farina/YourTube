@@ -2,13 +2,6 @@
 
     <PreferenceCategory app:title="@string/settings_category_ui">
 
-        <!--
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-            -->
-
         <ListPreference
             app:defaultValue="system"
             app:entries="@array/theme_entries"
@@ -16,6 +9,14 @@
             app:key="theme_preference"
             app:title="@string/setting_theme_title"
             app:icon="@drawable/icon_preference_theme" />
+
+        <ListPreference
+            app:defaultValue="system"
+            app:entries="@array/language_entries"
+            app:entryValues="@array/language_values"
+            app:key="language_preference"
+            app:title="@string/setting_language_title"
+            app:icon="@drawable/icon_preference_language" />
 
     </PreferenceCategory>
 
