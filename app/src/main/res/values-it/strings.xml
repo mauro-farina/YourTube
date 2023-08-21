@@ -1,15 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">YourTube</string>
     <string name="something_went_wrong">Qualcosa è andato storto</string>
-    <string name="ok" translatable="false">OK</string>
     <string name="yes">Sì</string>
     <string name="cancel">Annulla</string>
     <string name="close">Chiudi</string>
     <string name="confirm">Conferma</string>
-    <!-- Auth -->
     <string name="welcome_text">Benvenuto su YourTube</string>
     <string name="login_button_text">Entra con Google</string>
-    <!-- Main Activity -->
     <string name="bottom_nav_videos">Video</string>
     <string name="bottom_nav_subscriptions">Iscrizioni</string>
     <string name="bottom_nav_categories">Categorie</string>
@@ -19,27 +16,18 @@
     <string name="no_internet_connection">Nessuna connessione a Internet</string>
     <string name="missing_youtube_authorization">YourTube ha bisogno di accedere alle informazioni del
         tuo account YouTube per ottenere la lista dei canali a cui sei iscritto. Per favore, effettua
-        nuovamente l'accesso e assicurati di autorizzare Yourtube ad accedere ai dati YouTube</string>
-    <!-- Videos -->
+        nuovamente l\'accesso e assicurati di autorizzare Yourtube ad accedere ai dati YouTube</string>
     <string name="thumbnail_img_placeholder">Copertina</string>
     <string name="next_day">Domani</string>
     <string name="previous_day">Ieri</string>
     <string name="current_date">Oggi</string>
     <string name="remove_filter">Rimuovi filtro</string>
-    <!-- Subscriptions -->
     <string name="subscribed_since">Iscritto dal %1$s</string>
-    <!-- Categories -->
     <string name="new_category_dialog_title">Nuova categoria</string>
     <string name="new_category_name_field">Nome</string>
     <string name="add_channels_to_the_category">Aggiungi canali</string>
     <string name="dialog_new_category_pick_icon">Scegli una icona</string>
     <string name="expand_list_button">Expand list button</string>
-    <string name="category_basketball" translatable="false">Basketball</string>
-    <string name="category_car" translatable="false">Car</string>
-    <string name="category_travel" translatable="false">Travel</string>
-    <string name="category_videogame" translatable="false">Videogame</string>
-    <string name="category_computer" translatable="false">Computer</string>
-    <string name="category_podcast" translatable="false">Podcast</string>
     <string name="create">Crea</string>
     <string name="create_new_category">Crea una nuova categoria</string>
     <string name="chosen_category_icon">Scegli una icona</string>
