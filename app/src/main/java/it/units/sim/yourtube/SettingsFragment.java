@@ -1,9 +1,6 @@
 package it.units.sim.yourtube;
 
-import static it.units.sim.yourtube.SettingsManager.PREFERENCE_LANGUAGE_DEFAULT;
-
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -24,7 +21,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import it.units.sim.yourtube.data.CategoriesViewModel;
