@@ -2,6 +2,8 @@ package it.units.sim.yourtube;
 
 import android.app.Application;
 
+import com.google.firebase.FirebaseApp;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,6 +15,7 @@ public class YourTubeApp extends Application {
     public void onCreate() {
         super.onCreate();
         executorService = Executors.newFixedThreadPool(NUM_THREADS);
+        FirebaseApp.initializeApp(this);
     }
 
     @Override
