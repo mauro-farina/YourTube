@@ -140,7 +140,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             if (backupObject == null) {
                 return;
             }
-            System.out.println(backupObject.getCategories());
             viewModel.restoreCategoriesFromBackup(backupObject.getCategories());
         })
         .addOnFailureListener(runnable -> System.out.println("*** fail ***"));
