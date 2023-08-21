@@ -13,7 +13,7 @@
             app:defaultValue="reply"
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
-            app:key="theme"
+            app:key="theme_preference"
             app:title="@string/setting_theme_title" />
 
     </PreferenceCategory>
