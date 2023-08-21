@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,8 +29,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private ActionBar toolbar;
     private CategoriesViewModel viewModel;
-    private CollectionReference userCategoriesBackupCollection;
     private static final String BACKUP_DOCUMENT_PATH = "categoriesBackup";
+    private DocumentReference userBackupDocument;
     private Preference importBackupPreference;
 
     @Override
@@ -62,10 +62,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        userCategoriesBackupCollection = firestore.collection(uid);
         viewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
+        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        userBackupDocument = FirebaseFirestore
+                .getInstance()
+                .collection(uid)
+                .document(BACKUP_DOCUMENT_PATH);
 
         Preference backupPreference = findPreference("create_backup");
         importBackupPreference = findPreference("import_backup");
@@ -78,8 +80,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (importBackupPreference == null) {
             return;
         }
-        DocumentReference backupDocument = userCategoriesBackupCollection.document(BACKUP_DOCUMENT_PATH);
-        backupDocument.get().addOnSuccessListener(doc -> {
+        userBackupDocument.get().addOnSuccessListener(doc -> {
             if (doc == null || doc.getData() == null || doc.toObject(CloudBackupObject.class) == null) {
                 importBackupPreference.setSummary("No backups found");
             } else {
@@ -89,18 +90,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
         importBackupPreference.setOnPreferenceClickListener(preference -> {
-            backupDocument.get().addOnSuccessListener(doc -> {
-                if (doc == null || doc.getData() == null) {
-                    return;
-                }
-                CloudBackupObject backupObject = doc.toObject(CloudBackupObject.class);
-                if (backupObject == null) {
-                    return;
-                }
-                System.out.println(backupObject.getCategories());
-                viewModel.restoreCategoriesFromBackup(backupObject.getCategories());
-            })
-            .addOnFailureListener(runnable -> System.out.println("*** fail ***"));
+            new MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Import categories from backup")
+                    .setMessage("By proceeding you will lose all your locally-stored 'Categories' "
+                            + "and the only available 'Categories' will be the ones imported from the cloud. "
+                            + "Do you want to continue?")
+                    .setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
+                    .setPositiveButton("Yes", (dialog, which) -> importBackup())
+                    .show();
         return true;
     });
 
@@ -119,8 +116,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     return;
                 }
                 CloudBackupObject backupObject = new CloudBackupObject (categoriesLiveData.getValue(), c.getTimeInMillis());
-                userCategoriesBackupCollection
-                        .document(BACKUP_DOCUMENT_PATH)
+                userBackupDocument
                         .set(backupObject)
                         .addOnSuccessListener(runnable -> {
                                 Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
@@ -133,6 +129,21 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             });
             return true;
         });
+    }
+
+    private void importBackup() {
+        userBackupDocument.get().addOnSuccessListener(doc -> {
+            if (doc == null || doc.getData() == null) {
+                return;
+            }
+            CloudBackupObject backupObject = doc.toObject(CloudBackupObject.class);
+            if (backupObject == null) {
+                return;
+            }
+            System.out.println(backupObject.getCategories());
+            viewModel.restoreCategoriesFromBackup(backupObject.getCategories());
+        })
+        .addOnFailureListener(runnable -> System.out.println("*** fail ***"));
     }
 
     private static String millisecondsToReadableDate(long timeInMilliseconds) {
