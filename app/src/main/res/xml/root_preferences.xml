@@ -14,7 +14,8 @@
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
             app:key="theme_preference"
-            app:title="@string/setting_theme_title" />
+            app:title="@string/setting_theme_title"
+            app:icon="@drawable/icon_preference_theme" />
 
     </PreferenceCategory>
 
