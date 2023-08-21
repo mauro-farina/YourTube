@@ -20,8 +20,8 @@
     </string-array>
 
     <string-array name="language_values">
-        <item>english</item>
-        <item>italiano</item>
+        <item>en</item>
+        <item>it</item>
         <item>system</item>
     </string-array>
 </resources>
