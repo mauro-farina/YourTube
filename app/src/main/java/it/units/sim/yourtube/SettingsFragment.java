@@ -156,17 +156,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void importBackup() {
-        userBackupDocument.get().addOnSuccessListener(doc -> {
-            if (doc == null || doc.getData() == null) {
-                return;
-            }
-            CloudBackupObject backupObject = doc.toObject(CloudBackupObject.class);
-            if (backupObject == null) {
-                return;
-            }
-            viewModel.restoreCategoriesFromBackup(backupObject.getCategories());
-        })
-        .addOnFailureListener(runnable -> System.out.println("*** fail ***"));
+        userBackupDocument.get()
+                .addOnSuccessListener(doc -> {
+                    if (doc == null || doc.getData() == null) {
+                        return;
+                    }
+                    CloudBackupObject backupObject = doc.toObject(CloudBackupObject.class);
+                    if (backupObject == null) {
+                        return;
+                    }
+                    viewModel.restoreCategoriesFromBackup(backupObject.getCategories());
+                })
+                .addOnFailureListener(runnable -> System.out.println("*** fail ***"));
     }
 
     private static String millisecondsToReadableDate(long timeInMilliseconds) {
