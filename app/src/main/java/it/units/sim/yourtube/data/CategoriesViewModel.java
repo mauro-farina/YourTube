@@ -12,8 +12,6 @@ import java.util.concurrent.ExecutorService;
 
 import it.units.sim.yourtube.GoogleCredentialManager;
 import it.units.sim.yourtube.YourTubeApp;
-import it.units.sim.yourtube.data.CategoryDAO;
-import it.units.sim.yourtube.data.LocalDatabase;
 import it.units.sim.yourtube.model.Category;
 
 public class CategoriesViewModel extends AndroidViewModel {
@@ -52,10 +50,6 @@ public class CategoriesViewModel extends AndroidViewModel {
 
     public void updateCategory(Category category) {
         executorService.submit(() -> categoryDao.updateAll(category));
-    }
-
-    public void deleteAll() {
-        executorService.submit(() -> categoryDao.deleteAll(categoriesOwner));
     }
 
     public void restoreCategoriesFromBackup(List<Category> categories) {
