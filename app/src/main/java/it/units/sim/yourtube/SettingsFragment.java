@@ -1,5 +1,6 @@
 package it.units.sim.yourtube;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +27,7 @@ import it.units.sim.yourtube.data.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.CloudBackupObject;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private ActionBar toolbar;
     private CategoriesViewModel viewModel;
@@ -37,6 +39,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        PreferenceManager.getDefaultSharedPreferences(requireContext()).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -74,6 +77,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         setupCreateBackupPreference(backupPreference);
         setupImportBackupPreference(importBackupPreference);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        switch (key) {
+            case SettingsManager.PREFERENCE_THEME:
+                String newTheme = sharedPreferences.getString(key, SettingsManager.PREFERENCE_THEME_DEFAULT);
+                SettingsManager.setTheme(newTheme);
+                break;
+        }
     }
 
     private void setupImportBackupPreference(Preference importBackupPreference) {
