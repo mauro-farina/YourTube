@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,19 +14,24 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import it.units.sim.yourtube.data.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
+import it.units.sim.yourtube.model.CloudBackupObject;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private ActionBar toolbar;
+    private CategoriesViewModel viewModel;
+    private CollectionReference userCategoriesBackupCollection;
+    private static final String BACKUP_DOCUMENT_PATH = "categoriesBackup";
+    private Preference importBackupPreference;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,11 +62,48 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        userCategoriesBackupCollection = firestore.collection(uid);
+        viewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
 
-        androidx.preference.Preference backupPreference = findPreference("create_backup");
+        Preference backupPreference = findPreference("create_backup");
+        importBackupPreference = findPreference("import_backup");
+
         setupCreateBackupPreference(backupPreference);
+        setupImportBackupPreference(importBackupPreference);
+    }
 
-        androidx.preference.Preference importBackupPreference = findPreference("import_backup");
+    private void setupImportBackupPreference(Preference importBackupPreference) {
+        if (importBackupPreference == null) {
+            return;
+        }
+        DocumentReference backupDocument = userCategoriesBackupCollection.document(BACKUP_DOCUMENT_PATH);
+        backupDocument.get().addOnSuccessListener(doc -> {
+            if (doc == null || doc.getData() == null || doc.toObject(CloudBackupObject.class) == null) {
+                importBackupPreference.setSummary("No backups found");
+            } else {
+                CloudBackupObject backupObject = Objects.requireNonNull(doc.toObject(CloudBackupObject.class));
+                long backupTimeInMillis =backupObject.getBackupTimeInMilliseconds();
+                importBackupPreference.setSummary("Last backup: " + millisecondsToReadableDate(backupTimeInMillis));
+            }
+        });
+        importBackupPreference.setOnPreferenceClickListener(preference -> {
+            backupDocument.get().addOnSuccessListener(doc -> {
+                if (doc == null || doc.getData() == null) {
+                    return;
+                }
+                CloudBackupObject backupObject = doc.toObject(CloudBackupObject.class);
+                if (backupObject == null) {
+                    return;
+                }
+                System.out.println(backupObject.getCategories());
+                viewModel.restoreCategoriesFromBackup(backupObject.getCategories());
+            })
+            .addOnFailureListener(runnable -> System.out.println("*** fail ***"));
+        return true;
+    });
+
     }
 
     private void setupCreateBackupPreference(Preference backupPreference) {
@@ -70,30 +111,42 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return;
         }
         backupPreference.setOnPreferenceClickListener(preference -> {
-            CategoriesViewModel viewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
-            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-            String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+            Calendar c = Calendar.getInstance();
             LiveData<List<Category>> categoriesLiveData = viewModel.getCategoriesList();
-
             categoriesLiveData.observe(getViewLifecycleOwner(), list -> {
                 if (list == null) {
                     Toast.makeText(requireContext(), getString(R.string.backup_no_data), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Map<String, List<Category>> backup = new HashMap<>();
-                backup.put("categories", categoriesLiveData.getValue());
-                CollectionReference userCategoriesBackupCollection = firestore.collection(uid);
+                CloudBackupObject backupObject = new CloudBackupObject (categoriesLiveData.getValue(), c.getTimeInMillis());
                 userCategoriesBackupCollection
-                        .document("categoriesBackup")
-                        .set(backup)
-                        .addOnSuccessListener(runnable ->
-                                Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show())
+                        .document(BACKUP_DOCUMENT_PATH)
+                        .set(backupObject)
+                        .addOnSuccessListener(runnable -> {
+                                Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
+                                importBackupPreference.setSummary("Last backup: " + millisecondsToReadableDate(c.getTimeInMillis()));
+                            }
+                        )
                         .addOnFailureListener(runnable ->
                                 Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
                         );
             });
             return true;
         });
+    }
+
+    private static String millisecondsToReadableDate(long timeInMilliseconds) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(timeInMilliseconds);
+        return c.get(Calendar.YEAR) +
+                "/" +
+                (c.get(Calendar.MONTH) + 1) +
+                "/" +
+                c.get(Calendar.DAY_OF_MONTH) +
+                ", " +
+                c.get(Calendar.HOUR_OF_DAY) +
+                ":" +
+                c.get(Calendar.MINUTE);
     }
 
     private void toggleBottomNav() {
