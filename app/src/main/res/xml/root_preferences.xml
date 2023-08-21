@@ -10,7 +10,7 @@
             -->
 
         <ListPreference
-            app:defaultValue="reply"
+            app:defaultValue="system"
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
             app:key="theme_preference"
