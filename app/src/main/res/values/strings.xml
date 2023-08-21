@@ -2,6 +2,7 @@
     <string name="app_name">YourTube</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="ok">OK</string>
+    <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
     <string name="confirm">Confirm</string>
@@ -70,4 +71,9 @@
     <string name="backup_failed">Backup failed</string>
     <string name="backup_no_data">No data to backup</string>
     <string name="backup_done">Backup completed</string>
+    <string name="no_backup_found">No backup found</string>
+    <string name="last_backup_date">Last backup: %1$s</string>
+    <string name="dialog_import_categories_title">Import categories from backup</string>
+    <string name="dialog_import_categories_warning">By proceeding, you will lose all your locally-stored Categories.
+    \nDo you want to continue?</string>
 </resources>

@@ -82,25 +82,25 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
         userBackupDocument.get().addOnSuccessListener(doc -> {
             if (doc == null || doc.getData() == null || doc.toObject(CloudBackupObject.class) == null) {
-                importBackupPreference.setSummary("No backups found");
+                importBackupPreference.setSummary(getString(R.string.no_backup_found));
             } else {
                 CloudBackupObject backupObject = Objects.requireNonNull(doc.toObject(CloudBackupObject.class));
                 long backupTimeInMillis =backupObject.getBackupTimeInMilliseconds();
-                importBackupPreference.setSummary("Last backup: " + millisecondsToReadableDate(backupTimeInMillis));
+                importBackupPreference.setSummary(
+                        getString(R.string.last_backup_date,
+                        millisecondsToReadableDate(backupTimeInMillis))
+                );
             }
         });
         importBackupPreference.setOnPreferenceClickListener(preference -> {
             new MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Import categories from backup")
-                    .setMessage("By proceeding you will lose all your locally-stored 'Categories' "
-                            + "and the only available 'Categories' will be the ones imported from the cloud. "
-                            + "Do you want to continue?")
+                    .setTitle(getString(R.string.dialog_import_categories_title))
+                    .setMessage(getString(R.string.dialog_import_categories_warning))
                     .setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
-                    .setPositiveButton("Yes", (dialog, which) -> importBackup())
+                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> importBackup())
                     .show();
-        return true;
-    });
-
+            return true;
+        });
     }
 
     private void setupCreateBackupPreference(Preference backupPreference) {
