@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">YourTube</string>
+    <string name="app_name" translatable="false">YourTube</string>
     <string name="something_went_wrong">Something went wrong</string>
-    <string name="ok">OK</string>
+    <string name="ok" translatable="false">OK</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
@@ -19,7 +19,7 @@
     <string name="no_internet_connection">No Internet connection</string>
     <string name="missing_youtube_authorization">YourTube requires access to your YouTube personal
         data in order to retrieve the list of channels you are subscribed to. Please log in again,
-        and make sure to authorize YourTube to access your YouTube account information.</string>
+        and make sure to authorize YourTube to access your YouTube account information</string>
     <!-- Videos -->
     <string name="thumbnail_img_placeholder">Thumbnail</string>
     <string name="next_day">Next day</string>
@@ -34,12 +34,12 @@
     <string name="add_channels_to_the_category">Add channels</string>
     <string name="dialog_new_category_pick_icon">Pick an icon</string>
     <string name="expand_list_button">Expand list button</string>
-    <string name="category_basketball">Basketball</string>
-    <string name="category_car">Car</string>
-    <string name="category_travel">Travel</string>
-    <string name="category_videogame">Videogame</string>
-    <string name="category_computer">Computer</string>
-    <string name="category_podcast">Podcast</string>
+    <string name="category_basketball" translatable="false">Basketball</string>
+    <string name="category_car" translatable="false">Car</string>
+    <string name="category_travel" translatable="false">Travel</string>
+    <string name="category_videogame" translatable="false">Videogame</string>
+    <string name="category_computer" translatable="false">Computer</string>
+    <string name="category_podcast" translatable="false">Podcast</string>
     <string name="create">Create</string>
     <string name="create_new_category">Create new category</string>
     <string name="chosen_category_icon">Chosen category icon</string>
