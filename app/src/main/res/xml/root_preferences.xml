@@ -22,24 +22,26 @@
 
         <Preference
             app:key="create_backup"
-            app:title="Backup categories" />
+            app:title="Backup categories"
+            app:icon="@drawable/icon_preference_backup" />
 
         <Preference
             app:key="import_backup"
-            app:title="Import categories" />
+            app:title="Import categories"
+            app:icon="@drawable/icon_preference_backup_import" />
 
-<!--
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+        <!--
+                <SwitchPreferenceCompat
+                    app:key="sync"
+                    app:title="@string/sync_title" />
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
--->
+                <SwitchPreferenceCompat
+                    app:dependency="sync"
+                    app:key="attachment"
+                    app:summaryOff="@string/attachment_summary_off"
+                    app:summaryOn="@string/attachment_summary_on"
+                    app:title="@string/attachment_title" />
+        -->
     </PreferenceCategory>
 
 </PreferenceScreen>
