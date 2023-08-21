@@ -1,6 +1,9 @@
 package it.units.sim.yourtube;
 
+import static it.units.sim.yourtube.SettingsManager.PREFERENCE_LANGUAGE_DEFAULT;
+
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -21,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import it.units.sim.yourtube.data.CategoriesViewModel;
@@ -40,6 +44,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         super.onCreate(savedInstanceState);
         toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         PreferenceManager.getDefaultSharedPreferences(requireContext()).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(requireContext()).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -85,6 +95,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             case SettingsManager.PREFERENCE_THEME:
                 String newTheme = sharedPreferences.getString(key, SettingsManager.PREFERENCE_THEME_DEFAULT);
                 SettingsManager.setTheme(newTheme);
+                break;
+            case SettingsManager.PREFERENCE_LANGUAGE:
+                String newLanguage = sharedPreferences.getString(key, SettingsManager.PREFERENCE_LANGUAGE_DEFAULT);
+                SettingsManager.setLanguage(requireContext(), newLanguage);
+                requireActivity().recreate();
                 break;
         }
     }
