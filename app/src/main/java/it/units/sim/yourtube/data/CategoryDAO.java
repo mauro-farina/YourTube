@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
@@ -29,10 +30,13 @@ public interface CategoryDAO {
     @Query("DELETE FROM categories WHERE owner LIKE :owner")
     void deleteAll(String owner);
 
+    @Transaction
+    default void restoreFromBackup(String owner, Category... importCategories) {
+        deleteAll(owner);
+        insertAll(importCategories);
+    }
+
     @Update
     void updateAll(Category... categories);
-
-    // Optionally... @Insert, @Delete and @Update can return a number
-    // https://developer.android.com/training/data-storage/room/accessing-data#java
 
 }
