@@ -95,6 +95,17 @@ public class VideosFragment extends Fragment {
         categoryFilterButton = view.findViewById(R.id.category_filter_button);
         datePicker = view.findViewById(R.id.date_filter_pick);
         datePicker.setText(dateFormat.format(Objects.requireNonNull(localViewModel.getDateFilter().getValue())));
+        datePicker.setOnClickListener(v -> showDatePickerDialog());
+        Button previousDateButton = view.findViewById(R.id.date_filter_previous);
+        Button nextDateButton = view.findViewById(R.id.date_filter_next);
+        previousDateButton.setOnClickListener(view1 -> {
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            localViewModel.setDateFilter(calendar.getTime());
+        });
+        nextDateButton.setOnClickListener(view1 -> {
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            localViewModel.setDateFilter(calendar.getTime());
+        });
         return view;
     }
 
@@ -136,19 +147,6 @@ public class VideosFragment extends Fragment {
                     }
                 }
         );
-
-        Button previousDateButton = view.findViewById(R.id.date_filter_previous);
-        Button nextDateButton = view.findViewById(R.id.date_filter_next);
-        datePicker.setOnClickListener(v -> showDatePickerDialog());
-        previousDateButton.setOnClickListener(view1 -> {
-            calendar.add(Calendar.DAY_OF_MONTH, -1);
-            localViewModel.setDateFilter(calendar.getTime());
-        });
-        nextDateButton.setOnClickListener(view1 -> {
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-            localViewModel.setDateFilter(calendar.getTime());
-        });
-
         categoryFilterButton.setOnClickListener(v -> {
             FragmentManager fragmentManager = getChildFragmentManager();
             fragmentManager.setFragmentResultListener(
