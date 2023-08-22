@@ -44,6 +44,7 @@ public class VideosFragment extends Fragment {
     private Button categoryFilterButton;
     private Date dateObserverBypass;
     private List<UserSubscription> subscriptionsObserverBypass;
+    private boolean hasDateChangedWhileCategoryFilterOn;
 
     public VideosFragment() {
         super(R.layout.fragment_videos);
@@ -60,6 +61,7 @@ public class VideosFragment extends Fragment {
         subscriptionsObserverBypass = globalViewModel.getSubscriptionsList().getValue();
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        hasDateChangedWhileCategoryFilterOn = false;
     }
 
     @Override
@@ -127,6 +129,9 @@ public class VideosFragment extends Fragment {
                     localViewModel.getCategoryFilter().getValue()
             );
             datePicker.setText(dateFormat.format(date));
+            if (localViewModel.getCategoryFilter().getValue() != null) {
+                hasDateChangedWhileCategoryFilterOn = true;
+            }
         });
         globalViewModel.getVideosList().observe(getViewLifecycleOwner(), list -> {
             Category filterCategory = localViewModel.getCategoryFilter().getValue();
@@ -139,7 +144,15 @@ public class VideosFragment extends Fragment {
         localViewModel.getCategoryFilter().observe(
                 getViewLifecycleOwner(),
                 category -> {
-                    setFilteredVideosListInAdapter(category);
+                    if (hasDateChangedWhileCategoryFilterOn) {
+                        hasDateChangedWhileCategoryFilterOn = false;
+                        globalViewModel.fetchVideos(
+                                localViewModel.getDateFilter().getValue(),
+                                localViewModel.getCategoryFilter().getValue()
+                        );
+                    } else {
+                        setFilteredVideosListInAdapter(category);
+                    }
                     if (category != null) {
                         categoryFilterButton.setText(category.getName());
                     } else {
