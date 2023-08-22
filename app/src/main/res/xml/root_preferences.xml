@@ -20,6 +20,20 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/settings_category_account">
+
+        <Preference
+            app:key="logout_preference"
+            app:title="@string/logout"
+            app:icon="@drawable/icon_logout" />
+
+        <Preference
+            app:key="logout_preference"
+            app:title="@string/delete_account"
+            app:icon="@drawable/icon_delete" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/setting_backup_category">
 
         <Preference

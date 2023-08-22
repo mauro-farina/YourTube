@@ -69,6 +69,8 @@
     <string name="setting_backup_category">Backup</string>
     <string name="setting_theme_title">Theme</string>
     <string name="setting_language_title">Language</string>
+    <string name="settings_category_account">Account</string>
+    <string name="delete_account">Delete account</string>
     <string name="backup_categories">Backup categories</string>
     <string name="backup_import_categories">Import categories</string>
     <string name="backup_failed">Backup failed</string>
