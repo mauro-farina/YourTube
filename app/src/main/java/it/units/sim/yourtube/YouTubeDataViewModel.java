@@ -48,24 +48,21 @@ public class YouTubeDataViewModel extends AndroidViewModel {
                 List<UserSubscription> fetchedSubscriptions = ((Result.Success<List<UserSubscription>>) result).getData();
                 subscriptionsList.postValue(fetchedSubscriptions);
             } else {
-                handleResultError(result);
+                handleResultError((Result.Error<?>) result);
             }
         }));
     }
 
-    private void handleResultError(Result<?> result) {
-        System.out.println("Request Failed");
-        Exception exception = ((Result.Error<?>) result).getException();
+    private void handleResultError(Result.Error<?> result) {
+        Exception exception = result.getException();
         Throwable cause = exception.getCause();
         if (exception.getMessage() != null) {
             if (exception.getMessage().contains("quotaExceeded")) {
-                System.out.println("Quota Exceeded");
                 quotaExceeded.postValue(true);
             }
         }
         if (cause != null && cause.getMessage() != null) {
             if (cause.getMessage().equals("NeedRemoteConsent")) {
-                System.out.println("Need consent to access user's YouTube data");
                 missingYouTubeDataAuthorization.postValue(true);
             }
         }
@@ -97,7 +94,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
                                 videosList.postValue(videos);
                             }
                         } else {
-                            handleResultError(result);
+                            handleResultError((Result.Error<?>) result);
                             cancelOngoingTasks();
                         }
                     }, sub, date)));
@@ -112,10 +109,10 @@ public class YouTubeDataViewModel extends AndroidViewModel {
                             videosList.postValue(videos);
                         }
                     } else {
-                        handleResultError(result);
+                        handleResultError((Result.Error<?>) result);
                     }
                 }, sub, date));
-                ongoingFetchTasks.add(task); // Add the task to the list of ongoing tasks
+                ongoingFetchTasks.add(task);
             }
         }
     }
