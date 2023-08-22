@@ -1,6 +1,7 @@
 package it.units.sim.yourtube.video;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -22,7 +23,7 @@ public class VideosViewModel extends ViewModel {
         return dateFilter;
     }
 
-    public void setCategoryFilter(Category category) {
+    public void setCategoryFilter(@Nullable Category category) {
         categoryFilter.setValue(category);
     }
 
