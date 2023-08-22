@@ -52,6 +52,10 @@ public class CategoriesViewModel extends AndroidViewModel {
         executorService.submit(() -> categoryDao.updateAll(category));
     }
 
+    public void deleteAll() {
+        executorService.submit(() -> categoryDao.deleteAll(categoriesOwner));
+    }
+
     public void restoreCategoriesFromBackup(List<Category> categories) {
         executorService.submit(() -> {
             Category[] categoryArray = categories.toArray(new Category[0]);
