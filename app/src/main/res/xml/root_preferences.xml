@@ -28,7 +28,7 @@
             app:icon="@drawable/icon_logout" />
 
         <Preference
-            app:key="logout_preference"
+            app:key="delete_account"
             app:title="@string/delete_account"
             app:icon="@drawable/icon_delete" />
 

@@ -15,7 +15,13 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.api.services.youtube.YouTubeScopes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -82,7 +88,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         Preference backupPreference = findPreference("create_backup");
         importBackupPreference = findPreference("import_backup");
         Preference logoutPreference = findPreference("logout_preference");
-        Preference deleteAccountPreference = findPreference("logout_preference");
+        Preference deleteAccountPreference = findPreference("delete_account");
 
         setupCreateBackupPreference(backupPreference);
         setupImportBackupPreference(importBackupPreference);
@@ -110,20 +116,46 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             return;
         }
         logoutPreference.setOnPreferenceClickListener(preference -> {
-            FirebaseAuth.getInstance().signOut();
-            SharedPreferences.Editor editor = android.preference.PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
-            editor.remove("accountName");
-            editor.apply();
-            Intent intent = new Intent(requireContext(), AuthenticationActivity.class);
-            intent.putExtra(AuthenticationActivity.INTENT_LOGOUT_FLAG, true);
-            requireActivity().finish();
-            startActivity(intent);
+            logout();
             return true;
         });
     }
 
-    private void setupDeleteAccountPreference(Preference deleteAccountPreference) {
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+        SharedPreferences.Editor editor = android.preference.PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
+        editor.remove("accountName");
+        editor.apply();
+        Intent intent = new Intent(requireContext(), AuthenticationActivity.class);
+        intent.putExtra(AuthenticationActivity.INTENT_LOGOUT_FLAG, true);
+        requireActivity().finish();
+        startActivity(intent);
+    }
 
+    private void setupDeleteAccountPreference(Preference deleteAccountPreference) {
+        if (deleteAccountPreference == null) {
+            return;
+        }
+        deleteAccountPreference.setOnPreferenceClickListener(preference -> {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestScopes(new Scope(YouTubeScopes.YOUTUBE_READONLY))
+                    .build();
+            GoogleSignInClient signInClient = GoogleSignIn.getClient(requireActivity(), gso);
+            userBackupDocument.delete().addOnSuccessListener(runnable ->
+                signInClient.revokeAccess().addOnSuccessListener(runnable1 -> {
+                    viewModel.deleteAll();
+                    Snackbar.make(requireView(), "Account successfully deleted", Snackbar.LENGTH_LONG).show();
+                    logout();
+                }).addOnFailureListener(runnable1 ->
+                    Snackbar.make(requireView(), getString(R.string.something_went_wrong), Snackbar.LENGTH_LONG).show()
+                )
+            ).addOnFailureListener(runnable ->
+                Snackbar.make(requireView(), getString(R.string.something_went_wrong), Snackbar.LENGTH_LONG).show()
+            );
+            return true;
+        });
     }
 
     private void setupImportBackupPreference(Preference importBackupPreference) {
@@ -169,12 +201,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 userBackupDocument
                         .set(backupObject)
                         .addOnSuccessListener(runnable -> {
-                                Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
-                                importBackupPreference.setSummary("Last backup: " + millisecondsToReadableDate(c.getTimeInMillis()));
-                            }
-                        )
+                            Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
+                            importBackupPreference.setSummary(
+                                    getString(R.string.last_backup_date,
+                                    millisecondsToReadableDate(c.getTimeInMillis())));
+                            })
                         .addOnFailureListener(runnable ->
-                                Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
                         );
             });
             return true;
