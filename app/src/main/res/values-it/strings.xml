@@ -57,6 +57,8 @@
     <string name="setting_backup_category">Backup</string>
     <string name="setting_theme_title">Tema</string>
     <string name="setting_language_title">Lingua</string>
+    <string name="backup_categories">Backup delle categorie</string>
+    <string name="backup_import_categories">Importa categorie</string>
     <string name="backup_failed">Backup fallito</string>
     <string name="backup_no_data">Non ci sono dati salvare</string>
     <string name="backup_done">Backup completato</string>

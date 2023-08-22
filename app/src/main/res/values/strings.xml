@@ -69,6 +69,8 @@
     <string name="setting_backup_category">Backup</string>
     <string name="setting_theme_title">Theme</string>
     <string name="setting_language_title">Language</string>
+    <string name="backup_categories">Backup categories</string>
+    <string name="backup_import_categories">Import categories</string>
     <string name="backup_failed">Backup failed</string>
     <string name="backup_no_data">No data to backup</string>
     <string name="backup_done">Backup completed</string>

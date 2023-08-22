@@ -24,12 +24,12 @@
 
         <Preference
             app:key="create_backup"
-            app:title="Backup categories"
+            app:title="@string/backup_categories"
             app:icon="@drawable/icon_preference_backup" />
 
         <Preference
             app:key="import_backup"
-            app:title="Import categories"
+            app:title="@string/backup_import_categories"
             app:icon="@drawable/icon_preference_backup_import" />
 
         <!--
