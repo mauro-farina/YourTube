@@ -41,7 +41,6 @@ public class VideosFragment extends Fragment {
     private VideosAdapter adapter;
     private Calendar calendar;
     private Button datePicker;
-    private Date currentDateReference;
     private Button categoryFilterButton;
     private Date dateObserverBypass;
     private List<UserSubscription> subscriptionsObserverBypass;
@@ -61,7 +60,6 @@ public class VideosFragment extends Fragment {
         subscriptionsObserverBypass = globalViewModel.getSubscriptionsList().getValue();
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        currentDateReference = new Date();
     }
 
     @Override
@@ -147,9 +145,6 @@ public class VideosFragment extends Fragment {
             localViewModel.setDateFilter(calendar.getTime());
         });
         nextDateButton.setOnClickListener(view1 -> {
-            if (currentDateReference.getTime()-10 < calendar.getTime().getTime()) {
-                return;
-            }
             calendar.add(Calendar.DAY_OF_MONTH, 1);
             localViewModel.setDateFilter(calendar.getTime());
         });
