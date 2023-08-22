@@ -1,5 +1,6 @@
 package it.units.sim.yourtube;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -80,9 +81,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
         Preference backupPreference = findPreference("create_backup");
         importBackupPreference = findPreference("import_backup");
+        Preference logoutPreference = findPreference("logout_preference");
+        Preference deleteAccountPreference = findPreference("logout_preference");
 
         setupCreateBackupPreference(backupPreference);
         setupImportBackupPreference(importBackupPreference);
+        setupLogoutPreference(logoutPreference);
+        setupDeleteAccountPreference(deleteAccountPreference);
     }
 
     @Override
@@ -98,6 +103,27 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 requireActivity().recreate();
                 break;
         }
+    }
+
+    private void setupLogoutPreference(Preference logoutPreference) {
+        if (logoutPreference == null){
+            return;
+        }
+        logoutPreference.setOnPreferenceClickListener(preference -> {
+            FirebaseAuth.getInstance().signOut();
+            SharedPreferences.Editor editor = android.preference.PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
+            editor.remove("accountName");
+            editor.apply();
+            Intent intent = new Intent(requireContext(), AuthenticationActivity.class);
+            intent.putExtra(AuthenticationActivity.INTENT_LOGOUT_FLAG, true);
+            requireActivity().finish();
+            startActivity(intent);
+            return true;
+        });
+    }
+
+    private void setupDeleteAccountPreference(Preference deleteAccountPreference) {
+
     }
 
     private void setupImportBackupPreference(Preference importBackupPreference) {
