@@ -3,13 +3,15 @@ package it.units.sim.yourtube;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -38,6 +40,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private ActionBar toolbar;
     private CategoriesViewModel viewModel;
+    private List<Category> categories;
     private static final String BACKUP_DOCUMENT_PATH = "categoriesBackup";
     private DocumentReference userBackupDocument;
     private Preference importBackupPreference;
@@ -73,6 +76,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             toolbar.setDisplayHomeAsUpEnabled(false);
             toolbar.setTitle(R.string.app_name);
         }
+    }
+
+    @NonNull
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        viewModel.getCategoriesList().observe(getViewLifecycleOwner(), list -> categories = list);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -191,25 +201,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         }
         backupPreference.setOnPreferenceClickListener(preference -> {
             Calendar c = Calendar.getInstance();
-            LiveData<List<Category>> categoriesLiveData = viewModel.getCategoriesList();
-            categoriesLiveData.observe(getViewLifecycleOwner(), list -> {
-                if (list == null) {
-                    Toast.makeText(requireContext(), getString(R.string.backup_no_data), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                CloudBackupObject backupObject = new CloudBackupObject (categoriesLiveData.getValue(), c.getTimeInMillis());
-                userBackupDocument
-                        .set(backupObject)
-                        .addOnSuccessListener(runnable -> {
-                            Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
-                            importBackupPreference.setSummary(
-                                    getString(R.string.last_backup_date,
-                                    millisecondsToReadableDate(c.getTimeInMillis())));
-                            })
-                        .addOnFailureListener(runnable ->
-                            Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
-                        );
-            });
+            CloudBackupObject backupObject = new CloudBackupObject (categories, c.getTimeInMillis());
+            userBackupDocument
+                    .set(backupObject)
+                    .addOnSuccessListener(runnable -> {
+                        Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
+                        importBackupPreference.setSummary(
+                                getString(R.string.last_backup_date,
+                                millisecondsToReadableDate(c.getTimeInMillis())));
+                        })
+                    .addOnFailureListener(runnable ->
+                        Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
+                    );
             return true;
         });
     }
