@@ -12,13 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.units.sim.yourtube.MainViewModel;
+import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.UserSubscription;
 
 public class SubscriptionsFragment extends Fragment {
 
-    private MainViewModel viewModel;
+    private YouTubeDataViewModel viewModel;
     private SubscriptionsAdapter adapter;
 
     public SubscriptionsFragment() {
@@ -28,7 +28,7 @@ public class SubscriptionsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(YouTubeDataViewModel.class);
         viewModel.fetchUserSubscriptions();
     }
 

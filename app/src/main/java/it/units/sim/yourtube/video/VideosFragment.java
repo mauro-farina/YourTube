@@ -27,7 +27,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import it.units.sim.yourtube.MainViewModel;
+import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.UserSubscription;
@@ -36,7 +36,7 @@ import it.units.sim.yourtube.model.VideoData;
 public class VideosFragment extends Fragment {
 
     private SimpleDateFormat dateFormat;
-    private MainViewModel globalViewModel;
+    private YouTubeDataViewModel globalViewModel;
     private VideosViewModel localViewModel;
     private VideosAdapter adapter;
     private Calendar calendar;
@@ -54,7 +54,7 @@ public class VideosFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ViewModelProvider.AndroidViewModelFactory factory =
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication());
-        globalViewModel = new ViewModelProvider(requireActivity(), factory).get(MainViewModel.class);
+        globalViewModel = new ViewModelProvider(requireActivity(), factory).get(YouTubeDataViewModel.class);
         localViewModel = new ViewModelProvider(this).get(VideosViewModel.class);
         dateObserverBypass = localViewModel.getDateFilter().getValue();
         subscriptionsObserverBypass = globalViewModel.getSubscriptionsList().getValue();

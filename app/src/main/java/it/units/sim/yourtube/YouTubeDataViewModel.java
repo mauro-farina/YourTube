@@ -23,7 +23,7 @@ import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
 
-public class MainViewModel extends AndroidViewModel {
+public class YouTubeDataViewModel extends AndroidViewModel {
 
     private final ExecutorService executorService;
     private final MutableLiveData<List<UserSubscription>> subscriptionsList;
@@ -31,7 +31,7 @@ public class MainViewModel extends AndroidViewModel {
     private final MutableLiveData<Boolean> missingYouTubeDataAuthorization;
     private final MutableLiveData<Boolean> quotaExceeded;
 
-    public MainViewModel(@NonNull Application application) {
+    public YouTubeDataViewModel(@NonNull Application application) {
         super(application);
         YourTubeApp app = getApplication();
         executorService = app.getExecutorService();

@@ -26,7 +26,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
-import it.units.sim.yourtube.MainViewModel;
+import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.UserSubscription;
 
@@ -45,7 +45,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainViewModel subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        YouTubeDataViewModel subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(YouTubeDataViewModel.class);
         toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         localViewModel = new ViewModelProvider(this).get(CategoryEditorViewModel.class);
         subscriptions = subscriptionsViewModel

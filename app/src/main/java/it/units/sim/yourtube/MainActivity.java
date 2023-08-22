@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         ViewModelProvider.AndroidViewModelFactory factory =
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication());
-        MainViewModel viewModel = new ViewModelProvider(this, factory).get(MainViewModel.class);
+        YouTubeDataViewModel viewModel = new ViewModelProvider(this, factory).get(YouTubeDataViewModel.class);
         viewModel.fetchUserSubscriptions();
         viewModel.getMissingYouTubeDataAuthorization().observe(this, isMissing -> {
             if (isMissing) {
