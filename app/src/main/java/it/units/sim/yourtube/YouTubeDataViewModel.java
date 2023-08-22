@@ -81,39 +81,23 @@ public class YouTubeDataViewModel extends AndroidViewModel {
         videosList.setValue(new ArrayList<>());
         cancelOngoingTasks();
         GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
-        if (category != null)  {
-            Objects.requireNonNull(subscriptionsList.getValue())
-                    .stream()
-                    .filter(s -> category.getChannelIds().contains(s.getChannelId()))
-                    .forEach(sub -> executorService.submit(new VideoUploadsRequest(credential, result -> {
-                        if (result instanceof Result.Success) {
-                            List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
-                            List<VideoData> videos = videosList.getValue();
-                            if (videos != null) {
-                                videos.addAll(fetchedVideos);
-                                videosList.postValue(videos);
-                            }
-                        } else {
-                            handleResultError((Result.Error<?>) result);
-                            cancelOngoingTasks();
-                        }
-                    }, sub, date)));
-        } else {
-            for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
-                Future<?> task = executorService.submit(new VideoUploadsRequest(credential, result -> {
-                    if (result instanceof Result.Success) {
-                        List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
-                        List<VideoData> videos = videosList.getValue();
-                        if (videos != null) {
-                            videos.addAll(fetchedVideos);
-                            videosList.postValue(videos);
-                        }
-                    } else {
-                        handleResultError((Result.Error<?>) result);
+        for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
+            if (category != null && !category.getChannelIds().contains(sub.getChannelId()))
+                continue;
+            Future<?> task = executorService.submit(new VideoUploadsRequest(credential, result -> {
+                if (result instanceof Result.Success) {
+                    List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
+                    List<VideoData> videos = videosList.getValue();
+                    if (videos != null) {
+                        videos.addAll(fetchedVideos);
+                        videosList.postValue(videos);
                     }
-                }, sub, date));
-                ongoingFetchTasks.add(task);
-            }
+                } else {
+                    handleResultError((Result.Error<?>) result);
+                    cancelOngoingTasks();
+                }
+            }, sub, date));
+            ongoingFetchTasks.add(task);
         }
     }
 
