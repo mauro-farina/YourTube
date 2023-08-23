@@ -1,9 +1,6 @@
 package it.units.sim.yourtube;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -11,12 +8,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,6 +21,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTubeScopes;
@@ -37,13 +33,11 @@ import java.util.Arrays;
 
 public class LoginFragment extends Fragment {
 
-    public static final String INTENT_ALREADY_LOGGED_FLAG = "alreadyLogged";
+    private static final String TAG = "LoginFragment";
     private GoogleSignInClient googleSignInClient;
     private GoogleCredentialManager credentialManager;
     private GoogleAccountCredential credential;
-    private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
-    private SharedPreferences defaultSharedPreferences;
     private FirebaseAuth mAuth;
 
     public LoginFragment() {
@@ -61,7 +55,6 @@ public class LoginFragment extends Fragment {
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         mAuth = FirebaseAuth.getInstance();
 
-        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         credentialManager = GoogleCredentialManager.getInstance();
         credential = GoogleAccountCredential
                 .usingOAuth2(requireContext(), Arrays.asList(YOUTUBE_API_SCOPES))
@@ -92,11 +85,8 @@ public class LoginFragment extends Fragment {
 
         try {
             GoogleSignInAccount account = task.getResult(ApiException.class);
-            String idToken = account.getIdToken();
-            localLogin(account.getEmail());
-            remoteLoginAndOpenMainActivity(idToken);
+            login(account);
         } catch (ApiException e) {
-            // GoogleSignInStatusCodes class for more info.
             Log.w(TAG, "signInResult: failed code = " + e.getStatusCode());
             switch (e.getStatusCode()) {
                 case CommonStatusCodes.CANCELED:
@@ -112,36 +102,27 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void localLogin(String accountName) {
-        credential.setSelectedAccountName(accountName);
-        credentialManager.setCredential(credential);
-        SharedPreferences.Editor editor = defaultSharedPreferences.edit();
-        editor.putString(PREF_ACCOUNT_NAME, accountName);
-        editor.apply();
-    }
-
-    private void remoteLoginAndOpenMainActivity(String idToken) {
-        AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
+    private void login(GoogleSignInAccount account) {
+        AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(firebaseCredential)
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
-                        openMainActivity(false);
+                        credential.setSelectedAccountName(account.getEmail());
+                        credentialManager.setCredential(credential);
+                        openMainActivity();
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signIn : failure", task.getException());
-                        Toast.makeText(
-                                requireContext(),
+                        Log.w(TAG, "signIn failed", task.getException());
+                        Snackbar.make(
+                                requireView(),
                                 "Authentication process encountered an error",
-                                Toast.LENGTH_SHORT).show();
-                        // TODO: Snackbar
+                                Snackbar.LENGTH_LONG).show();
                     }
                 });
     }
 
-    private void openMainActivity(boolean alreadyLogged) {
+    private void openMainActivity() {
         requireActivity().finish();
         Intent intent = new Intent(requireActivity(), MainActivity.class);
-        intent.putExtra(INTENT_ALREADY_LOGGED_FLAG, alreadyLogged);
         startActivity(intent);
     }
 

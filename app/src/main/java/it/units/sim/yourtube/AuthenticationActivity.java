@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -23,10 +24,10 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
     public static final String INTENT_LOGOUT_FLAG = "logout";
-    public static final String INTENT_ALREADY_LOGGED_FLAG = "alreadyLogged";
     private FirebaseAuth mAuth;
     private GoogleAccountCredential credential;
     private GoogleCredentialManager credentialManager;
+    private GoogleSignInClient googleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +45,11 @@ public class AuthenticationActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestScopes(new Scope(YouTubeScopes.YOUTUBE_READONLY))
                 .build();
-        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         if (getIntent().getExtras() != null
                 && getIntent().getExtras().getBoolean(INTENT_LOGOUT_FLAG)) {
-            mAuth.signOut();
-            mGoogleSignInClient.signOut().addOnFailureListener(runnable -> {
-
-            });
+            forceLogout();
         }
 
         credentialManager = GoogleCredentialManager.getInstance();
@@ -64,26 +62,38 @@ public class AuthenticationActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Check for existing GoogleSignInAccount (already logged user)
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        FirebaseUser currentFirebaseUser = mAuth.getCurrentUser();
-        if (currentFirebaseUser != null) {
-            System.out.println("firebase logged");
-            System.out.println(currentFirebaseUser.getEmail());
-        }
-        if (account != null) {
-            System.out.println(" already logged in ");
-            String accountName = account.getEmail();
+        GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        if (firebaseUser != null && googleAccount != null) {
+            String accountName = googleAccount.getEmail();
             credential.setSelectedAccountName(accountName);
             credentialManager.setCredential(credential);
-            openMainActivity(true);
+            openMainActivity();
+        } else if (firebaseUser != null || googleAccount != null) {
+            forceLogout();
         }
     }
 
-    private void openMainActivity(boolean alreadyLogged) {
+    private void forceLogout() {
+        googleSignInClient.signOut()
+                .addOnSuccessListener(runnable -> {
+                    mAuth.signOut();
+                    Toast.makeText(
+                            getBaseContext(),
+                            "Log out successfully",
+                            Toast.LENGTH_LONG).show();
+                })
+                .addOnFailureListener(runnable ->
+                    Toast.makeText(
+                            getBaseContext(),
+                            "Logged out failed",
+                            Toast.LENGTH_LONG).show()
+                );
+    }
+
+    private void openMainActivity() {
         finish();
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(INTENT_ALREADY_LOGGED_FLAG, alreadyLogged);
         startActivity(intent);
     }
 

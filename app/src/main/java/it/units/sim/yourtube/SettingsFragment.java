@@ -132,14 +132,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void logout() {
-        FirebaseAuth.getInstance().signOut();
-        SharedPreferences.Editor editor = android.preference.PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
-        editor.remove("accountName");
-        editor.apply();
-        Intent intent = new Intent(requireContext(), AuthenticationActivity.class);
-        intent.putExtra(AuthenticationActivity.INTENT_LOGOUT_FLAG, true);
-        requireActivity().finish();
-        startActivity(intent);
+        ((MainActivity) requireActivity()).logoutViaAuthenticationActivity();
     }
 
     private void setupDeleteAccountPreference(Preference deleteAccountPreference) {
