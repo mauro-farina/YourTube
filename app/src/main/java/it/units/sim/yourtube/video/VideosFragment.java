@@ -133,14 +133,7 @@ public class VideosFragment extends Fragment {
                 hasDateChangedWhileCategoryFilterOn = true;
             }
         });
-        youTubeDataViewModel.getVideosList().observe(getViewLifecycleOwner(), list -> {
-            Category filterCategory = localViewModel.getCategoryFilter().getValue();
-            if (filterCategory != null) {
-                setFilteredVideosListInAdapter(filterCategory);
-            } else {
-                adapter.setVideosList(list);
-            }
-        });
+        youTubeDataViewModel.getVideosList().observe(getViewLifecycleOwner(), list -> adapter.setVideosList(list));
         localViewModel.getCategoryFilter().observe(
                 getViewLifecycleOwner(),
                 category -> {
