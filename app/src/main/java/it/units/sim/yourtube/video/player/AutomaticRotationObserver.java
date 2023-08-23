@@ -1,4 +1,4 @@
-package it.units.sim.yourtube.video;
+package it.units.sim.yourtube.video.player;
 
 import android.content.ContentResolver;
 import android.database.ContentObserver;
