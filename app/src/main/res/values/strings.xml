@@ -9,6 +9,9 @@
     <!-- Auth -->
     <string name="welcome_text">YourTube</string>
     <string name="login_button_text">Login with Google</string>
+    <string name="logout_success">Logged out successfully</string>
+    <string name="logout_fail">Log out failed</string>
+    <string name="authentication_error">Authentication process encountered an error</string>
     <!-- Main Activity -->
     <string name="bottom_nav_videos">Videos</string>
     <string name="bottom_nav_subscriptions">Subscriptions</string>

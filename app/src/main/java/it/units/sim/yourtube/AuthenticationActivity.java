@@ -80,13 +80,13 @@ public class AuthenticationActivity extends AppCompatActivity {
                     mAuth.signOut();
                     Toast.makeText(
                             getBaseContext(),
-                            "Log out successfully",
+                            getString(R.string.logout_success),
                             Toast.LENGTH_LONG).show();
                 })
                 .addOnFailureListener(runnable ->
                     Toast.makeText(
                             getBaseContext(),
-                            "Logged out failed",
+                            getString(R.string.logout_fail),
                             Toast.LENGTH_LONG).show()
                 );
     }

@@ -114,7 +114,7 @@ public class LoginFragment extends Fragment {
                         Log.w(TAG, "signIn failed", task.getException());
                         Snackbar.make(
                                 requireView(),
-                                "Authentication process encountered an error",
+                                getString(R.string.authentication_error),
                                 Snackbar.LENGTH_LONG).show();
                     }
                 });
