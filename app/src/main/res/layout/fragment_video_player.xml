@@ -29,8 +29,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="10dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="5dp"
         app:layout_constraintTop_toBottomOf="@+id/youtube_player_view" >
 
         <TextView
@@ -45,8 +43,7 @@
             android:id="@+id/video_player_views_counter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="0dp"
+            android:paddingVertical="10dp"
             app:layout_constraintTop_toBottomOf="@+id/video_player_title" />
 
         <Button
@@ -54,8 +51,7 @@
             style="?attr/materialIconButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="0dp"
+            android:paddingVertical="10dp"
             app:icon="@drawable/icon_thumb_up_on"
             android:contentDescription="@string/like_button"
             android:clickable="false"
@@ -67,8 +63,7 @@
             android:id="@+id/video_player_likes_counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="0dp"
+            android:paddingVertical="10dp"
             app:layout_constraintTop_toTopOf="@+id/video_player_btn_like"
             app:layout_constraintBottom_toBottomOf="@+id/video_player_btn_like"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -81,10 +76,6 @@
             app:layout_constraintTop_toBottomOf="@+id/video_player_views_counter" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
