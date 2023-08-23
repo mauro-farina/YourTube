@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
                 this::handleSignInResult
         );
 
-        view.findViewById(R.id.newGoogleSignInButton).setOnClickListener(v -> {
+        view.findViewById(R.id.googleSignInButton).setOnClickListener(v -> {
             Intent signInIntent = googleSignInClient.getSignInIntent();
             signInActivityLauncher.launch(signInIntent);
         });
