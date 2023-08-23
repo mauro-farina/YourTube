@@ -81,13 +81,13 @@ public class AuthenticationActivity extends AppCompatActivity {
                     Toast.makeText(
                             getBaseContext(),
                             getString(R.string.logout_success),
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(runnable ->
                     Toast.makeText(
                             getBaseContext(),
                             getString(R.string.logout_fail),
-                            Toast.LENGTH_LONG).show()
+                            Toast.LENGTH_SHORT).show()
                 );
     }
 
