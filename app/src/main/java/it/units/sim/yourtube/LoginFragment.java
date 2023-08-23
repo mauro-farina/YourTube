@@ -8,7 +8,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,7 +31,6 @@ import java.util.Arrays;
 
 public class LoginFragment extends Fragment {
 
-    private static final String TAG = "LoginFragment";
     private GoogleSignInClient googleSignInClient;
     private GoogleCredentialManager credentialManager;
     private GoogleAccountCredential credential;
@@ -87,18 +84,10 @@ public class LoginFragment extends Fragment {
             GoogleSignInAccount account = task.getResult(ApiException.class);
             login(account);
         } catch (ApiException e) {
-            Log.w(TAG, "signInResult: failed code = " + e.getStatusCode());
-            switch (e.getStatusCode()) {
-                case CommonStatusCodes.CANCELED:
-                    Log.d(TAG, "Sign In canceled");
-                    break;
-                case CommonStatusCodes.NETWORK_ERROR:
-                    Log.d(TAG, "Network error.");
-                    break;
-                default:
-                    Log.d(TAG, "Couldn't get credential from result." + e.getLocalizedMessage());
-                    break;
-            }
+            Snackbar.make(
+                    requireView(),
+                    getString(R.string.authentication_error),
+                    Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -111,7 +100,6 @@ public class LoginFragment extends Fragment {
                         credentialManager.setCredential(credential);
                         openMainActivity();
                     } else {
-                        Log.w(TAG, "signIn failed", task.getException());
                         Snackbar.make(
                                 requireView(),
                                 getString(R.string.authentication_error),
