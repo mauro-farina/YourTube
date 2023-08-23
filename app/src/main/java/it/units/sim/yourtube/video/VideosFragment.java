@@ -36,7 +36,7 @@ import it.units.sim.yourtube.model.VideoData;
 public class VideosFragment extends Fragment {
 
     private SimpleDateFormat dateFormat;
-    private YouTubeDataViewModel globalViewModel;
+    private YouTubeDataViewModel youTubeDataViewModel;
     private VideosViewModel localViewModel;
     private VideosAdapter adapter;
     private Calendar calendar;
@@ -55,10 +55,10 @@ public class VideosFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ViewModelProvider.AndroidViewModelFactory factory =
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication());
-        globalViewModel = new ViewModelProvider(requireActivity(), factory).get(YouTubeDataViewModel.class);
+        youTubeDataViewModel = new ViewModelProvider(requireActivity(), factory).get(YouTubeDataViewModel.class);
         localViewModel = new ViewModelProvider(this).get(VideosViewModel.class);
         dateObserverBypass = localViewModel.getDateFilter().getValue();
-        subscriptionsObserverBypass = globalViewModel.getSubscriptionsList().getValue();
+        subscriptionsObserverBypass = youTubeDataViewModel.getSubscriptionsList().getValue();
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         hasDateChangedWhileCategoryFilterOn = false;
@@ -76,7 +76,7 @@ public class VideosFragment extends Fragment {
     public void onStop() {
         super.onStop();
         dateObserverBypass = localViewModel.getDateFilter().getValue();
-        subscriptionsObserverBypass = globalViewModel.getSubscriptionsList().getValue();
+        subscriptionsObserverBypass = youTubeDataViewModel.getSubscriptionsList().getValue();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class VideosFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_videos, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.videos_recycler_view);
-        adapter = new VideosAdapter(globalViewModel.getVideosList().getValue(), clickedView -> {
+        adapter = new VideosAdapter(youTubeDataViewModel.getVideosList().getValue(), clickedView -> {
             VideoData video = (VideoData) clickedView.getTag();
             Bundle extras = new Bundle();
             extras.putParcelable("video", video);
@@ -113,10 +113,10 @@ public class VideosFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        globalViewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> {
+        youTubeDataViewModel.getSubscriptionsList().observe(getViewLifecycleOwner(), list -> {
             if (subscriptionsObserverBypass.equals(list))
                 return;
-            globalViewModel.fetchVideos(
+            youTubeDataViewModel.fetchVideos(
                     localViewModel.getDateFilter().getValue(),
                     localViewModel.getCategoryFilter().getValue()
             );
@@ -124,7 +124,7 @@ public class VideosFragment extends Fragment {
         localViewModel.getDateFilter().observe(getViewLifecycleOwner(), date -> {
             if ((this.dateObserverBypass != null) && this.dateObserverBypass.equals(date))
                 return;
-            globalViewModel.fetchVideos(
+            youTubeDataViewModel.fetchVideos(
                     localViewModel.getDateFilter().getValue(),
                     localViewModel.getCategoryFilter().getValue()
             );
@@ -133,7 +133,7 @@ public class VideosFragment extends Fragment {
                 hasDateChangedWhileCategoryFilterOn = true;
             }
         });
-        globalViewModel.getVideosList().observe(getViewLifecycleOwner(), list -> {
+        youTubeDataViewModel.getVideosList().observe(getViewLifecycleOwner(), list -> {
             Category filterCategory = localViewModel.getCategoryFilter().getValue();
             if (filterCategory != null) {
                 setFilteredVideosListInAdapter(filterCategory);
@@ -146,7 +146,7 @@ public class VideosFragment extends Fragment {
                 category -> {
                     if (hasDateChangedWhileCategoryFilterOn) {
                         hasDateChangedWhileCategoryFilterOn = false;
-                        globalViewModel.fetchVideos(
+                        youTubeDataViewModel.fetchVideos(
                                 localViewModel.getDateFilter().getValue(),
                                 localViewModel.getCategoryFilter().getValue()
                         );
@@ -182,11 +182,11 @@ public class VideosFragment extends Fragment {
 
     private void setFilteredVideosListInAdapter(Category filterCategory) {
         if (filterCategory == null) {
-            adapter.setVideosList(globalViewModel.getVideosList().getValue());
+            adapter.setVideosList(youTubeDataViewModel.getVideosList().getValue());
             return;
         }
         adapter.setVideosList(
-                Objects.requireNonNull(globalViewModel.getVideosList().getValue())
+                Objects.requireNonNull(youTubeDataViewModel.getVideosList().getValue())
                         .stream()
                         .filter(v -> filterCategory.getChannelIds().contains(v.getChannel().getChannelId()))
                         .collect(Collectors.toList())
