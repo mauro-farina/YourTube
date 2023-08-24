@@ -165,6 +165,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
             return;
         }
         userBackupDocument.get().addOnSuccessListener(doc -> {
+            if (!isAdded()) {
+                // avoid crash when exit settings too soon
+                return;
+            }
             if (doc == null || doc.getData() == null || doc.toObject(CloudBackupObject.class) == null) {
                 importBackupPreference.setSummary(getString(R.string.no_backup_found));
             } else {
