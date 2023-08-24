@@ -47,16 +47,6 @@ public class UserSubscription implements Parcelable {
         }
     };
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "@" + channelName
-                + System.lineSeparator()
-                + "ID: " + channelId
-                + System.lineSeparator()
-                + "Thumbnail: " + thumbnailUrl;
-    }
-
     public String getUploadsPlaylistId() {
         return uploadsPlaylistId;
     }

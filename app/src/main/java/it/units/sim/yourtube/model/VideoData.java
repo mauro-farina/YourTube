@@ -62,12 +62,6 @@ public class VideoData implements Parcelable {
         return url;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return title + " by " + getChannel().getChannelName();
-    }
-
     public String getTitle() {
         return title;
     }
@@ -78,10 +72,6 @@ public class VideoData implements Parcelable {
 
     public String getThumbnailUrl() {
         return thumbnailUrl;
-    }
-
-    public DateTime getPublishedAt() {
-        return publishedAt;
     }
 
     public String getDescription() {
