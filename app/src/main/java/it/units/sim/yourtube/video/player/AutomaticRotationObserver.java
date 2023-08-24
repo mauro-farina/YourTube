@@ -30,12 +30,11 @@ public class AutomaticRotationObserver extends ContentObserver {
     public void onChange(boolean selfChange, Uri uri) {
         super.onChange(selfChange, uri);
 
-        if (uri != null) {
-            if (uri.equals(Settings.System.getUriFor(Settings.System.ACCELEROMETER_ROTATION))) {
-                int newAutoRotationSettingState = getAutoRotationSettingState();
-                autoRotationEnabled = newAutoRotationSettingState == 1;
-                callback.onAutoRotationChanged();
-            }
+        if (uri != null
+                && uri.equals(Settings.System.getUriFor(Settings.System.ACCELEROMETER_ROTATION))) {
+            int newAutoRotationSettingState = getAutoRotationSettingState();
+            autoRotationEnabled = newAutoRotationSettingState == 1;
+            callback.onAutoRotationChanged();
         }
     }
 
