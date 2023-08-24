@@ -110,16 +110,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case SettingsManager.PREFERENCE_THEME:
-                String newTheme = sharedPreferences.getString(key, SettingsManager.PREFERENCE_THEME_DEFAULT);
-                SettingsManager.setTheme(newTheme);
-                break;
-            case SettingsManager.PREFERENCE_LANGUAGE:
-                String newLanguage = sharedPreferences.getString(key, SettingsManager.PREFERENCE_LANGUAGE_DEFAULT);
-                SettingsManager.setLanguage(getResources(), newLanguage);
-                requireActivity().recreate();
-                break;
+        if (key.equals(SettingsManager.PREFERENCE_THEME)) {
+            String newTheme = sharedPreferences.getString(key, SettingsManager.PREFERENCE_THEME_DEFAULT);
+            SettingsManager.setTheme(newTheme);
+        } else if(key.equals(SettingsManager.PREFERENCE_LANGUAGE)) {
+            String newLanguage = sharedPreferences.getString(key, SettingsManager.PREFERENCE_LANGUAGE_DEFAULT);
+            SettingsManager.setLanguage(getResources(), newLanguage);
+            requireActivity().recreate();
         }
     }
 
