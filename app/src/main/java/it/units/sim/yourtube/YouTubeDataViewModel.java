@@ -57,15 +57,13 @@ public class YouTubeDataViewModel extends AndroidViewModel {
     private void handleResultError(Result.Error<?> result) {
         Exception exception = result.getException();
         Throwable cause = exception.getCause();
-        if (exception.getMessage() != null) {
-            if (exception.getMessage().contains("quotaExceeded")) {
-                quotaExceeded.postValue(true);
-            }
+        if (exception.getMessage() != null
+                && exception.getMessage().contains("quotaExceeded")) {
+            quotaExceeded.postValue(true);
         }
-        if (cause != null && cause.getMessage() != null) {
-            if (cause.getMessage().equals("NeedRemoteConsent")) {
-                missingYouTubeDataAuthorization.postValue(true);
-            }
+        if (cause != null && cause.getMessage() != null
+                && cause.getMessage().equals("NeedRemoteConsent")) {
+            missingYouTubeDataAuthorization.postValue(true);
         }
     }
 
