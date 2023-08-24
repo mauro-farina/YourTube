@@ -19,8 +19,8 @@ import it.units.sim.yourtube.model.UserSubscription;
 
 public class SubscriptionInfoDialog extends DialogFragment {
 
-    public final static String TAG = "SUBSCRIPTION_INFO_DIALOG";
-    private final static String ARG = "subscription";
+    public static final String TAG = "SUBSCRIPTION_INFO_DIALOG";
+    private static final String ARG = "subscription";
 
     public static SubscriptionInfoDialog newInstance(UserSubscription subscription) {
         Bundle args = new Bundle();
