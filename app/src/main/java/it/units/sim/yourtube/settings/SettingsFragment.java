@@ -223,8 +223,15 @@ public class SettingsFragment extends PreferenceFragmentCompat
                         return;
                     }
                     viewModel.restoreCategoriesFromBackup(backupObject.getCategories());
+                    Snackbar.make(
+                            requireView(),
+                            getString(R.string.backup_import_categories_failed),
+                            Snackbar.LENGTH_SHORT).show();
                 })
-                .addOnFailureListener(runnable -> System.out.println("*** fail ***"));
+                .addOnFailureListener(runnable -> Snackbar
+                        .make(requireView(), getString(R.string.backup_import_categories_failed), Snackbar.LENGTH_SHORT)
+                        .show()
+                );
     }
 
     private static String millisecondsToReadableDate(long timeInMilliseconds) {

@@ -72,4 +72,6 @@
     <string name="dialog_import_categories_title">Importa categorie dall\'ultimo backup</string>
     <string name="dialog_import_categories_warning">Se procedi, perderai tutte le categorie memorizzate sul dispsotivo.
     \nVuoi proseguire?</string>
+    <string name="backup_import_categories_failed">Operazione fallita</string>
+    <string name="backup_import_categories_success">Categorie importate con successo</string>
 </resources>
