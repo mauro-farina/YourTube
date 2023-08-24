@@ -161,7 +161,7 @@ public class VideoPlayerFragment extends Fragment {
                     requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     handler.postDelayed(
                             () -> {
-                                if (rotationObserver.isAutoRotationEnabled())
+                                if (isAdded() && rotationObserver.isAutoRotationEnabled())
                                     requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                             },
                             3*1000
@@ -182,7 +182,7 @@ public class VideoPlayerFragment extends Fragment {
                     requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     handler.postDelayed(
                             () -> {
-                                if (!isFullscreen)
+                                if (isAdded() && !isFullscreen)
                                     requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                             },
                             3*1000
