@@ -76,13 +76,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     private void forceLogout() {
         googleSignInClient.signOut()
-                .addOnSuccessListener(runnable -> {
-                    mAuth.signOut();
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.logout_success),
-                            Toast.LENGTH_SHORT).show();
-                })
+                .addOnSuccessListener(runnable -> mAuth.signOut())
                 .addOnFailureListener(runnable ->
                     Toast.makeText(
                             getBaseContext(),
