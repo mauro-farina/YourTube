@@ -3,6 +3,9 @@ package it.units.sim.yourtube.settings;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -11,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -37,7 +41,8 @@ import it.units.sim.yourtube.data.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.CloudBackupObject;
 
-public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragmentCompat
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private ActionBar toolbar;
     private CategoriesViewModel viewModel;
@@ -49,7 +54,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         PreferenceManager.getDefaultSharedPreferences(requireContext()).registerOnSharedPreferenceChangeListener(this);
     }
 
@@ -63,6 +67,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onResume() {
         super.onResume();
         toggleBottomNav();
+        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setTitle(getString(R.string.settings));
