@@ -20,21 +20,14 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTubeScopes;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.util.Arrays;
-
 public class LoginFragment extends Fragment {
 
     private GoogleSignInClient googleSignInClient;
-    private GoogleCredentialManager credentialManager;
-    private GoogleAccountCredential credential;
-    private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
     private FirebaseAuth mAuth;
 
     public LoginFragment() {
@@ -51,11 +44,6 @@ public class LoginFragment extends Fragment {
                 .build();
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         mAuth = FirebaseAuth.getInstance();
-
-        credentialManager = GoogleCredentialManager.getInstance();
-        credential = GoogleAccountCredential
-                .usingOAuth2(requireContext(), Arrays.asList(YOUTUBE_API_SCOPES))
-                .setBackOff(new ExponentialBackOff());
     }
 
     @Override
@@ -96,8 +84,8 @@ public class LoginFragment extends Fragment {
         mAuth.signInWithCredential(firebaseCredential)
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
-                        credential.setSelectedAccountName(account.getEmail());
-                        credentialManager.setCredential(credential);
+                        YourTubeApp app = (YourTubeApp) requireActivity().getApplication();
+                        app.setGoogleCredentialAccount(account.getEmail());
                         openMainActivity();
                     } else {
                         Snackbar.make(

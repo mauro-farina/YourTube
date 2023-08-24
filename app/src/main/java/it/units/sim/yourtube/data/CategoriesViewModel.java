@@ -10,7 +10,6 @@ import androidx.room.Room;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import it.units.sim.yourtube.GoogleCredentialManager;
 import it.units.sim.yourtube.YourTubeApp;
 import it.units.sim.yourtube.model.Category;
 
@@ -32,7 +31,7 @@ public class CategoriesViewModel extends AndroidViewModel {
                         "categories-db")
                 .build();
         categoryDao = db.categoryDao();
-        categoriesOwner = GoogleCredentialManager.getInstance().getCredential().getSelectedAccountName();
+        categoriesOwner = app.getGoogleCredential().getSelectedAccountName();
         categoriesList = categoryDao.getAll(categoriesOwner);
     }
 

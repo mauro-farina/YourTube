@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 
-import it.units.sim.yourtube.GoogleCredentialManager;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.YourTubeApp;
 import it.units.sim.yourtube.api.Result;
@@ -31,10 +30,12 @@ public class VideoPlayerViewModel extends AndroidViewModel {
     private final MutableLiveData<String> viewsCount;
     private final MutableLiveData<String> likesCount;
     private final MutableLiveData<List<VideoComment>> comments;
+    private final GoogleAccountCredential credential;
 
     public VideoPlayerViewModel(@NonNull Application application) {
         super(application);
         YourTubeApp app = getApplication();
+        credential = app.getGoogleCredential();
         executorService = app.getExecutorService();
         viewsCount = new MutableLiveData<>();
         likesCount = new MutableLiveData<>();
@@ -42,7 +43,6 @@ public class VideoPlayerViewModel extends AndroidViewModel {
     }
 
     public void setVideoId(String videoId) {
-        GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         executorService.submit(new VideoStatsRequest(
                 credential,
                 result -> {

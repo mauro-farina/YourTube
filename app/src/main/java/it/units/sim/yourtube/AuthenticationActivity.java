@@ -12,21 +12,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Scope;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTubeScopes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Arrays;
-
 public class AuthenticationActivity extends AppCompatActivity {
 
-    private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };
     public static final String INTENT_LOGOUT_FLAG = "logout";
     private FirebaseAuth mAuth;
-    private GoogleAccountCredential credential;
-    private GoogleCredentialManager credentialManager;
     private GoogleSignInClient googleSignInClient;
 
     @Override
@@ -51,12 +44,6 @@ public class AuthenticationActivity extends AppCompatActivity {
                 && getIntent().getExtras().getBoolean(INTENT_LOGOUT_FLAG)) {
             forceLogout();
         }
-
-        credentialManager = GoogleCredentialManager.getInstance();
-        credential = GoogleAccountCredential
-                .usingOAuth2(getApplicationContext(), Arrays.asList(YOUTUBE_API_SCOPES))
-                .setBackOff(new ExponentialBackOff());
-
     }
 
     @Override
@@ -66,8 +53,8 @@ public class AuthenticationActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
         if (firebaseUser != null && googleAccount != null) {
             String accountName = googleAccount.getEmail();
-            credential.setSelectedAccountName(accountName);
-            credentialManager.setCredential(credential);
+            YourTubeApp app = (YourTubeApp) getApplication();
+            app.setGoogleCredentialAccount(accountName);
             openMainActivity();
         } else if (firebaseUser != null || googleAccount != null) {
             forceLogout();

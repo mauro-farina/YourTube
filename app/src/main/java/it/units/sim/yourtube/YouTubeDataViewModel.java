@@ -30,10 +30,12 @@ public class YouTubeDataViewModel extends AndroidViewModel {
     private final MutableLiveData<List<VideoData>> videosList;
     private final MutableLiveData<Boolean> missingYouTubeDataAuthorization;
     private final MutableLiveData<Boolean> quotaExceeded;
+    private final GoogleAccountCredential credential;
 
     public YouTubeDataViewModel(@NonNull Application application) {
         super(application);
         YourTubeApp app = getApplication();
+        credential = app.getGoogleCredential();
         executorService = app.getExecutorService();
         subscriptionsList = new MutableLiveData<>(new ArrayList<>());
         videosList = new MutableLiveData<>(new ArrayList<>());
@@ -42,7 +44,6 @@ public class YouTubeDataViewModel extends AndroidViewModel {
     }
 
     public void fetchUserSubscriptions() {
-        GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         executorService.submit(new SubscriptionListRequest(credential, result -> {
             if (result instanceof Result.Success) {
                 List<UserSubscription> fetchedSubscriptions = ((Result.Success<List<UserSubscription>>) result).getData();
@@ -80,7 +81,6 @@ public class YouTubeDataViewModel extends AndroidViewModel {
     public void fetchVideos(Date date, Category category) {
         videosList.setValue(new ArrayList<>());
         cancelOngoingTasks();
-        GoogleAccountCredential credential = GoogleCredentialManager.getInstance().getCredential();
         for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
             if (category != null && !category.getChannelIds().contains(sub.getChannelId()))
                 continue;

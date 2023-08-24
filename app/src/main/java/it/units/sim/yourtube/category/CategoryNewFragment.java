@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import it.units.sim.yourtube.GoogleCredentialManager;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.data.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
@@ -65,8 +67,11 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
                 .stream()
                 .map(UserSubscription::getChannelId)
                 .collect(Collectors.toList());
-        String owner = GoogleCredentialManager.getInstance().getCredential().getSelectedAccountName();
-        Category newCategory = new Category(categoryName, selectedChannelsId, chosenCategoryResId, owner);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(requireContext());
+        if (account == null || account.getEmail() == null) {
+            return false;
+        }
+        Category newCategory = new Category(categoryName, selectedChannelsId, chosenCategoryResId, account.getEmail());
         categoriesViewModel.addCategory(newCategory);
         return true;
     }
