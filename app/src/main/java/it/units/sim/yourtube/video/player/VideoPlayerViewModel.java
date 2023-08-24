@@ -55,8 +55,8 @@ public class VideoPlayerViewModel extends AndroidViewModel {
                         viewsCount.postValue(readableViewsCount);
                         likesCount.postValue(readableLikesCount);
                     } else {
-                        System.out.println("Request failed");
-                        System.out.println(((Result.Error<VideoStatistics>) result).getException().getMessage());
+                        viewsCount.postValue("N/A");
+                        likesCount.postValue("N/A");
                     }
                 },
                 videoId
@@ -67,8 +67,7 @@ public class VideoPlayerViewModel extends AndroidViewModel {
                     if (result instanceof Result.Success) {
                         comments.postValue(((Result.Success<List<VideoComment>>) result).getData());
                     } else {
-                        System.out.println("fail");
-                        System.out.println(((Result.Error<?>) result).getException().getMessage());
+                        comments.postValue(new ArrayList<>());
                     }
                 },
                 videoId,
