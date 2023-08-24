@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    void logoutViaAuthenticationActivity() {
+    public void logoutViaAuthenticationActivity() {
         Intent intent = new Intent(this, AuthenticationActivity.class);
         intent.putExtra(AuthenticationActivity.INTENT_LOGOUT_FLAG, true);
         finish();

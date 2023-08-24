@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import it.units.sim.yourtube.MainActivity;
 import it.units.sim.yourtube.R;
-import it.units.sim.yourtube.SettingsManager;
+import it.units.sim.yourtube.settings.SettingsManager;
 import it.units.sim.yourtube.YourTubeApp;
 
 public class AuthenticationActivity extends AppCompatActivity {

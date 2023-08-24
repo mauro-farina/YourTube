@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import it.units.sim.yourtube.settings.SettingsManager;
+
 public class YourTubeApp extends Application {
 
     private static final String[] YOUTUBE_API_SCOPES = { YouTubeScopes.YOUTUBE_READONLY };

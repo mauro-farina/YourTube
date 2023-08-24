@@ -1,6 +1,5 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.settings;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,6 +31,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
+import it.units.sim.yourtube.MainActivity;
+import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.data.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.CloudBackupObject;
