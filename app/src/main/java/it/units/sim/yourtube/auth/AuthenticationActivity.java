@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +15,11 @@ import com.google.android.gms.common.api.Scope;
 import com.google.api.services.youtube.YouTubeScopes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import it.units.sim.yourtube.MainActivity;
+import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.SettingsManager;
+import it.units.sim.yourtube.YourTubeApp;
 
 public class AuthenticationActivity extends AppCompatActivity {
 

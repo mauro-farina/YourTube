@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,10 @@ import com.google.api.services.youtube.YouTubeScopes;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import it.units.sim.yourtube.MainActivity;
+import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.YourTubeApp;
 
 public class LoginFragment extends Fragment {
 

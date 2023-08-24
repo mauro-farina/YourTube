@@ -18,6 +18,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import it.units.sim.yourtube.auth.AuthenticationActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private NavController navController;
