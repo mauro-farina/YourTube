@@ -56,7 +56,7 @@ public class CategorySelectChannelsDialog extends DialogFragment {
         }
 
         subscriptions = getArguments().getParcelableArrayList(ARG_SUBSCRIPTIONS_KEY);
-        if (subscriptions == null || subscriptions.size() == 0) {
+        if (subscriptions == null || subscriptions.isEmpty()) {
             return new MaterialAlertDialogBuilder(requireContext())
                     .setMessage("You are not subscribed to any channel")
                     .create();
