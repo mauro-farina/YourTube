@@ -2,6 +2,7 @@ package it.units.sim.yourtube.settings;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -27,12 +28,12 @@ public class SettingsManager {
         }
     }
 
-    public static void setLanguage(Context context, String newLanguage) {
+    public static void setLanguage(Resources resources, String newLanguage) {
         Locale locale = newLanguage.equals(PREFERENCE_LANGUAGE_DEFAULT) ?
                 Locale.getDefault() : new Locale(newLanguage);
-        Configuration configuration = context.getResources().getConfiguration();
+        Configuration configuration = resources.getConfiguration();
         configuration.setLocale(locale);
-        context.getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 
 }

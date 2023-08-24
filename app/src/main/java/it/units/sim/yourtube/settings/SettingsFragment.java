@@ -117,7 +117,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 break;
             case SettingsManager.PREFERENCE_LANGUAGE:
                 String newLanguage = sharedPreferences.getString(key, SettingsManager.PREFERENCE_LANGUAGE_DEFAULT);
-                SettingsManager.setLanguage(requireContext(), newLanguage);
+                SettingsManager.setLanguage(getResources(), newLanguage);
                 requireActivity().recreate();
                 break;
         }

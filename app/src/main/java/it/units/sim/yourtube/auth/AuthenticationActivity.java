@@ -34,7 +34,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         String lang = sharedPreferences.getString(SettingsManager.PREFERENCE_LANGUAGE, SettingsManager.PREFERENCE_LANGUAGE_DEFAULT);
-        SettingsManager.setLanguage(getBaseContext(), lang);
+        SettingsManager.setLanguage(getResources(), lang);
 
         mAuth = FirebaseAuth.getInstance();
 
