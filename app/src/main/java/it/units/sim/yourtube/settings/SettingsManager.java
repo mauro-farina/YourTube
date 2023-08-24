@@ -1,6 +1,5 @@
 package it.units.sim.yourtube.settings;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
