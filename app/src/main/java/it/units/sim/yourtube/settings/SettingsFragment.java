@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -31,6 +32,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
+import it.units.sim.yourtube.EmptyMenuProvider;
 import it.units.sim.yourtube.MainActivity;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.data.CategoriesViewModel;
@@ -46,10 +48,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private static final String BACKUP_DOCUMENT_PATH = "categoriesBackup";
     private DocumentReference userBackupDocument;
     private Preference importBackupPreference;
+    private MenuProvider menuProvider;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        menuProvider = new EmptyMenuProvider();
         PreferenceManager.getDefaultSharedPreferences(requireContext()).registerOnSharedPreferenceChangeListener(this);
     }
 
@@ -67,6 +71,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setTitle(getString(R.string.settings));
+            requireActivity().addMenuProvider(menuProvider);
         }
     }
 
@@ -77,6 +82,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(false);
             toolbar.setTitle(R.string.app_name);
+            requireActivity().removeMenuProvider(menuProvider);
         }
     }
 

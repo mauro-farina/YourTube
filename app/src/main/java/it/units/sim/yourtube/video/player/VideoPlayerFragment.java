@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -31,6 +32,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.You
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import it.units.sim.yourtube.EmptyMenuProvider;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.VideoData;
 import kotlin.Unit;
@@ -48,6 +50,7 @@ public class VideoPlayerFragment extends Fragment {
     private final Handler handler = new Handler();
     private ContentResolver contentResolver;
     private AutomaticRotationObserver rotationObserver;
+    private MenuProvider menuProvider;
 
     public VideoPlayerFragment() {
         // Required empty public constructor
@@ -59,6 +62,7 @@ public class VideoPlayerFragment extends Fragment {
         window = requireActivity().getWindow();
         originalSystemUiVisibility = window.getDecorView().getSystemUiVisibility();
         toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        menuProvider = new EmptyMenuProvider();
 
         if (getArguments() != null) {
             video = getArguments().getParcelable("video");
@@ -88,6 +92,7 @@ public class VideoPlayerFragment extends Fragment {
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setTitle(video.getReadablePublishedDate());
+            requireActivity().addMenuProvider(menuProvider);
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
@@ -105,6 +110,7 @@ public class VideoPlayerFragment extends Fragment {
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(false);
             toolbar.setTitle(R.string.app_name);
+            requireActivity().removeMenuProvider(menuProvider);
         }
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         turnImmersionModeOff();

@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,6 +27,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
+import it.units.sim.yourtube.EmptyMenuProvider;
 import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.UserSubscription;
@@ -41,12 +43,14 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     protected int chosenCategoryResId;
     protected String categoryName;
     protected String failureReason;
+    private MenuProvider menuProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         YouTubeDataViewModel subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(YouTubeDataViewModel.class);
         toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        menuProvider = new EmptyMenuProvider();
         localViewModel = new ViewModelProvider(this).get(CategoryEditorViewModel.class);
         subscriptions = subscriptionsViewModel
                 .getSubscriptionsList()
@@ -60,6 +64,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setTitle(getToolbarTitle());
+            requireActivity().addMenuProvider(menuProvider);
         }
     }
 
@@ -67,6 +72,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     public void onStop() {
         super.onStop();
         toggleBottomNav();
+        requireActivity().removeMenuProvider(menuProvider);
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(false);
             toolbar.setTitle(R.string.app_name);
