@@ -76,8 +76,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         toggleBottomNav();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(false);
