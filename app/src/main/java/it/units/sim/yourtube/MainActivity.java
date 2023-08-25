@@ -8,11 +8,14 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -20,7 +23,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import it.units.sim.yourtube.auth.AuthenticationActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MenuProvider {
 
     private NavController navController;
     private NetworkChangeReceiver networkChangeReceiver;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.top_app_bar);
         setSupportActionBar(toolbar);
+        addMenuProvider(this);
 
         ViewModelProvider.AndroidViewModelFactory factory =
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication());
@@ -80,14 +84,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.top_bar_menu, menu);
-        return true;
+    public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.top_bar_menu, menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
         if (id == R.id.logoutButton) {
             logoutViaAuthenticationActivity();
             return true;
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 navController.popBackStack();
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     public void logoutViaAuthenticationActivity() {
