@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,7 +18,6 @@
             android:layout_width="@dimen/category_icon"
             android:layout_height="@dimen/category_icon"
             android:layout_margin="@dimen/category_icon_margin"
-            app:tint="?attr/colorAccent"
             android:src="@drawable/icon_category_basketball"
             android:tag="icon_category_basketball"
             android:contentDescription="@string/category_basketball" />
@@ -28,7 +26,6 @@
             android:layout_width="@dimen/category_icon"
             android:layout_height="@dimen/category_icon"
             android:layout_margin="@dimen/category_icon_margin"
-            app:tint="?attr/colorAccent"
             android:src="@drawable/icon_category_car"
             android:tag="icon_category_car"
             android:contentDescription="@string/category_car" />
@@ -37,7 +34,6 @@
             android:layout_width="@dimen/category_icon"
             android:layout_height="@dimen/category_icon"
             android:layout_margin="@dimen/category_icon_margin"
-            app:tint="?attr/colorAccent"
             android:src="@drawable/icon_category_travel"
             android:tag="icon_category_travel"
             android:contentDescription="@string/category_travel" />
@@ -46,7 +42,6 @@
             android:layout_width="@dimen/category_icon"
             android:layout_height="@dimen/category_icon"
             android:layout_margin="@dimen/category_icon_margin"
-            app:tint="?attr/colorAccent"
             android:src="@drawable/icon_category_videogame"
             android:tag="icon_category_videogame"
             android:contentDescription="@string/category_videogame" />
@@ -55,7 +50,6 @@
             android:layout_width="@dimen/category_icon"
             android:layout_height="@dimen/category_icon"
             android:layout_margin="@dimen/category_icon_margin"
-            app:tint="?attr/colorAccent"
             android:src="@drawable/icon_category_computer"
             android:tag="icon_category_computer"
             android:contentDescription="@string/category_computer" />
@@ -64,7 +58,6 @@
             android:layout_width="@dimen/category_icon"
             android:layout_height="@dimen/category_icon"
             android:layout_margin="@dimen/category_icon_margin"
-            app:tint="?attr/colorAccent"
             android:src="@drawable/icon_category_podcast"
             android:tag="icon_category_podcast"
             android:contentDescription="@string/category_podcast" />
