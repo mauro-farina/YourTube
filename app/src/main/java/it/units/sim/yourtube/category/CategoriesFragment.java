@@ -36,7 +36,6 @@ public class CategoriesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
         adapter = new CategoriesAdapter(
                 new ArrayList<>(),
@@ -72,10 +71,11 @@ public class CategoriesFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+
         RecyclerView recyclerView = view.findViewById(R.id.categories_recycler_view);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         categoriesViewModel.getCategoriesList().observe(getViewLifecycleOwner(), adapter::setCategoriesList);
 
         FloatingActionButton fab = view.findViewById(R.id.categories_add_category_fab);
