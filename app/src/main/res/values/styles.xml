@@ -2,12 +2,19 @@
 <resources>
 
     <!-- Material Dialog -->
-    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="colorPrimary">?attr/colorOnPrimary</item>
+
+    <style name="ThemeOverlay.App.MaterialAlertDialog.Base" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="colorOnSurface">?attr/colorSecondary</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button.Dialog</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button.Dialog</item>
         <item name="buttonBarNeutralButtonStyle">@style/Widget.App.Button.Dialog</item>
+    </style>
+
+    <style name="ThemeOverlay.App.MaterialAlertDialog.Day" parent="ThemeOverlay.App.MaterialAlertDialog.Base">
+        <item name="colorPrimary">?attr/colorOnPrimary</item>
+    </style>
+    <style name="ThemeOverlay.App.MaterialAlertDialog.Night" parent="ThemeOverlay.App.MaterialAlertDialog.Base">
+        <item name="colorSurface">#1f1f1f</item>
     </style>
     <style name="Widget.App.Button.Dialog" parent="Widget.Material3.Button.TextButton.Dialog">
         <item name="android:textColor">?attr/colorOnBackground</item>

@@ -12,7 +12,7 @@
         <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
         <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
         <!-- Material Dialog -->
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog.Day</item>
         <!-- Material Buttons -->
         <item name="materialButtonStyle">@style/Widget.App.Button.TextButton</item>
         <item name="materialIconButtonStyle">@style/Widget.App.Button.IconButton</item>
