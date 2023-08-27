@@ -9,4 +9,19 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="red_darker">#c40003</color>
+
+    <!-- New Scheme color -->
+    <color name="seed">#000000</color>
+    <color name="md_theme_light_primary">#FF0000</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_onPrimaryContainer">#3E001D</color> <!-- FAB Icon Color -->
+    <color name="md_theme_light_secondary">#9C0000</color> <!-- settings section titles -->
+    <color name="md_theme_light_onSecondary">#FFFFFF</color> <!-- useless -->
+    <color name="md_theme_light_secondaryContainer">#FF0000</color> <!-- bottom nav chosen color splash -->
+    <color name="md_theme_light_onSecondaryContainer">#FFFFFF</color> <!-- bottom nav chosen color icon -->
+    <color name="md_theme_light_background">#FFFFFF</color>
+    <color name="md_theme_light_onBackground">#201A1B</color>
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#201A1B</color>
+    <color name="md_theme_light_onSurfaceVariant">#514347</color>
 </resources>
