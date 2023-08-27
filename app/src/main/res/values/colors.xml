@@ -16,7 +16,6 @@
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_light_onPrimaryContainer">#3E001D</color> <!-- FAB Icon Color -->
     <color name="md_theme_light_secondary">#9C0000</color> <!-- settings section titles -->
-    <color name="md_theme_light_onSecondary">#FFFFFF</color> <!-- useless -->
     <color name="md_theme_light_secondaryContainer">#FF0000</color> <!-- bottom nav chosen color splash -->
     <color name="md_theme_light_onSecondaryContainer">#FFFFFF</color> <!-- bottom nav chosen color icon -->
     <color name="md_theme_light_background">#FFFFFF</color>
@@ -24,4 +23,19 @@
     <color name="md_theme_light_surface">#FFFFFF</color>
     <color name="md_theme_light_onSurface">#201A1B</color>
     <color name="md_theme_light_onSurfaceVariant">#514347</color>
+
+    <!-- New Scheme color (night) -->
+    <color name="md_theme_dark_primary">#D5D5D5</color>
+    <color name="md_theme_dark_onPrimary">#000000</color>
+    <color name="md_theme_dark_onPrimaryContainer">#D5D5D5</color>
+    <color name="md_theme_dark_secondary">#AEAEAE</color>
+    <color name="md_theme_dark_secondaryContainer">#930100</color>
+    <color name="md_theme_dark_onSecondaryContainer">#FFDAD4</color>
+    <color name="md_theme_dark_background">#000000</color>
+    <color name="md_theme_dark_onBackground">#D5D5D5</color>
+    <color name="md_theme_dark_surface">#000000</color>
+    <color name="md_theme_dark_surface_dialog">#1f1f1f</color>
+    <color name="md_theme_dark_onSurface">#EBE0E1</color>
+    <color name="md_theme_dark_onSurfaceVariant">#D5C2C6</color>
+
 </resources>

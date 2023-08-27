@@ -1,25 +1,25 @@
 <resources>
-    <!-- Base application theme. -->
     <style name="Theme.YourTube" parent="Theme.Material3.Dark.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryVariant">@color/red_darker</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorOnPrimary</item>
-        <!-- Customize your theme here. -->
-        <item name="android:windowBackground">?attr/colorOnPrimary</item>
-        <item name="colorSurface">?attr/colorOnPrimary</item>
-        <item name="colorAccent">@color/white</item>
-        <item name="colorPrimaryContainer">?attr/colorPrimary</item>
-        <item name="colorOnPrimaryContainer">?attr/colorOnPrimary</item>
-        <item name="colorSecondaryContainer">#AA2E2E</item>
-        <item name="colorOnSurfaceVariant">#CCCCCC</item>
-        <item name="colorOnSecondaryContainer">@color/white</item>
-        <item name="colorOnSurface">@color/white</item>
+        <item name="colorPrimary">@color/md_theme_dark_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_dark_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_dark_secondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_dark_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_dark_onSecondaryContainer</item>
+        <item name="android:colorBackground">@color/md_theme_dark_background</item>
+        <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
+        <item name="colorSurface">@color/md_theme_dark_surface</item>
+        <item name="colorOnSurface">@color/md_theme_dark_onSurface</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_dark_onSurfaceVariant</item>
+        <!-- Material Dialog -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog.Night</item>
+        <!-- Material Buttons -->
+        <item name="materialButtonStyle">@style/Widget.App.Button.TextButton</item>
+        <item name="materialIconButtonStyle">@style/Widget.App.Button.IconButton</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton.Primary</item>
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@color/md_theme_dark_onPrimary</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>
