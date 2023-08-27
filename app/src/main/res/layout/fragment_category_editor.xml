@@ -62,7 +62,6 @@
         android:layout_height="@dimen/category_icon_preview"
         android:id="@+id/category_editor_icons_preview"
         android:layout_marginStart="20dp"
-        app:tint="?attr/colorAccent"
         app:layout_constraintStart_toEndOf="@+id/category_editor_icons_list_expand"
         app:layout_constraintTop_toTopOf="@+id/category_editor_icons_list_expand"
         app:layout_constraintBottom_toBottomOf="@+id/category_editor_icons_list_expand"
