@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -14,7 +15,7 @@
         android:contentDescription="@string/previous_day" />
 
     <Button
-        style="@style/Widget.Material3.Button.TextButton"
+        style="?attr/materialButtonStyle"
         android:id="@+id/date_filter_pick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +30,7 @@
         android:contentDescription="@string/next_day"  />
 
     <Button
-        style="@style/Widget.Material3.Button.TextButton"
+        style="?attr/materialButtonStyle"
         android:id="@+id/category_filter_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
