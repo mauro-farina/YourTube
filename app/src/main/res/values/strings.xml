@@ -28,6 +28,7 @@
     <string name="next_day">Next day</string>
     <string name="previous_day">Previous day</string>
     <string name="current_date">Current date</string>
+    <string name="category_filter">Category filter</string>
     <string name="remove_filter">Remove filer</string>
     <!-- Subscriptions -->
     <string name="subscribed_since">Subscribed since %1$s</string>

@@ -55,7 +55,7 @@ public class FilterVideosByCategoryDialog extends DialogFragment {
         viewModel.getCategoriesList().observe(requireParentFragment(), adapter::setCategoriesList);
 
         return new MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Category filter")
+                .setTitle(getString(R.string.category_filter))
                 .setView(dialogView)
                 .setNeutralButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
                 .setNegativeButton(getString(R.string.remove_filter), (dialog, which) -> {

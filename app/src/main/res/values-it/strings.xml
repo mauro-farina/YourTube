@@ -74,4 +74,5 @@
     \nVuoi proseguire?</string>
     <string name="backup_import_categories_failed">Operazione fallita</string>
     <string name="backup_import_categories_success">Categorie importate con successo</string>
+    <string name="category_filter">Filtro categoria</string>
 </resources>
