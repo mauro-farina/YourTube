@@ -25,11 +25,11 @@
     </style>
     <style name="Widget.App.Button.IconButton" parent="Widget.Material3.Button.IconButton">
         <item name="iconTint">?attr/colorOnBackground</item>
-d    </style>
+    </style>
     <style name="Widget.App.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton.Icon">
         <item name="iconTint">?attr/colorPrimary</item>
         <item name="android:textColor">?attr/colorOnBackground</item>
-d    </style>
+    </style>
 
     <style name="Widget.App.FloatingActionButton.Primary" parent="Widget.Material3.FloatingActionButton.Primary">
         <item name="backgroundTint">?attr/colorPrimary</item>
