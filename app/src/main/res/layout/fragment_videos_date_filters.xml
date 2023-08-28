@@ -29,11 +29,4 @@
         app:icon="@drawable/icon_keyboard_arrow_right_24"
         android:contentDescription="@string/next_day"  />
 
-    <Button
-        style="?attr/materialButtonStyle"
-        android:id="@+id/category_filter_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/category" />
-
 </LinearLayout>

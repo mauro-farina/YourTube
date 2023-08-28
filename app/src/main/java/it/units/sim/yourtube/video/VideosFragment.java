@@ -19,6 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,7 +44,8 @@ public class VideosFragment extends Fragment {
     private VideosAdapter adapter;
     private Calendar calendar;
     private Button datePicker;
-    private Button categoryFilterButton;
+    private FloatingActionButton categoryFilterFAB;
+    private Chip categoryFilterChip;
     private Date dateObserverBypass;
     private List<UserSubscription> subscriptionsObserverBypass;
     private boolean hasDateChangedWhileCategoryFilterOn;
@@ -94,7 +98,8 @@ public class VideosFragment extends Fragment {
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        categoryFilterButton = view.findViewById(R.id.category_filter_button);
+        categoryFilterFAB = view.findViewById(R.id.category_filter_fab);
+        categoryFilterChip = view.findViewById(R.id.category_filter_chip);
         datePicker = view.findViewById(R.id.date_filter_pick);
         datePicker.setText(dateFormat.format(Objects.requireNonNull(localViewModel.getDateFilter().getValue())));
         datePicker.setOnClickListener(v -> showDatePickerDialog());
@@ -147,13 +152,18 @@ public class VideosFragment extends Fragment {
                         setFilteredVideosListInAdapter(category);
                     }
                     if (category != null) {
-                        categoryFilterButton.setText(category.getName());
+                        categoryFilterChip.setText(category.getName());
+                        categoryFilterChip.setVisibility(View.VISIBLE);
+                        categoryFilterChip.setOnCloseIconClickListener(v -> {
+                            v.setVisibility(View.GONE);
+                            localViewModel.setCategoryFilter(null);
+                        });
                     } else {
-                        categoryFilterButton.setText(R.string.category);
+                        categoryFilterChip.setVisibility(View.GONE);
                     }
                 }
         );
-        categoryFilterButton.setOnClickListener(v -> {
+        categoryFilterFAB.setOnClickListener(v -> {
             FragmentManager fragmentManager = getChildFragmentManager();
             fragmentManager.setFragmentResultListener(
                     FilterVideosByCategoryDialog.REQUEST_KEY,
