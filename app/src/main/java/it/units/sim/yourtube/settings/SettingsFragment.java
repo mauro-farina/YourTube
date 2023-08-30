@@ -232,7 +232,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                     viewModel.restoreCategoriesFromBackup(backupObject.getCategories());
                     Snackbar.make(
                             requireView(),
-                            getString(R.string.backup_import_categories_failed),
+                            getString(R.string.backup_import_categories_success),
                             Snackbar.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(runnable -> Snackbar
