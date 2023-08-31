@@ -1,5 +1,7 @@
 package it.units.sim.yourtube.auth;
 
+import static com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes.SIGN_IN_CANCELLED;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -76,10 +78,12 @@ public class LoginFragment extends Fragment {
             GoogleSignInAccount account = task.getResult(ApiException.class);
             login(account);
         } catch (ApiException e) {
-            Snackbar.make(
-                    requireView(),
-                    getString(R.string.authentication_error),
-                    Snackbar.LENGTH_LONG).show();
+            if (e.getStatusCode() !=  SIGN_IN_CANCELLED) {
+                Snackbar.make(
+                        requireView(),
+                        getString(R.string.authentication_error),
+                        Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 
