@@ -1,0 +1,16 @@
+<resources>
+    <!-- Theme Preference -->
+    <string-array name="theme_entries">
+        <item>Tema Scuro</item>
+        <item>Tema Chiaro</item>
+        <item>Tema del sistema</item>
+    </string-array>
+
+    <!-- Language Preference -->
+    <string-array name="language_entries">
+        <item>English</item>
+        <item>Italiano</item>
+        <item>Lingua del sistema</item>
+    </string-array>
+
+</resources>
