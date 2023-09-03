@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuProvider;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -21,7 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Scope;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.api.services.youtube.YouTubeScopes;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,12 +51,37 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private Preference importBackupPreference;
     private MenuProvider menuProvider;
     private FirebaseUser firebaseUser;
+    private FragmentManager fragmentManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         menuProvider = new EmptyMenuProvider();
         PreferenceManager.getDefaultSharedPreferences(requireContext()).registerOnSharedPreferenceChangeListener(this);
+        fragmentManager = getChildFragmentManager();
+        fragmentManager.setFragmentResultListener(
+                ConfirmPreferenceDialog.REQUEST_KEY,
+                this,
+                (requestKey, result) -> {
+                    if (!requestKey.equals(ConfirmPreferenceDialog.REQUEST_KEY))
+                        return;
+                    if (result.keySet().size() == 0)
+                        return;
+                    int preference = result.getInt(ConfirmPreferenceDialog.RESULT_KEY);
+                    switch (preference) {
+                        case ConfirmPreferenceDialog.PREFERENCE_BACKUP_CATEGORIES:
+                            backupCategories();
+                            break;
+                        case ConfirmPreferenceDialog.PREFERENCE_DELETE_ACCOUNT:
+                            deleteAccount();
+                            break;
+                        case ConfirmPreferenceDialog.PREFERENCE_IMPORT_BACKUP:
+                            importBackup();
+                            break;
+                        default:
+                            break;
+                    }
+                });
     }
 
     @Override
@@ -151,25 +176,31 @@ public class SettingsFragment extends PreferenceFragmentCompat
             return;
         }
         deleteAccountPreference.setOnPreferenceClickListener(preference -> {
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestScopes(new Scope(YouTubeScopes.YOUTUBE_READONLY))
-                    .build();
-            GoogleSignInClient signInClient = GoogleSignIn.getClient(requireActivity(), gso);
-            userBackupDocument.delete().addOnSuccessListener(runnable ->
+            ConfirmPreferenceDialog
+                    .newInstance(ConfirmPreferenceDialog.PREFERENCE_DELETE_ACCOUNT)
+                    .show(fragmentManager, ConfirmPreferenceDialog.TAG);
+            return true;
+        });
+    }
+
+    private void deleteAccount() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestScopes(new Scope(YouTubeScopes.YOUTUBE_READONLY))
+                .build();
+        GoogleSignInClient signInClient = GoogleSignIn.getClient(requireActivity(), gso);
+        userBackupDocument.delete().addOnSuccessListener(runnable ->
                 signInClient.revokeAccess().addOnSuccessListener(runnable1 -> {
                     viewModel.deleteAll();
                     firebaseUser.delete();
                     logout();
                 }).addOnFailureListener(runnable1 ->
-                    Snackbar.make(requireView(), getString(R.string.something_went_wrong), Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(requireView(), getString(R.string.something_went_wrong), Snackbar.LENGTH_LONG).show()
                 )
-            ).addOnFailureListener(runnable ->
+        ).addOnFailureListener(runnable ->
                 Snackbar.make(requireView(), getString(R.string.something_went_wrong), Snackbar.LENGTH_LONG).show()
-            );
-            return true;
-        });
+        );
     }
 
     private void setupImportBackupPreference(Preference importBackupPreference) {
@@ -193,12 +224,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
             }
         });
         importBackupPreference.setOnPreferenceClickListener(preference -> {
-            new MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(R.string.dialog_import_categories_title))
-                    .setMessage(getString(R.string.dialog_import_categories_warning))
-                    .setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss())
-                    .setPositiveButton(getString(R.string.yes), (dialog, which) -> importBackup())
-                    .show();
+            ConfirmPreferenceDialog
+                    .newInstance(ConfirmPreferenceDialog.PREFERENCE_IMPORT_BACKUP)
+                    .show(fragmentManager, ConfirmPreferenceDialog.TAG);
             return true;
         });
     }
@@ -208,21 +236,27 @@ public class SettingsFragment extends PreferenceFragmentCompat
             return;
         }
         backupPreference.setOnPreferenceClickListener(preference -> {
-            Calendar c = Calendar.getInstance();
-            CloudBackupObject backupObject = new CloudBackupObject (categories, c.getTimeInMillis());
-            userBackupDocument
-                    .set(backupObject)
-                    .addOnSuccessListener(runnable -> {
-                        Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
-                        importBackupPreference.setSummary(
-                                getString(R.string.last_backup_date,
-                                millisecondsToReadableDate(c.getTimeInMillis())));
-                        })
-                    .addOnFailureListener(runnable ->
-                        Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
-                    );
+            ConfirmPreferenceDialog
+                    .newInstance(ConfirmPreferenceDialog.PREFERENCE_BACKUP_CATEGORIES)
+                    .show(fragmentManager, ConfirmPreferenceDialog.TAG);
             return true;
         });
+    }
+
+    private void backupCategories() {
+        Calendar c = Calendar.getInstance();
+        CloudBackupObject backupObject = new CloudBackupObject (categories, c.getTimeInMillis());
+        userBackupDocument
+                .set(backupObject)
+                .addOnSuccessListener(runnable -> {
+                    Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
+                    importBackupPreference.setSummary(
+                            getString(R.string.last_backup_date,
+                                    millisecondsToReadableDate(c.getTimeInMillis())));
+                })
+                .addOnFailureListener(runnable ->
+                        Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
+                );
     }
 
     private void importBackup() {

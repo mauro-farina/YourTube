@@ -5,6 +5,7 @@
     <string name="cancel">Annulla</string>
     <string name="close">Chiudi</string>
     <string name="confirm">Conferma</string>
+    <string name="error">Errore</string>
     <string name="welcome_text">Benvenuto su YourTube</string>
     <string name="login_button_text">Entra con Google</string>
     <string name="logout_success">Disconnesso con successo</string>
@@ -71,9 +72,10 @@
     <string name="no_backup_found">Nessun backup trovato</string>
     <string name="last_backup_date">Ultimo backup: %1$s</string>
     <string name="dialog_import_categories_title">Importa categorie dall\'ultimo backup</string>
-    <string name="dialog_import_categories_warning">Se procedi, perderai tutte le categorie memorizzate sul dispsotivo.
-    \nVuoi proseguire?</string>
+    <string name="dialog_import_categories_warning">Se procedi, perderai tutte le categorie memorizzate sul dispsotivo.</string>
     <string name="backup_import_categories_failed">Operazione fallita</string>
     <string name="backup_import_categories_success">Categorie importate con successo</string>
     <string name="category_filter">Filtro categoria</string>
+    <string name="dialog_backup_categories_warning">Se procedi, sostituirai l\'ultimo backup con uno nuovo.</string>
+    <string name="dialog_delete_account_warning">Se procedi, eliminerai l\'account, i dati locali e il backup su cloud.</string>
 </resources>

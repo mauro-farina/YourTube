@@ -6,6 +6,7 @@
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
     <string name="confirm">Confirm</string>
+    <string name="error">Error</string>
     <!-- Auth -->
     <string name="welcome_text">YourTube</string>
     <string name="login_button_text">Login with Google</string>
@@ -86,6 +87,7 @@
     <string name="no_backup_found">No backup found</string>
     <string name="last_backup_date">Last backup: %1$s</string>
     <string name="dialog_import_categories_title">Import categories from backup</string>
-    <string name="dialog_import_categories_warning">By proceeding, you will lose all your locally-stored Categories.
-    \nDo you want to continue?</string>
+    <string name="dialog_import_categories_warning">By proceeding, you will lose all your locally-stored Categories.</string>
+    <string name="dialog_backup_categories_warning">By proceeding, you will replace the current cloud backup with a new one.</string>
+    <string name="dialog_delete_account_warning">By proceeding, you will delete your account, your local data and cloud backup.</string>
 </resources>
