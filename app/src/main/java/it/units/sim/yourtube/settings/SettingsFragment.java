@@ -25,6 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.api.services.youtube.YouTubeScopes;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -49,6 +50,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private DocumentReference userBackupDocument;
     private Preference importBackupPreference;
     private MenuProvider menuProvider;
+    private FirebaseUser firebaseUser;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,7 +99,11 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
         viewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
-        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = "";
+        if (firebaseUser != null) {
+            uid = firebaseUser.getUid();
+        }
         userBackupDocument = FirebaseFirestore
                 .getInstance()
                 .collection(uid)
@@ -154,7 +160,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
             userBackupDocument.delete().addOnSuccessListener(runnable ->
                 signInClient.revokeAccess().addOnSuccessListener(runnable1 -> {
                     viewModel.deleteAll();
-                    Snackbar.make(requireView(), "Account successfully deleted", Snackbar.LENGTH_LONG).show();
+                    firebaseUser.delete();
                     logout();
                 }).addOnFailureListener(runnable1 ->
                     Snackbar.make(requireView(), getString(R.string.something_went_wrong), Snackbar.LENGTH_LONG).show()
