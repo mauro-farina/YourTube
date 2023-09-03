@@ -63,11 +63,9 @@ public class MainActivity extends AppCompatActivity implements MenuProvider {
         viewModel.fetchUserSubscriptions();
         viewModel.getMissingYouTubeDataAuthorization().observe(this, isMissing -> {
             if (isMissing) {
-                new MaterialAlertDialogBuilder(this)
-                        .setMessage(getString(R.string.missing_youtube_authorization))
-                        .setNeutralButton(getString(R.string.ok), (dialog, which) -> dialog.dismiss())
-                        .setOnDismissListener(dialog -> logoutViaAuthenticationActivity())
-                        .show();
+                NoYouTubeAuthorizationDialog
+                        .newInstance()
+                        .show(getSupportFragmentManager(), NoYouTubeAuthorizationDialog.TAG);
             }
         });
         viewModel.getQuotaExceeded().observe(this, isQuotaExceeded -> {
