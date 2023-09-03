@@ -24,7 +24,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -46,7 +45,7 @@ public class VideosFragment extends Fragment {
     private Button datePicker;
     private FloatingActionButton categoryFilterFAB;
     private Chip categoryFilterChip;
-    private Date dateObserverBypass;
+    private boolean dateObserverBypass;
     private List<UserSubscription> subscriptionsObserverBypass;
     private boolean hasDateChangedWhileCategoryFilterOn;
 
@@ -61,7 +60,7 @@ public class VideosFragment extends Fragment {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication());
         youTubeDataViewModel = new ViewModelProvider(requireActivity(), factory).get(YouTubeDataViewModel.class);
         localViewModel = new ViewModelProvider(this).get(VideosViewModel.class);
-        dateObserverBypass = localViewModel.getDateFilter().getValue();
+        dateObserverBypass = false;
         subscriptionsObserverBypass = youTubeDataViewModel.getSubscriptionsList().getValue();
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -79,7 +78,7 @@ public class VideosFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        dateObserverBypass = localViewModel.getDateFilter().getValue();
+        dateObserverBypass = true;
         subscriptionsObserverBypass = youTubeDataViewModel.getSubscriptionsList().getValue();
     }
 
@@ -127,8 +126,10 @@ public class VideosFragment extends Fragment {
             );
         });
         localViewModel.getDateFilter().observe(getViewLifecycleOwner(), date -> {
-            if ((this.dateObserverBypass != null) && this.dateObserverBypass.equals(date))
+            if (dateObserverBypass) {
+                dateObserverBypass = false;
                 return;
+            }
             youTubeDataViewModel.fetchVideos(
                     localViewModel.getDateFilter().getValue(),
                     localViewModel.getCategoryFilter().getValue()
