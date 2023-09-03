@@ -99,25 +99,25 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
         viewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = "";
-        if (firebaseUser != null) {
-            uid = firebaseUser.getUid();
-        }
-        userBackupDocument = FirebaseFirestore
-                .getInstance()
-                .collection(uid)
-                .document(BACKUP_DOCUMENT_PATH);
 
         Preference backupPreference = findPreference("create_backup");
         importBackupPreference = findPreference("import_backup");
         Preference logoutPreference = findPreference("logout_preference");
         Preference deleteAccountPreference = findPreference("delete_account");
 
-        setupCreateBackupPreference(backupPreference);
-        setupImportBackupPreference(importBackupPreference);
-        setupLogoutPreference(logoutPreference);
-        setupDeleteAccountPreference(deleteAccountPreference);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            String uid = firebaseUser.getUid();
+            userBackupDocument = FirebaseFirestore
+                    .getInstance()
+                    .collection(uid)
+                    .document(BACKUP_DOCUMENT_PATH);
+
+            setupCreateBackupPreference(backupPreference);
+            setupImportBackupPreference(importBackupPreference);
+            setupLogoutPreference(logoutPreference);
+            setupDeleteAccountPreference(deleteAccountPreference);
+        }
     }
 
     @Override
