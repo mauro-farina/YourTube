@@ -71,7 +71,7 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
                 .findFirst()
                 .orElse(null);
         if (categoryToUpdate == null) {
-            failureReason = getString(R.string.channel_not_found);
+            failureReason = getString(R.string.category_not_found);
             return false;
         }
         categoryToUpdate.setName(categoryName);

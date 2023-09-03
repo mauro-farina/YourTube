@@ -44,6 +44,7 @@
     <string name="category_created">Categoria %1$s creata</string>
     <string name="category_modified">Categoria %1$s modificata</string>
     <string name="channel_not_found">Canale non trovato</string>
+    <string name="category_not_found">Categoria non trovata</string>
     <string name="new_category_fail_no_name">Devi specificare un nome la categoria</string>
     <string name="new_category_fail_no_icon">Devi selezionare un\'icona</string>
     <string name="new_category_fail_category_exists">Questa categoria esiste già</string>

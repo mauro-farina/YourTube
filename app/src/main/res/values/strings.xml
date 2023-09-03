@@ -57,6 +57,7 @@
     <string name="category_created">Category %1$s created</string>
     <string name="category_modified">Category %1$s modified</string>
     <string name="channel_not_found">Channel not found</string>
+    <string name="category_not_found">Category not found</string>
     <string name="new_category_fail_no_name">You need to specify a name for the category</string>
     <string name="new_category_fail_no_icon">You need to pick an icon</string>
     <string name="new_category_fail_category_exists">This category already exists</string>
