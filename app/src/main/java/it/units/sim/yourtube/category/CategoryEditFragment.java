@@ -24,6 +24,7 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
     private int categoryId;
     private CategoriesViewModel categoriesViewModel;
     private List<String> previouslySelectedChannelIds;
+    private String originalCategoryName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
         if (getArguments() != null) {
             categoryId = getArguments().getInt("categoryId");
             categoryName = getArguments().getString("categoryName");
+            originalCategoryName = categoryName;
             chosenCategoryResId = getArguments().getInt("categoryIcon");
             previouslySelectedChannelIds = getArguments().getStringArrayList("categoryChannels");
             localViewModel.setSelectedChannels(
@@ -73,6 +75,18 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
         if (categoryToUpdate == null) {
             failureReason = getString(R.string.category_not_found);
             return false;
+        }
+        if (!categoryName.equals(originalCategoryName)) {
+            Category alreadyExistingCategory = Objects
+                    .requireNonNull(categoriesViewModel.getCategoriesList().getValue())
+                    .stream()
+                    .filter(c -> c.getName().equals(categoryName))
+                    .findFirst()
+                    .orElse(null);
+            if (alreadyExistingCategory != null) {
+                failureReason = "Name already used by another category";
+                return false;
+            }
         }
         categoryToUpdate.setName(categoryName);
         categoryToUpdate.setChannelIds(Objects
