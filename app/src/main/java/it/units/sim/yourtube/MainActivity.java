@@ -1,7 +1,6 @@
 package it.units.sim.yourtube;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import android.content.Intent;
 import android.content.IntentFilter;
