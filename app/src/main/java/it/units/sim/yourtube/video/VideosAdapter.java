@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Comparator;
 import java.util.List;
 
 import it.units.sim.yourtube.R;
@@ -30,6 +31,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
     @SuppressLint("NotifyDataSetChanged")
     public void setVideosList(List<VideoData> videosList) {
         this.videosList = videosList;
+        videosList.sort(Comparator.comparing(VideoData::getPublishedDateInMillis).reversed());
         notifyDataSetChanged();
     }
 

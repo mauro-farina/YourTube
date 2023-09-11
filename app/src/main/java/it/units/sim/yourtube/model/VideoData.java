@@ -97,6 +97,10 @@ public class VideoData implements Parcelable {
         return subscription;
     }
 
+    public long getPublishedDateInMillis() {
+        return publishedAt.getValue();
+    }
+
     @Override
     public int describeContents() {
         return 0;
