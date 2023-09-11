@@ -77,8 +77,8 @@ public class YouTubeDataViewModel extends AndroidViewModel {
     }
 
     public void fetchVideos(Date date, Category category) {
-        videosList.setValue(new ArrayList<>());
         cancelOngoingTasks();
+        videosList.setValue(new ArrayList<>());
         for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
             if (category != null && !category.getChannelIds().contains(sub.getChannelId()))
                 continue;
@@ -92,7 +92,6 @@ public class YouTubeDataViewModel extends AndroidViewModel {
                     }
                 } else {
                     handleResultError((Result.Error<?>) result);
-                    cancelOngoingTasks();
                 }
             }, sub, date));
             ongoingFetchTasks.add(task);
