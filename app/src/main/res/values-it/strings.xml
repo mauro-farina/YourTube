@@ -16,7 +16,7 @@
     <string name="bottom_nav_categories">Categorie</string>
     <string name="settings">Impostazioni</string>
     <string name="logout">Esci</string>
-    <string name="quota_exceeded">Quota di API YouTube API superata. \nTorna domani!</string>
+    <string name="quota_exceeded">Quota di API YouTube superata. \nTorna domani!</string>
     <string name="no_internet_connection">Nessuna connessione a Internet</string>
     <string name="missing_youtube_authorization">YourTube ha bisogno di accedere alle informazioni del
         tuo account YouTube per ottenere la lista dei canali a cui sei iscritto. Per favore, effettua
