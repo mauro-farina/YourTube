@@ -89,7 +89,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         TextView categoryNameTextView = holder.getCategoryNameTextView();
         ImageView categoryIconImageView = holder.getCategoryIconImageView();
         categoryNameTextView.setText(category.getName());
-        categoryIconImageView.setImageResource(category.getDrawableIconResId());
+        categoryIconImageView.setImageResource(category.getCategoryIcon().getResourceId());
     }
 
     @Override

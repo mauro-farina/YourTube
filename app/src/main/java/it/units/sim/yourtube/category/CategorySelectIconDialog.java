@@ -14,14 +14,14 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-
 import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.model.CategoryIcon;
 
 public class CategorySelectIconDialog extends DialogFragment {
 
     public static final String TAG = "SELECT_ICON_FOR_CATEGORY_DIALOG";
     public static final String REQUEST_KEY = "updateSelectedIcon";
-    public static final String RESULT_KEY = "selectedIconResourceId";
+    public static final String RESULT_KEY = "selectedCategoryIcon";
     private Bundle result;
 
     public static CategorySelectIconDialog newInstance() {
@@ -40,13 +40,8 @@ public class CategorySelectIconDialog extends DialogFragment {
             View childView = iconsGrid.getChildAt(i);
             if (!(childView instanceof ImageView)) continue;
             childView.setOnClickListener(v -> {
-                String categoryIconName = v.getTag().toString();
-                int selectedIconResId = getResources().getIdentifier(
-                        categoryIconName,
-                        "drawable",
-                        requireContext().getPackageName()
-                );
-                result.putInt(RESULT_KEY, selectedIconResId);
+                String categoryIconName = v.getTag().toString().toUpperCase();
+                result.putSerializable(RESULT_KEY, CategoryIcon.valueOf(categoryIconName));
                 dismiss();
             });
         }

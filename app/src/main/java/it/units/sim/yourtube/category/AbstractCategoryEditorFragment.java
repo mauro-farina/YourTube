@@ -30,6 +30,7 @@ import java.util.List;
 import it.units.sim.yourtube.EmptyMenuProvider;
 import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.model.CategoryIcon;
 import it.units.sim.yourtube.model.UserSubscription;
 
 public abstract class AbstractCategoryEditorFragment extends Fragment {
@@ -40,7 +41,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     protected ChipGroup selectedChannelsChipGroup;
     protected EditText categoryNameEditText;
     protected ImageView categoryIconPreview;
-    protected int chosenCategoryResId;
+    protected CategoryIcon chosenCategoryIcon;
     protected String categoryName;
     protected String failureReason;
     private MenuProvider menuProvider;
@@ -124,8 +125,8 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
                             return;
                         if (result.keySet().size() == 0)
                             return;
-                        chosenCategoryResId = result.getInt(CategorySelectIconDialog.RESULT_KEY);
-                        categoryIconPreview.setImageResource(chosenCategoryResId);
+                        chosenCategoryIcon = (CategoryIcon) result.getSerializable(CategorySelectIconDialog.RESULT_KEY);
+                        categoryIconPreview.setImageResource(chosenCategoryIcon.getResourceId());
                     });
             CategorySelectIconDialog
                     .newInstance()

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.data.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
+import it.units.sim.yourtube.model.CategoryIcon;
 import it.units.sim.yourtube.model.UserSubscription;
 
 public class CategoryEditFragment extends AbstractCategoryEditorFragment {
@@ -35,7 +36,7 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
             categoryId = getArguments().getInt("categoryId");
             categoryName = getArguments().getString("categoryName");
             originalCategoryName = categoryName;
-            chosenCategoryResId = getArguments().getInt("categoryIcon");
+            chosenCategoryIcon = (CategoryIcon) getArguments().getSerializable("categoryIcon");
             previouslySelectedChannelIds = getArguments().getStringArrayList("categoryChannels");
             localViewModel.setSelectedChannels(
                     subscriptions.stream()
@@ -59,8 +60,8 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         categoryNameEditText.setText(categoryName);
-        if (chosenCategoryResId != 0) {
-            categoryIconPreview.setImageResource(chosenCategoryResId);
+        if (chosenCategoryIcon != null) {
+            categoryIconPreview.setImageResource(chosenCategoryIcon.getResourceId());
         }
     }
 
@@ -95,7 +96,7 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
                 .map(UserSubscription::getChannelId)
                 .collect(Collectors.toList())
         );
-        categoryToUpdate.setDrawableIconResId(chosenCategoryResId);
+        categoryToUpdate.setCategoryIcon(chosenCategoryIcon);
         categoriesViewModel.updateCategory(categoryToUpdate);
         return true;
     }

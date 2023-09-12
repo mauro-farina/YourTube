@@ -23,19 +23,21 @@ public class Category implements Parcelable {
     @NonNull
     @ColumnInfo(name = "channels")
     private List<String> channelIds;
+    @NonNull
     @ColumnInfo(name = "icon_res_id")
-    private int drawableIconResId;
+    private CategoryIcon categoryIcon;
+    @NonNull
     @ColumnInfo(name = "owner")
     private String ownerEmail;
 
     public Category(){
-        this("", new ArrayList<>(), 0, "");
+        this("", new ArrayList<>(), CategoryIcon.ICON_CATEGORY_TRAVEL, "");
     }
 
-    public Category(@NonNull String name, @NonNull List<String> channelIds, int drawableIconId, @NonNull String ownerEmail) {
+    public Category(@NonNull String name, @NonNull List<String> channelIds, @NonNull CategoryIcon categoryIcon, @NonNull String ownerEmail) {
         this.name = name;
         this.channelIds = channelIds;
-        this.drawableIconResId = drawableIconId;
+        this.categoryIcon = categoryIcon;
         this.ownerEmail = ownerEmail;
     }
 
@@ -43,7 +45,7 @@ public class Category implements Parcelable {
         id = in.readInt();
         name = in.readString();
         channelIds = in.createStringArrayList();
-        drawableIconResId = in.readInt();
+        categoryIcon = (CategoryIcon) in.readSerializable();
         ownerEmail = in.readString();
     }
 
@@ -71,8 +73,8 @@ public class Category implements Parcelable {
         this.channelIds = channelIds;
     }
 
-    public void setDrawableIconResId(int drawableIconResId) {
-        this.drawableIconResId = drawableIconResId;
+    public void setCategoryIcon(@NonNull CategoryIcon newDrawableIconId) {
+        this.categoryIcon = newDrawableIconId;
     }
 
     public void setOwnerEmail(@NonNull String ownerEmail) {
@@ -93,8 +95,9 @@ public class Category implements Parcelable {
         return channelIds;
     }
 
-    public int getDrawableIconResId() {
-        return drawableIconResId;
+    @NonNull
+    public CategoryIcon getCategoryIcon() {
+        return categoryIcon;
     }
 
     @NonNull
@@ -118,7 +121,7 @@ public class Category implements Parcelable {
         parcel.writeInt(id);
         parcel.writeString(name);
         parcel.writeList(channelIds);
-        parcel.writeInt(drawableIconResId);
+        parcel.writeSerializable(categoryIcon);
         parcel.writeString(ownerEmail);
     }
 }

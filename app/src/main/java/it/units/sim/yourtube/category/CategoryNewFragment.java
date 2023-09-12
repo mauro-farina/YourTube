@@ -50,7 +50,7 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
             failureReason = getString(R.string.new_category_fail_no_name);
             return false;
         }
-        if (chosenCategoryResId == 0) {
+        if (chosenCategoryIcon == null) {
             failureReason = getString(R.string.new_category_fail_no_icon);
             return false;
         }
@@ -62,16 +62,18 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
             }
         }
 
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(requireContext());
+        if (account == null || account.getEmail() == null) {
+            return false;
+        }
+
         List<String> selectedChannelsId = Objects
                 .requireNonNull(localViewModel.getSelectedChannels().getValue())
                 .stream()
                 .map(UserSubscription::getChannelId)
                 .collect(Collectors.toList());
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(requireContext());
-        if (account == null || account.getEmail() == null) {
-            return false;
-        }
-        Category newCategory = new Category(categoryName, selectedChannelsId, chosenCategoryResId, account.getEmail());
+
+        Category newCategory = new Category(categoryName, selectedChannelsId, chosenCategoryIcon, account.getEmail());
         categoriesViewModel.addCategory(newCategory);
         return true;
     }

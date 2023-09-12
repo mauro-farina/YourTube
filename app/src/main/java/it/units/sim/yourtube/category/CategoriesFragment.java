@@ -87,7 +87,7 @@ public class CategoriesFragment extends Fragment {
         Bundle extras = new Bundle();
         extras.putInt("categoryId", category.getId());
         extras.putString("categoryName", category.getName());
-        extras.putInt("categoryIcon", category.getDrawableIconResId());
+        extras.putSerializable("categoryIcon", category.getCategoryIcon());
         extras.putStringArrayList("categoryChannels", new ArrayList<>(category.getChannelIds()));
         navController.navigate(R.id.categoryEditFragment, extras);
     }
