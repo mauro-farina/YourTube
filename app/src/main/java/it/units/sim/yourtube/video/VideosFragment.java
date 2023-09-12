@@ -121,6 +121,7 @@ public class VideosFragment extends Fragment {
             );
         });
         localViewModel.getDateFilter().observe(getViewLifecycleOwner(), date -> {
+            datePicker.setText(DateFormatter.formatDate(date.getTime(), getResources()));
             if (dateObserverBypass) {
                 dateObserverBypass = false;
                 return;
@@ -129,7 +130,6 @@ public class VideosFragment extends Fragment {
                     localViewModel.getDateFilter().getValue(),
                     localViewModel.getCategoryFilter().getValue()
             );
-            datePicker.setText(DateFormatter.formatDate(date.getTime(), getResources()));
             if (localViewModel.getCategoryFilter().getValue() != null) {
                 hasDateChangedWhileCategoryFilterOn = true;
             }
