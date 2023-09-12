@@ -6,7 +6,6 @@
     <string name="close">Chiudi</string>
     <string name="confirm">Conferma</string>
     <string name="error">Errore</string>
-    <string name="welcome_text">Benvenuto su YourTube</string>
     <string name="login_button_text">Entra con Google</string>
     <string name="logout_success">Disconnesso con successo</string>
     <string name="logout_fail">Disconnessione fallita</string>
