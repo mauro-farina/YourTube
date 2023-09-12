@@ -31,7 +31,7 @@ public class Category implements Parcelable {
     private String ownerEmail;
 
     public Category(){
-        this("", new ArrayList<>(), CategoryIcon.ICON_CATEGORY_TRAVEL, "");
+        this("", new ArrayList<>(), CategoryIcon.ICON_CATEGORY_DEFAULT, "");
     }
 
     public Category(@NonNull String name, @NonNull List<String> channelIds, @NonNull CategoryIcon categoryIcon, @NonNull String ownerEmail) {
