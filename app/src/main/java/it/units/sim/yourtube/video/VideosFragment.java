@@ -22,13 +22,12 @@ import android.widget.Button;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import it.units.sim.yourtube.DateFormatter;
 import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.Category;
@@ -37,7 +36,6 @@ import it.units.sim.yourtube.model.VideoData;
 
 public class VideosFragment extends Fragment {
 
-    private SimpleDateFormat dateFormat;
     private YouTubeDataViewModel youTubeDataViewModel;
     private VideosViewModel localViewModel;
     private VideosAdapter adapter;
@@ -63,7 +61,6 @@ public class VideosFragment extends Fragment {
         dateObserverBypass = false;
         subscriptionsObserverBypass = youTubeDataViewModel.getSubscriptionsList().getValue();
         calendar = Calendar.getInstance();
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         hasDateChangedWhileCategoryFilterOn = false;
     }
 
@@ -100,7 +97,6 @@ public class VideosFragment extends Fragment {
         categoryFilterFAB = view.findViewById(R.id.category_filter_fab);
         categoryFilterChip = view.findViewById(R.id.category_filter_chip);
         datePicker = view.findViewById(R.id.date_filter_pick);
-        datePicker.setText(dateFormat.format(Objects.requireNonNull(localViewModel.getDateFilter().getValue())));
         datePicker.setOnClickListener(v -> showDatePickerDialog());
         Button previousDateButton = view.findViewById(R.id.date_filter_previous);
         Button nextDateButton = view.findViewById(R.id.date_filter_next);
@@ -134,7 +130,7 @@ public class VideosFragment extends Fragment {
                     localViewModel.getDateFilter().getValue(),
                     localViewModel.getCategoryFilter().getValue()
             );
-            datePicker.setText(dateFormat.format(date));
+            datePicker.setText(DateFormatter.formatDate(date.getTime(), getResources()));
             if (localViewModel.getCategoryFilter().getValue() != null) {
                 hasDateChangedWhileCategoryFilterOn = true;
             }
