@@ -24,7 +24,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.DateFormatter;
@@ -181,12 +180,14 @@ public class VideosFragment extends Fragment {
     }
 
     private void setFilteredVideosListInAdapter(Category filterCategory) {
+        if (youTubeDataViewModel.getVideosList().getValue() == null)
+            return;
         if (filterCategory == null) {
             adapter.setVideosList(youTubeDataViewModel.getVideosList().getValue());
             return;
         }
         adapter.setVideosList(
-                Objects.requireNonNull(youTubeDataViewModel.getVideosList().getValue())
+                youTubeDataViewModel.getVideosList().getValue()
                         .stream()
                         .filter(v -> filterCategory.getChannelIds().contains(v.getChannel().getChannelId()))
                         .collect(Collectors.toList())
