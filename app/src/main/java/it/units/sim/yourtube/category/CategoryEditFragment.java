@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.data.CategoriesViewModel;
 import it.units.sim.yourtube.model.Category;
-import it.units.sim.yourtube.model.CategoryIcon;
 import it.units.sim.yourtube.model.UserSubscription;
 
 public class CategoryEditFragment extends AbstractCategoryEditorFragment {
@@ -33,11 +32,12 @@ public class CategoryEditFragment extends AbstractCategoryEditorFragment {
         categoriesViewModel = new ViewModelProvider(requireActivity()).get(CategoriesViewModel.class);
 
         if (getArguments() != null) {
-            categoryId = getArguments().getInt("categoryId");
-            categoryName = getArguments().getString("categoryName");
+            Category category = getArguments().getParcelable("category");
+            categoryId = category.getId();
+            categoryName = category.getName();
             originalCategoryName = categoryName;
-            chosenCategoryIcon = (CategoryIcon) getArguments().getSerializable("categoryIcon");
-            previouslySelectedChannelIds = getArguments().getStringArrayList("categoryChannels");
+            chosenCategoryIcon = category.getCategoryIcon();
+            previouslySelectedChannelIds = category.getChannelIds();
             localViewModel.setSelectedChannels(
                     subscriptions.stream()
                         .filter(s -> previouslySelectedChannelIds.contains(s.getChannelId()))

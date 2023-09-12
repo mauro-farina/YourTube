@@ -85,10 +85,7 @@ public class CategoriesFragment extends Fragment {
 
     private void openCategoryEditor(Category category) {
         Bundle extras = new Bundle();
-        extras.putInt("categoryId", category.getId());
-        extras.putString("categoryName", category.getName());
-        extras.putSerializable("categoryIcon", category.getCategoryIcon());
-        extras.putStringArrayList("categoryChannels", new ArrayList<>(category.getChannelIds()));
+        extras.putParcelable("category", category);
         navController.navigate(R.id.categoryEditFragment, extras);
     }
 
