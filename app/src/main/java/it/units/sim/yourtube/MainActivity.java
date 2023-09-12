@@ -22,21 +22,21 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import it.units.sim.yourtube.auth.AuthenticationActivity;
-import it.units.sim.yourtube.utils.NetworkCallback;
+import it.units.sim.yourtube.utils.NetworkAvailabilityCallback;
 import it.units.sim.yourtube.utils.NoYouTubeAuthorizationDialog;
 
 public class MainActivity extends AppCompatActivity implements MenuProvider {
 
     private NavController navController;
     private ConnectivityManager connectivityManager;
-    private NetworkCallback networkCallback;
+    private NetworkAvailabilityCallback networkCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        networkCallback = new NetworkCallback();
+        networkCallback = new NetworkAvailabilityCallback();
         connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         connectivityManager.registerNetworkCallback(
                 new NetworkRequest.Builder().build(),
