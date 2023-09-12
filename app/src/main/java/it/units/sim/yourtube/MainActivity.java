@@ -2,9 +2,10 @@ package it.units.sim.yourtube;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,18 +26,22 @@ import it.units.sim.yourtube.auth.AuthenticationActivity;
 public class MainActivity extends AppCompatActivity implements MenuProvider {
 
     private NavController navController;
-    private NetworkChangeReceiver networkChangeReceiver;
+    private ConnectivityManager connectivityManager;
+    private NetworkCallback networkCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        networkChangeReceiver = new NetworkChangeReceiver();
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(networkChangeReceiver, filter);
+        networkCallback = new NetworkCallback();
+        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        connectivityManager.registerNetworkCallback(
+                new NetworkRequest.Builder().build(),
+                networkCallback
+        );
 
-        networkChangeReceiver.getNetworkAvailability().observe(this, isNetworkAvailable -> {
+        networkCallback.getNetworkAvailability().observe(this, isNetworkAvailable -> {
             View noNetworkView = findViewById(R.id.no_network_message);
             if (isNetworkAvailable)
                 noNetworkView.setVisibility(View.GONE);
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements MenuProvider {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(networkChangeReceiver);
+        connectivityManager.unregisterNetworkCallback(networkCallback);
     }
 
     @Override
