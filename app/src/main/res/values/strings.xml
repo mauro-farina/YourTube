@@ -44,6 +44,12 @@
     <string name="category_videogame" translatable="false">Videogame</string>
     <string name="category_computer" translatable="false">Computer</string>
     <string name="category_podcast" translatable="false">Podcast</string>
+    <string name="category_pet">Pet</string>
+    <string name="category_finance">Finance</string>
+    <string name="category_food">Food</string>
+    <string name="category_health">Health</string>
+    <string name="category_school">School</string>
+    <string name="category_shopping">Shopping</string>
     <string name="create">Create</string>
     <string name="create_new_category">Create new category</string>
     <string name="chosen_category_icon">Chosen category icon</string>
