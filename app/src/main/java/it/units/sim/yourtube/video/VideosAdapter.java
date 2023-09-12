@@ -29,7 +29,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setVideosList(List<VideoData> videosList) {
+    synchronized public void setVideosList(List<VideoData> videosList) {
         videosList.sort(Comparator.comparing(VideoData::getPublishedDateInMillis).reversed());
         this.videosList = videosList;
         notifyDataSetChanged();
