@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
+import it.units.sim.yourtube.utils.DateFormatter;
 import it.units.sim.yourtube.utils.EmptyMenuProvider;
 import it.units.sim.yourtube.MainActivity;
 import it.units.sim.yourtube.R;
@@ -217,10 +218,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
             } else {
                 CloudBackupObject backupObject = Objects.requireNonNull(doc.toObject(CloudBackupObject.class));
                 long backupTimeInMillis =backupObject.getBackupTimeInMilliseconds();
-                importBackupPreference.setSummary(
-                        getString(R.string.last_backup_date,
-                        millisecondsToReadableDate(backupTimeInMillis))
-                );
+                importBackupPreference.setSummary(getString(
+                        R.string.last_backup_date,
+                        DateFormatter.formatDateTime(backupTimeInMillis, getResources())
+                ));
             }
         });
         importBackupPreference.setOnPreferenceClickListener(preference -> {
@@ -250,9 +251,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 .set(backupObject)
                 .addOnSuccessListener(runnable -> {
                     Toast.makeText(requireContext(), getString(R.string.backup_done), Toast.LENGTH_SHORT).show();
-                    importBackupPreference.setSummary(
-                            getString(R.string.last_backup_date,
-                                    millisecondsToReadableDate(c.getTimeInMillis())));
+                    importBackupPreference.setSummary(getString(
+                            R.string.last_backup_date,
+                            DateFormatter.formatDateTime(c.getTimeInMillis(), getResources())
+                    ));
                 })
                 .addOnFailureListener(runnable ->
                         Toast.makeText(requireContext(), getString(R.string.backup_failed), Toast.LENGTH_SHORT).show()
@@ -279,20 +281,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
                         .make(requireView(), getString(R.string.backup_import_categories_failed), Snackbar.LENGTH_SHORT)
                         .show()
                 );
-    }
-
-    private static String millisecondsToReadableDate(long timeInMilliseconds) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(timeInMilliseconds);
-        return c.get(Calendar.YEAR) +
-                "/" +
-                (c.get(Calendar.MONTH) + 1) +
-                "/" +
-                c.get(Calendar.DAY_OF_MONTH) +
-                ", " +
-                c.get(Calendar.HOUR_OF_DAY) +
-                ":" +
-                c.get(Calendar.MINUTE);
     }
 
     private void toggleBottomNav() {
