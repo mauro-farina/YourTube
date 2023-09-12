@@ -92,7 +92,7 @@ public class VideoPlayerFragment extends Fragment {
         registerRotationObserver();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setTitle(DateFormatter.formatDate(video.getPublishedDate(), getResources()));
+            toolbar.setTitle(DateFormatter.formatDate(video.getPublishedDate().getValue(), getResources()));
             requireActivity().addMenuProvider(menuProvider);
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

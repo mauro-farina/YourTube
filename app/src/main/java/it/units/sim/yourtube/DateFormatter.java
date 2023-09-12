@@ -3,15 +3,13 @@ package it.units.sim.yourtube;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
-import com.google.api.client.util.DateTime;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class DateFormatter {
 
-    public static String formatDate(DateTime dateTime, Resources resources) {
+    public static String formatDate(long timeInMillis, Resources resources) {
         Configuration configuration = resources.getConfiguration();
         Locale currentLocale = configuration.getLocales().get(0);
 
@@ -23,6 +21,6 @@ public class DateFormatter {
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat(pattern, currentLocale);
-        return sdf.format(new Date(dateTime.getValue()));
+        return sdf.format(new Date(timeInMillis));
     }
 }

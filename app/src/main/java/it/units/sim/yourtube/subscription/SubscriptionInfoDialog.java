@@ -48,7 +48,7 @@ public class SubscriptionInfoDialog extends DialogFragment {
         ImageView channelThumbnail = dialogView.findViewById(R.id.dialog_subscription_info_channel_thumbnail);
 
         channelName.setText(subscription.getChannelName());
-        String subscribedSinceDate = DateFormatter.formatDate(subscription.getSubscribedSince(), getResources());
+        String subscribedSinceDate = DateFormatter.formatDate(subscription.getSubscribedSince().getValue(), getResources());
         subscribedSince.setText(getString(R.string.subscribed_since, subscribedSinceDate));
         Picasso
                 .get()
