@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,9 +31,11 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    synchronized public void setVideosList(List<VideoData> videosList) {
-        videosList.sort(Comparator.comparing(VideoData::getPublishedDateInMillis).reversed());
-        this.videosList = videosList;
+    public void setVideosList(List<VideoData> videosList) {
+        List<VideoData> videosListCopy = new ArrayList<>(Collections.nCopies(videosList.size(), null));
+        Collections.copy(videosListCopy, videosList);
+        videosListCopy.sort(Comparator.comparing(VideoData::getPublishedDateInMillis).reversed());
+        this.videosList = videosListCopy;
         notifyDataSetChanged();
     }
 
