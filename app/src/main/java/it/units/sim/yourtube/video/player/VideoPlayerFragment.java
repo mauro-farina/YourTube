@@ -62,7 +62,6 @@ public class VideoPlayerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         window = requireActivity().getWindow();
         originalSystemUiVisibility = window.getDecorView().getSystemUiVisibility();
-        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         menuProvider = new EmptyMenuProvider();
 
         if (getArguments() != null) {
@@ -90,6 +89,7 @@ public class VideoPlayerFragment extends Fragment {
         super.onResume();
         toggleBottomNavVisibility();
         registerRotationObserver();
+        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setTitle(DateFormatter.formatDate(video.getPublishedDate().getValue(), getResources()));

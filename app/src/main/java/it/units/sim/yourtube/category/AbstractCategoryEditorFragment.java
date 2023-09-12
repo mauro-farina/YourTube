@@ -50,7 +50,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         YouTubeDataViewModel subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(YouTubeDataViewModel.class);
-        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+//        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         menuProvider = new EmptyMenuProvider();
         localViewModel = new ViewModelProvider(this).get(CategoryEditorViewModel.class);
         subscriptions = subscriptionsViewModel
@@ -62,6 +62,7 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     public void onResume() {
         super.onResume();
         toggleBottomNav();
+        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setTitle(getToolbarTitle());
