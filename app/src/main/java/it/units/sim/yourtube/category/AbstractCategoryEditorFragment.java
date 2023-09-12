@@ -50,7 +50,6 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         YouTubeDataViewModel subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(YouTubeDataViewModel.class);
-//        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         menuProvider = new EmptyMenuProvider();
         localViewModel = new ViewModelProvider(this).get(CategoryEditorViewModel.class);
         subscriptions = subscriptionsViewModel
