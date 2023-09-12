@@ -115,6 +115,7 @@ public class VideoPlayerFragment extends Fragment {
         }
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         turnImmersionModeOff();
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     @Override
