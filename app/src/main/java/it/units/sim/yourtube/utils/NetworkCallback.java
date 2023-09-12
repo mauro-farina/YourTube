@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.utils;
 
 import android.net.ConnectivityManager;
 import android.net.Network;

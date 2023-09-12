@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.utils;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -6,6 +6,8 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuProvider;
+
+import it.units.sim.yourtube.R;
 
 public class EmptyMenuProvider implements MenuProvider {
     @Override

@@ -22,6 +22,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import it.units.sim.yourtube.auth.AuthenticationActivity;
+import it.units.sim.yourtube.utils.NetworkCallback;
+import it.units.sim.yourtube.utils.NoYouTubeAuthorizationDialog;
 
 public class MainActivity extends AppCompatActivity implements MenuProvider {
 

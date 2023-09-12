@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.utils;
 
 import android.content.res.Configuration;
 import android.content.res.Resources;

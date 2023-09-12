@@ -1,4 +1,4 @@
-package it.units.sim.yourtube;
+package it.units.sim.yourtube.utils;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -9,6 +9,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import it.units.sim.yourtube.MainActivity;
+import it.units.sim.yourtube.R;
 
 public class NoYouTubeAuthorizationDialog extends DialogFragment {
 

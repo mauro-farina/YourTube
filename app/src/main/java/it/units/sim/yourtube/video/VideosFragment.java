@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import it.units.sim.yourtube.DateFormatter;
+import it.units.sim.yourtube.utils.DateFormatter;
 import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.Category;

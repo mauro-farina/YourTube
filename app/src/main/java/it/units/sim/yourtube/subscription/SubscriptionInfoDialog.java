@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
-import it.units.sim.yourtube.DateFormatter;
+import it.units.sim.yourtube.utils.DateFormatter;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.UserSubscription;
 

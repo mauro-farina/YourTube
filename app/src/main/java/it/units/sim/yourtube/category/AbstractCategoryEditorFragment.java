@@ -27,7 +27,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
-import it.units.sim.yourtube.EmptyMenuProvider;
+import it.units.sim.yourtube.utils.EmptyMenuProvider;
 import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.CategoryIcon;

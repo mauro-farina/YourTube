@@ -32,8 +32,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.You
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
-import it.units.sim.yourtube.DateFormatter;
-import it.units.sim.yourtube.EmptyMenuProvider;
+import it.units.sim.yourtube.utils.DateFormatter;
+import it.units.sim.yourtube.utils.EmptyMenuProvider;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.VideoData;
 import kotlin.Unit;

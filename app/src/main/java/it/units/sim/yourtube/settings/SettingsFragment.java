@@ -33,7 +33,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-import it.units.sim.yourtube.EmptyMenuProvider;
+import it.units.sim.yourtube.utils.EmptyMenuProvider;
 import it.units.sim.yourtube.MainActivity;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.data.CategoriesViewModel;
