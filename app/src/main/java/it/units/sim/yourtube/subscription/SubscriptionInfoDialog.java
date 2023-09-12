@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
+import it.units.sim.yourtube.DateFormatter;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.UserSubscription;
 
@@ -47,7 +48,8 @@ public class SubscriptionInfoDialog extends DialogFragment {
         ImageView channelThumbnail = dialogView.findViewById(R.id.dialog_subscription_info_channel_thumbnail);
 
         channelName.setText(subscription.getChannelName());
-        subscribedSince.setText(getString(R.string.subscribed_since, subscription.getReadableSubscribedSince()));
+        String subscribedSinceDate = DateFormatter.formatDate(subscription.getSubscribedSince(), getResources());
+        subscribedSince.setText(getString(R.string.subscribed_since, subscribedSinceDate));
         Picasso
                 .get()
                 .load(subscription.getThumbnailUrl())

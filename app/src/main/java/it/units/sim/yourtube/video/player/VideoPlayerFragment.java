@@ -32,6 +32,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.You
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import it.units.sim.yourtube.DateFormatter;
 import it.units.sim.yourtube.EmptyMenuProvider;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.VideoData;
@@ -91,7 +92,7 @@ public class VideoPlayerFragment extends Fragment {
         registerRotationObserver();
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setTitle(video.getReadablePublishedDate());
+            toolbar.setTitle(DateFormatter.formatDate(video.getPublishedDate(), getResources()));
             requireActivity().addMenuProvider(menuProvider);
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

@@ -78,19 +78,8 @@ public class VideoData implements Parcelable {
         return description;
     }
 
-    public String getReadablePublishedDate() {
-        StringBuilder sb = new StringBuilder();
-        String dateString = publishedAt.toString().split("T")[0];
-        String[] yearMonthDay = dateString.split("-"); // 2023-12-25
-        if (yearMonthDay.length != 3) {
-            return publishedAt.toString();
-        }
-        sb.append(monthNumberToString(yearMonthDay[1]));
-        sb.append(" ");
-        sb.append(yearMonthDay[2]);
-        sb.append(", ");
-        sb.append(yearMonthDay[0]);
-        return sb.toString();
+    public DateTime getPublishedDate() {
+        return publishedAt;
     }
 
     public UserSubscription getChannel(){
@@ -116,21 +105,4 @@ public class VideoData implements Parcelable {
         parcel.writeParcelable(subscription, i);
     }
 
-    private static String monthNumberToString(String monthNumber) {
-        switch (monthNumber) {
-            case "01" : return "Jan";
-            case "02" : return "Feb";
-            case "03" : return "Mar";
-            case "04" : return "Apr";
-            case "05" : return "May";
-            case "06" : return "Jun";
-            case "07" : return "Jul";
-            case "08" : return "Aug";
-            case "09" : return "Sep";
-            case "10" : return "Oct";
-            case "11" : return "Nov";
-            case "12" : return "Dec";
-            default: return "";
-        }
-    }
 }
