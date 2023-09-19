@@ -65,9 +65,7 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
             checkBox.setVisibility(View.VISIBLE);
             checkBox.setOnClickListener(onItemClickListener);
             checkBox.setTag(sub);
-            if (selectedChannels.contains(sub)) {
-                checkBox.setChecked(true);
-            }
+            checkBox.setChecked(selectedChannels.contains(sub));
         } else {
             holder.itemView.setOnClickListener(onItemClickListener);
             holder.itemView.setTag(sub);
