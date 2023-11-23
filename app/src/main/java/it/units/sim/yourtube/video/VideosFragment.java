@@ -93,6 +93,7 @@ public class VideosFragment extends Fragment {
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemViewCacheSize(30);
         categoryFilterFAB = view.findViewById(R.id.category_filter_fab);
         categoryFilterChip = view.findViewById(R.id.category_filter_chip);
         datePicker = view.findViewById(R.id.date_filter_pick);
