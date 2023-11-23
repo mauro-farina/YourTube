@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements MenuProvider {
 
         networkCallback = new NetworkAvailabilityCallback();
         connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        connectivityManager.registerNetworkCallback(
+        connectivityManager.requestNetwork(
                 new NetworkRequest.Builder().build(),
                 networkCallback
         );
