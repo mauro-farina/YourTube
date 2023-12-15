@@ -1,6 +1,7 @@
 package it.units.sim.yourtube.video;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +31,7 @@ import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
+import it.units.sim.yourtube.videoplayer.VideoPlayerActivity;
 
 public class VideosFragment extends Fragment {
 
@@ -88,8 +88,9 @@ public class VideosFragment extends Fragment {
             VideoData video = (VideoData) clickedView.getTag();
             Bundle extras = new Bundle();
             extras.putParcelable("video", video);
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            navController.navigate(R.id.videoPlayerFragment, extras);
+            Intent intent = new Intent(requireActivity(), VideoPlayerActivity.class);
+            intent.putExtras(extras);
+            startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

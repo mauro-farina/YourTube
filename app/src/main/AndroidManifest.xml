@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
-        android:usesCleartextTraffic="false"
         android:name=".YourTubeApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,7 +14,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.YourTube"
+        android:usesCleartextTraffic="false"
         tools:targetApi="31">
+        <activity
+            android:name=".videoplayer.VideoPlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false" />
         <activity
             android:name=".auth.AuthenticationActivity"
             android:exported="true">
@@ -27,8 +30,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>
