@@ -48,11 +48,22 @@ public class VideoPlayerFragment extends Fragment {
 
     // DateFormatter.formatDate(video.getPublishedDate().getValue(), getResources())
 
+    private final Runnable delayedHideSysUi = () -> {
+        if(isFullscreen && isAdded()) turnImmersionModeOn();
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         window = requireActivity().getWindow();
         originalSystemUiVisibility = window.getDecorView().getSystemUiVisibility();
+        window.getDecorView().setOnSystemUiVisibilityChangeListener(
+                visibility -> {
+                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                        handler.postDelayed(delayedHideSysUi, 2000);
+                    }
+                }
+        );
 
         if (getArguments() != null) {
             video = getArguments().getParcelable("video");
@@ -203,7 +214,10 @@ public class VideoPlayerFragment extends Fragment {
     private void turnImmersionModeOn() {
         int immersiveModeFlags = View.SYSTEM_UI_FLAG_IMMERSIVE
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         window.getDecorView().setSystemUiVisibility(immersiveModeFlags);
     }
 
