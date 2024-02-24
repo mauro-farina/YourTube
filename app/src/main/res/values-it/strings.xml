@@ -83,4 +83,5 @@
     <string name="category_health">Salute</string>
     <string name="category_school">Scuola</string>
     <string name="category_shopping">Compere</string>
+    <string name="portrait_fullscreen">Schermata piena verticale</string>
 </resources>

@@ -191,9 +191,19 @@ public class VideoPlayerFragment extends Fragment {
                 playerOptions
         );
 
+        view.findViewById(R.id.youtube_player_fullscreen_portrait_button).setOnClickListener(v -> {
+            if (portraitFullscreen)
+                youTubePlayerView.wrapContent();
+            else
+                youTubePlayerView.matchParent();
+            portraitFullscreen = !portraitFullscreen;
+        });
+
         addBackPressedCallback();
         return view;
     }
+
+    private boolean portraitFullscreen = false;
 
     private void addBackPressedCallback() {
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {

@@ -32,4 +32,15 @@
         app:layout_constraintTop_toBottomOf="@id/youtube_player_view"
         android:id="@+id/youtube_player_infos" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/youtube_player_fullscreen_portrait_button"
+        android:src="@drawable/icon_fullscreen_portrait"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/portrait_fullscreen" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

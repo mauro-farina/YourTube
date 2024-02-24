@@ -95,4 +95,5 @@
     <string name="dialog_import_categories_warning">By proceeding, you will lose all your locally-stored Categories.</string>
     <string name="dialog_backup_categories_warning">By proceeding, you will replace the current cloud backup with a new one.</string>
     <string name="dialog_delete_account_warning">By proceeding, you will delete your account, your local data and cloud backup.</string>
+    <string name="portrait_fullscreen">Portrait fullscreen</string>
 </resources>
