@@ -23,9 +23,6 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.api.services.youtube.YouTubeScopes;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 import it.units.sim.yourtube.MainActivity;
 import it.units.sim.yourtube.R;
@@ -34,7 +31,6 @@ import it.units.sim.yourtube.YourTubeApp;
 public class LoginFragment extends Fragment {
 
     private GoogleSignInClient googleSignInClient;
-    private FirebaseAuth mAuth;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -49,7 +45,6 @@ public class LoginFragment extends Fragment {
                 .requestScopes(new Scope(YouTubeScopes.YOUTUBE_READONLY))
                 .build();
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
-        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -88,20 +83,9 @@ public class LoginFragment extends Fragment {
     }
 
     private void login(GoogleSignInAccount account) {
-        AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(firebaseCredential)
-                .addOnCompleteListener(requireActivity(), task -> {
-                    if (task.isSuccessful()) {
-                        YourTubeApp app = (YourTubeApp) requireActivity().getApplication();
-                        app.setGoogleCredentialAccount(account.getEmail());
-                        openMainActivity();
-                    } else {
-                        Snackbar.make(
-                                requireView(),
-                                getString(R.string.authentication_error),
-                                Snackbar.LENGTH_LONG).show();
-                    }
-                });
+        YourTubeApp app = (YourTubeApp) requireActivity().getApplication();
+        app.setGoogleCredentialAccount(account.getEmail());
+        openMainActivity();
     }
 
     private void openMainActivity() {

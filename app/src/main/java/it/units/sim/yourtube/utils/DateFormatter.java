@@ -26,17 +26,4 @@ public class DateFormatter {
         return sdf.format(new Date(timeInMillis));
     }
 
-    public static String formatDateTime(long timeInMillis, Resources resources) {
-        Configuration configuration = resources.getConfiguration();
-        Locale currentLocale = configuration.getLocales().get(0);
-        String pattern;
-        if (currentLocale.getDisplayLanguage().equals(ITALIAN)){
-            pattern = "dd MMM yyyy, HH:mm";
-        } else {
-            pattern = "MMM dd, yyyy, hh:mm a";
-        }
-
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern, currentLocale);
-        return sdf.format(new Date(timeInMillis));
-    }
 }

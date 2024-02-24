@@ -30,11 +30,6 @@ android {
 }
 
 dependencies {
-    // Firebase dependencies
-    implementation platform('com.google.firebase:firebase-bom:32.1.1')
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore")
-
     // YouTube Data API dependencies
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
     implementation('com.google.api-client:google-api-client-android:1.30.10') {

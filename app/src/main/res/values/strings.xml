@@ -82,18 +82,6 @@
     <string name="setting_language_title">Language</string>
     <string name="settings_category_account">Account</string>
     <string name="delete_account">Delete account</string>
-    <string name="backup_categories">Backup categories</string>
-    <string name="backup_import_categories">Import categories</string>
-    <string name="backup_import_categories_failed">Import failed</string>
-    <string name="backup_import_categories_success">Categories imported successfully</string>
-    <string name="backup_failed">Backup failed</string>
-    <string name="backup_no_data">No data to backup</string>
-    <string name="backup_done">Backup completed</string>
-    <string name="no_backup_found">No backup found</string>
-    <string name="last_backup_date">Last backup: %1$s</string>
-    <string name="dialog_import_categories_title">Import categories from backup</string>
-    <string name="dialog_import_categories_warning">By proceeding, you will lose all your locally-stored Categories.</string>
-    <string name="dialog_backup_categories_warning">By proceeding, you will replace the current cloud backup with a new one.</string>
-    <string name="dialog_delete_account_warning">By proceeding, you will delete your account, your local data and cloud backup.</string>
+    <string name="dialog_delete_account_warning">By proceeding, you will delete your account and your local data.</string>
     <string name="portrait_fullscreen">Portrait fullscreen</string>
 </resources>

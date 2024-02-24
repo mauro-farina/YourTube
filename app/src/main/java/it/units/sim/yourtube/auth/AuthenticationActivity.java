@@ -13,8 +13,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Scope;
 import com.google.api.services.youtube.YouTubeScopes;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import it.units.sim.yourtube.MainActivity;
 import it.units.sim.yourtube.R;
@@ -24,7 +22,6 @@ import it.units.sim.yourtube.YourTubeApp;
 public class AuthenticationActivity extends AppCompatActivity {
 
     public static final String INTENT_LOGOUT_FLAG = "logout";
-    private FirebaseAuth mAuth;
     private GoogleSignInClient googleSignInClient;
 
     @Override
@@ -35,8 +32,6 @@ public class AuthenticationActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         String lang = sharedPreferences.getString(SettingsManager.PREFERENCE_LANGUAGE, SettingsManager.PREFERENCE_LANGUAGE_DEFAULT);
         SettingsManager.setLanguage(getResources(), lang);
-
-        mAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -55,20 +50,18 @@ public class AuthenticationActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if (firebaseUser != null && googleAccount != null) {
+        if (googleAccount != null) {
             String accountName = googleAccount.getEmail();
             YourTubeApp app = (YourTubeApp) getApplication();
             app.setGoogleCredentialAccount(accountName);
             openMainActivity();
-        } else if (firebaseUser != null || googleAccount != null) {
+        } else {
             forceLogout();
         }
     }
 
     private void forceLogout() {
         googleSignInClient.signOut()
-                .addOnSuccessListener(runnable -> mAuth.signOut())
                 .addOnFailureListener(runnable ->
                     Toast.makeText(
                             getBaseContext(),
