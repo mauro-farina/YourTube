@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,12 +22,14 @@
         android:id="@+id/youtube_player_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:autoPlay="false"
         app:enableAutomaticInitialization="false" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/youtube_player_view"
         android:id="@+id/youtube_player_infos" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
