@@ -73,7 +73,7 @@ public class CategoryNewFragment extends AbstractCategoryEditorFragment {
                 .map(UserSubscription::getChannelId)
                 .collect(Collectors.toList());
 
-        Category newCategory = new Category(categoryName, selectedChannelsId, chosenCategoryIcon, account.getEmail());
+        Category newCategory = new Category(categoryName, selectedChannelsId, chosenCategoryIcon);
         categoriesViewModel.addCategory(newCategory);
         return true;
     }
