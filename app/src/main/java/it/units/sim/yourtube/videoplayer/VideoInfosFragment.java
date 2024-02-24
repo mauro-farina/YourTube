@@ -56,7 +56,7 @@ public class VideoInfosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_video_infos2, container, false);
+        View view = inflater.inflate(R.layout.fragment_video_infos, container, false);
         TextView videoTitle = view.findViewById(R.id.video_player_title);
         TextView videoViewsCount = view.findViewById(R.id.video_player_views_counter);
         TextView videoChannelName = view.findViewById(R.id.list_item_subscription_channel_name);

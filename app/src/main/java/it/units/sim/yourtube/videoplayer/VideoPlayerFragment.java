@@ -123,7 +123,7 @@ public class VideoPlayerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_video_player2, container, false);
+        View view = inflater.inflate(R.layout.fragment_video_player, container, false);
 
         youTubePlayerView = view.findViewById(R.id.youtube_player_view);
         FrameLayout fullscreenViewContainer = view.findViewById(R.id.youtube_player_fullscreen_container);
