@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -30,6 +31,7 @@ public class Category implements Parcelable {
     @ColumnInfo(name = "owner")
     private String ownerEmail;
 
+    @Ignore
     public Category(){
         this("", new ArrayList<>(), CategoryIcon.ICON_CATEGORY_DEFAULT, "");
     }
