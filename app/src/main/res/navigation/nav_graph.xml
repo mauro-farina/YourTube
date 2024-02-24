@@ -80,7 +80,7 @@
 
     <fragment
         android:id="@+id/videoPlayerFragment"
-        android:name="it.units.sim.yourtube.video.player.VideoPlayerFragment"
+        android:name="it.units.sim.yourtube.videoplayer.VideoPlayerFragment"
         android:label="fragment_video_player"
         tools:layout="@layout/fragment_video_player" >
         <action
