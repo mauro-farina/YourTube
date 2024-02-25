@@ -18,6 +18,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener;
@@ -192,11 +193,15 @@ public class VideoPlayerFragment extends Fragment {
                 playerOptions
         );
 
-        view.findViewById(R.id.youtube_player_fullscreen_portrait_button).setOnClickListener(v -> {
+        FloatingActionButton portraitFullscreenFab = view.findViewById(R.id.youtube_player_fullscreen_portrait_button);
+        portraitFullscreenFab.setAlpha(0.8f);
+        portraitFullscreenFab.setOnClickListener(v -> {
             if (isPortraitFullscreen) {
                 youTubePlayerView.wrapContent();
+                portraitFullscreenFab.setAlpha(0.8f);
             } else {
                 youTubePlayerView.matchParent();
+                portraitFullscreenFab.setAlpha(0.4f);
             }
             isPortraitFullscreen = !isPortraitFullscreen;
         });
@@ -228,7 +233,8 @@ public class VideoPlayerFragment extends Fragment {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         window.getDecorView().setSystemUiVisibility(immersiveModeFlags);
     }
 
