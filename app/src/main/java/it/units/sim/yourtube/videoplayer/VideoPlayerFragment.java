@@ -147,11 +147,16 @@ public class VideoPlayerFragment extends Fragment {
                 .fullscreen(1)
                 .build();
 
+        View videoInfo = view.findViewById(R.id.youtube_player_infos);
+        FloatingActionButton portraitFullscreenFab = view.findViewById(R.id.youtube_player_fullscreen_portrait_button);
+
         youTubePlayerView.addFullscreenListener(new FullscreenListener() {
             @Override
             public void onEnterFullscreen(@NonNull View fullscreenView, @NonNull Function0<Unit> exitFullscreen) {
                 isFullscreen = true;
                 youTubePlayerView.setVisibility(View.GONE);
+                videoInfo.setVisibility(View.GONE);
+                portraitFullscreenFab.setVisibility(View.GONE);
                 fullscreenViewContainer.setVisibility(View.VISIBLE);
                 fullscreenViewContainer.addView(fullscreenView);
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -172,6 +177,8 @@ public class VideoPlayerFragment extends Fragment {
             public void onExitFullscreen() {
                 isFullscreen = false;
                 youTubePlayerView.setVisibility(View.VISIBLE);
+                videoInfo.setVisibility(View.VISIBLE);
+                portraitFullscreenFab.setVisibility(View.VISIBLE);
                 fullscreenViewContainer.setVisibility(View.GONE);
                 fullscreenViewContainer.removeAllViews();
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -193,7 +200,6 @@ public class VideoPlayerFragment extends Fragment {
                 playerOptions
         );
 
-        FloatingActionButton portraitFullscreenFab = view.findViewById(R.id.youtube_player_fullscreen_portrait_button);
         portraitFullscreenFab.setAlpha(0.8f);
         portraitFullscreenFab.setOnClickListener(v -> {
             if (isPortraitFullscreen) {
