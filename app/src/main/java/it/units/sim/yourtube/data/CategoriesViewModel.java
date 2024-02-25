@@ -18,6 +18,7 @@ public class CategoriesViewModel extends AndroidViewModel {
     private final LiveData<List<Category>> categoriesList;
     private final CategoryDAO categoryDao;
     private final ExecutorService executorService;
+    private final String categoriesOwner;
 
     public CategoriesViewModel(@NonNull Application application) {
         super(application);
@@ -30,7 +31,8 @@ public class CategoriesViewModel extends AndroidViewModel {
                         "categories-db")
                 .build();
         categoryDao = db.categoryDao();
-        categoriesList = categoryDao.getAll();
+        categoriesOwner = app.getGoogleCredential().getSelectedAccountName();
+        categoriesList = categoryDao.getAll(categoriesOwner);
     }
 
     public LiveData<List<Category>> getCategoriesList() {
@@ -50,7 +52,14 @@ public class CategoriesViewModel extends AndroidViewModel {
     }
 
     public void deleteAll() {
-        executorService.submit(categoryDao::deleteAll);
+        executorService.submit(() -> categoryDao.deleteAll(categoriesOwner));
+    }
+
+    public void restoreCategoriesFromBackup(List<Category> categories) {
+        executorService.submit(() -> {
+            Category[] categoryArray = categories.toArray(new Category[0]);
+            categoryDao.restoreFromBackup(categoriesOwner, categoryArray);
+        });
     }
 
 }
