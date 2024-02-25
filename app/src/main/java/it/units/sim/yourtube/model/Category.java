@@ -27,16 +27,20 @@ public class Category implements Parcelable {
     @NonNull
     @ColumnInfo(name = "icon_res_id")
     private CategoryIcon categoryIcon;
+    @NonNull
+    @ColumnInfo(name = "owner")
+    private String ownerEmail;
 
     @Ignore
     public Category(){
-        this("", new ArrayList<>(), CategoryIcon.ICON_CATEGORY_DEFAULT);
+        this("", new ArrayList<>(), CategoryIcon.ICON_CATEGORY_DEFAULT, "");
     }
 
-    public Category(@NonNull String name, @NonNull List<String> channelIds, @NonNull CategoryIcon categoryIcon) {
+    public Category(@NonNull String name, @NonNull List<String> channelIds, @NonNull CategoryIcon categoryIcon, @NonNull String ownerEmail) {
         this.name = name;
         this.channelIds = channelIds;
         this.categoryIcon = categoryIcon;
+        this.ownerEmail = ownerEmail;
     }
 
     protected Category(Parcel in) {
@@ -44,6 +48,7 @@ public class Category implements Parcelable {
         name = in.readString();
         channelIds = in.createStringArrayList();
         categoryIcon = (CategoryIcon) in.readSerializable();
+        ownerEmail = in.readString();
     }
 
     public static final Creator<Category> CREATOR = new Creator<>() {
@@ -74,6 +79,10 @@ public class Category implements Parcelable {
         this.categoryIcon = newDrawableIconId;
     }
 
+    public void setOwner(@NonNull String newOwnerEmail) {
+        this.ownerEmail = newOwnerEmail;
+    }
+
     public int getId() {
         return id;
     }
@@ -94,6 +103,11 @@ public class Category implements Parcelable {
     }
 
     @NonNull
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return name;
@@ -110,5 +124,6 @@ public class Category implements Parcelable {
         parcel.writeString(name);
         parcel.writeList(channelIds);
         parcel.writeSerializable(categoryIcon);
+        parcel.writeString(ownerEmail);
     }
 }
