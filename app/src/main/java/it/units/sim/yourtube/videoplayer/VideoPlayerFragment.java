@@ -38,6 +38,7 @@ public class VideoPlayerFragment extends Fragment {
     private YouTubePlayer youTubePlayerWhenReady;
     private VideoData video;
     private boolean isFullscreen;
+    private boolean isPortraitFullscreen = false;
     private final Handler handler = new Handler();
     private ContentResolver contentResolver;
     private AutomaticRotationObserver rotationObserver;
@@ -192,18 +193,18 @@ public class VideoPlayerFragment extends Fragment {
         );
 
         view.findViewById(R.id.youtube_player_fullscreen_portrait_button).setOnClickListener(v -> {
-            if (portraitFullscreen)
+            if (isPortraitFullscreen) {
                 youTubePlayerView.wrapContent();
-            else
+            } else {
                 youTubePlayerView.matchParent();
-            portraitFullscreen = !portraitFullscreen;
+            }
+            isPortraitFullscreen = !isPortraitFullscreen;
         });
 
         addBackPressedCallback();
         return view;
     }
 
-    private boolean portraitFullscreen = false;
 
     private void addBackPressedCallback() {
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
