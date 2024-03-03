@@ -55,10 +55,10 @@ public class VideoData implements Parcelable {
             url = thumbnails.getMedium().getUrl();
         if (thumbnails.getHigh() != null)
             url = thumbnails.getHigh().getUrl();
-        if (thumbnails.getStandard() != null)
-            url = thumbnails.getStandard().getUrl();
-        if (thumbnails.getMaxres() != null)
-            url = thumbnails.getMaxres().getUrl();
+//        if (thumbnails.getStandard() != null)
+//            url = thumbnails.getStandard().getUrl();
+//        if (thumbnails.getMaxres() != null)
+//            url = thumbnails.getMaxres().getUrl();
         return url;
     }
 
