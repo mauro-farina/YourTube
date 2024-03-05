@@ -2,6 +2,7 @@ package it.units.sim.yourtube.subscription;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.squareup.picasso.Picasso;
 
 import it.units.sim.yourtube.utils.DateFormatter;
 import it.units.sim.yourtube.R;
@@ -50,10 +50,8 @@ public class SubscriptionInfoDialog extends DialogFragment {
         channelName.setText(subscription.getChannelName());
         String subscribedSinceDate = DateFormatter.formatDate(subscription.getSubscribedSince().getValue(), getResources());
         subscribedSince.setText(getString(R.string.subscribed_since, subscribedSinceDate));
-        Picasso
-                .get()
-                .load(subscription.getThumbnailUrl())
-                .into(channelThumbnail);
+        Uri channelThumbnailUri = Uri.parse(subscription.getThumbnailUrl());
+        channelThumbnail.setImageURI(channelThumbnailUri);
 
         return new MaterialAlertDialogBuilder(requireContext())
                 .setView(dialogView)

@@ -6,13 +6,13 @@
     android:orientation="horizontal"
     android:layout_marginVertical="5dp" >
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/list_item_video_thumbnail"
         android:layout_width="134dp"
         android:layout_height="90dp"
-        android:adjustViewBounds="true"
-        android:id="@+id/list_item_video_thumbnail"
-        android:scaleType="centerCrop"
         android:contentDescription="@string/thumbnail_img_placeholder" />
+
+    <!--        android:scaleType="centerCrop"-->
 
     <LinearLayout
         android:layout_width="match_parent"

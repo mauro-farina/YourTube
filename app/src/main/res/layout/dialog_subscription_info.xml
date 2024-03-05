@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:cardCornerRadius="10dp">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:id="@+id/dialog_subscription_info_channel_thumbnail"

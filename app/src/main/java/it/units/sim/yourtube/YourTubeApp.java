@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTubeScopes;
@@ -29,6 +30,7 @@ public class YourTubeApp extends Application {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String theme = sharedPreferences.getString(SettingsManager.PREFERENCE_THEME, SettingsManager.PREFERENCE_THEME_DEFAULT);
         SettingsManager.setTheme(theme);
+        Fresco.initialize(this);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package it.units.sim.yourtube.subscription;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,11 +71,9 @@ public class SubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionsAdap
         }
         TextView channelNameTextView = holder.getChannelNameTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
+        Uri channelThumbnailUri = Uri.parse(sub.getThumbnailUrl());
+        thumbnailImageView.setImageURI(channelThumbnailUri);
         channelNameTextView.setText(sub.getChannelName());
-        Picasso
-                .get()
-                .load(sub.getThumbnailUrl())
-                .into(thumbnailImageView);
     }
 
     @Override

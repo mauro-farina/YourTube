@@ -1,6 +1,7 @@
 package it.units.sim.yourtube.video;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -52,14 +51,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
         TextView channelTextView = holder.getChannelTextView();
         videoTitleTextView.setText(videosList.get(position).getTitle());
         channelTextView.setText(videosList.get(position).getChannel().getChannelName());
-        Picasso
-                .get()
-                .load(videosList.get(position).getThumbnailUrl())
-                .into(thumbnailImageView);
-        Picasso
-                .get()
-                .load(videosList.get(position).getChannel().getThumbnailUrl())
-                .into(channelImageView);
+        Uri videoThumbnailUri = Uri.parse(videosList.get(position).getThumbnailUrl());
+        Uri channelThumbnailUri = Uri.parse(videosList.get(position).getChannel().getThumbnailUrl());
+        thumbnailImageView.setImageURI(videoThumbnailUri);
+        channelImageView.setImageURI(channelThumbnailUri);
     }
 
     @Override

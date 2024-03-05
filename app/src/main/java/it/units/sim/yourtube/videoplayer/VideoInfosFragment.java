@@ -1,5 +1,6 @@
 package it.units.sim.yourtube.videoplayer;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,7 +16,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
-import com.squareup.picasso.Picasso;
 
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.VideoData;
@@ -70,10 +70,8 @@ public class VideoInfosFragment extends Fragment {
         videoDescription.setText((video.getDescription()));
         viewModel.getViewsCount().observe(getViewLifecycleOwner(), views -> videoViewsCount.setText(getString(R.string.number_views, views)));
         viewModel.getLikesCount().observe(getViewLifecycleOwner(), videoLikesCounter::setText);
-        Picasso
-                .get()
-                .load(video.getChannel().getThumbnailUrl())
-                .into(videoChannelThumbnail);
+        Uri channelThumbnailUri = Uri.parse(video.getChannel().getThumbnailUrl());
+        videoChannelThumbnail.setImageURI(channelThumbnailUri);
 
         RecyclerView commentsRecyclerView = view.findViewById(R.id.video_player_comments_recycler_view);
         CommentsAdapter adapter = new CommentsAdapter(viewModel.getComments().getValue());
