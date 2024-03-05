@@ -178,7 +178,6 @@ public class VideoPlayerFragment extends Fragment {
                 isFullscreen = false;
                 youTubePlayerView.setVisibility(View.VISIBLE);
                 videoInfo.setVisibility(View.VISIBLE);
-                portraitFullscreenFab.setVisibility(View.VISIBLE);
                 fullscreenViewContainer.setVisibility(View.GONE);
                 fullscreenViewContainer.removeAllViews();
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -192,6 +191,7 @@ public class VideoPlayerFragment extends Fragment {
                     );
                 }
                 turnImmersionModeOff();
+                portraitFullscreenFab.setVisibility(View.VISIBLE);
             }
         });
 
