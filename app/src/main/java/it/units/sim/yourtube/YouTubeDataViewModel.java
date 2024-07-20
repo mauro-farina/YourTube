@@ -40,7 +40,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
         credential = app.getGoogleCredential();
         executorService = app.getExecutorService();
         subscriptionsList = new MutableLiveData<>(new LinkedList<>());
-        videosList = new MutableLiveData<>(new ArrayList<>());
+        videosList = new MutableLiveData<>(new LinkedList<>());
         missingYouTubeDataAuthorization = new MutableLiveData<>();
         quotaExceeded = new MutableLiveData<>();
     }
@@ -81,7 +81,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
 
     public void fetchVideos(Date date, Category category) {
         cancelOngoingTasks();
-        videosList.setValue(new ArrayList<>());
+        videosList.setValue(new LinkedList<>());
         for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
             if (category != null && !category.getChannelIds().contains(sub.getChannelId()))
                 continue;
@@ -91,6 +91,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
                     List<VideoData> videos = videosList.getValue();
                     if (videos != null) {
                         videos.addAll(fetchedVideos);
+                        videos.sort(Comparator.comparingLong(VideoData::getPublishedDateInMillis).reversed());
                         videosList.postValue(videos);
                     }
                 } else {
