@@ -67,8 +67,10 @@ public class VideoPlayerFragment extends Fragment {
                 }
         );
 
-        if (getArguments() != null) {
-            video = getArguments().getParcelable("video");
+        video = getArguments() == null ? null : getArguments().getParcelable("video");
+        if (video == null) {
+            requireActivity().finish();
+            return;
         }
 
         contentResolver = requireContext().getContentResolver();

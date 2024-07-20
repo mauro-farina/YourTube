@@ -13,6 +13,11 @@ public class VideoPlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+            finish();
+            return;
+        }
+
         VideoPlayerFragment fragment = new VideoPlayerFragment();
         fragment.setArguments(extras);
         getSupportFragmentManager().beginTransaction()
