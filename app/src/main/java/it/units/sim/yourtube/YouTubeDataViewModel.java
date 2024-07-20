@@ -10,7 +10,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -37,7 +39,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
         YourTubeApp app = getApplication();
         credential = app.getGoogleCredential();
         executorService = app.getExecutorService();
-        subscriptionsList = new MutableLiveData<>(new ArrayList<>());
+        subscriptionsList = new MutableLiveData<>(new LinkedList<>());
         videosList = new MutableLiveData<>(new ArrayList<>());
         missingYouTubeDataAuthorization = new MutableLiveData<>();
         quotaExceeded = new MutableLiveData<>();
@@ -47,6 +49,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
         executorService.submit(new SubscriptionListRequest(credential, result -> {
             if (result instanceof Result.Success) {
                 List<UserSubscription> fetchedSubscriptions = ((Result.Success<List<UserSubscription>>) result).getData();
+                fetchedSubscriptions.sort(Comparator.comparing(UserSubscription::getChannelName));
                 subscriptionsList.postValue(fetchedSubscriptions);
             } else {
                 handleResultError((Result.Error<?>) result);
