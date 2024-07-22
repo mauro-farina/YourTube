@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -24,10 +25,13 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.data.WatchDataViewModel;
 import it.units.sim.yourtube.model.VideoData;
+import it.units.sim.yourtube.model.WatchData;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 
@@ -43,6 +47,9 @@ public class VideoPlayerFragment extends Fragment {
     private final Handler handler = new Handler();
     private ContentResolver contentResolver;
     private AutomaticRotationObserver rotationObserver;
+    private WatchDataViewModel watchDataViewModel;
+    private WatchData videoWatchData;
+    private YouTubePlayerTracker tracker;
 
     public VideoPlayerFragment() {
         // Required empty public constructor
@@ -72,6 +79,9 @@ public class VideoPlayerFragment extends Fragment {
             requireActivity().finish();
             return;
         }
+
+        watchDataViewModel = new ViewModelProvider(this).get(WatchDataViewModel.class);
+        videoWatchData = watchDataViewModel.find(video.getVideoId());
 
         contentResolver = requireContext().getContentResolver();
         rotationObserver = new AutomaticRotationObserver(
@@ -105,6 +115,12 @@ public class VideoPlayerFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        if (videoWatchData == null) {
+            watchDataViewModel.add(video.getVideoId(), tracker.getCurrentSecond(), false);
+        } else {
+            videoWatchData.setTimestamp(tracker.getCurrentSecond());
+            watchDataViewModel.update(videoWatchData);
+        }
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         turnImmersionModeOff();
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
@@ -136,8 +152,11 @@ public class VideoPlayerFragment extends Fragment {
         YouTubePlayerListener playerListener = new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                tracker = new YouTubePlayerTracker();
+                youTubePlayer.addListener(tracker);
                 youTubePlayerWhenReady = youTubePlayer;
-                youTubePlayer.loadVideo(video.getVideoId(), 0);
+                float timestamp = videoWatchData == null ? 0 : videoWatchData.getTimestamp();
+                youTubePlayer.loadVideo(video.getVideoId(), timestamp);
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     youTubePlayer.toggleFullscreen();
                 }
