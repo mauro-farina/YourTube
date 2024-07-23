@@ -87,6 +87,7 @@
         android:scrollbars="none" >
         <TextView
             android:id="@+id/video_player_description"
+            android:autoLink="web"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
