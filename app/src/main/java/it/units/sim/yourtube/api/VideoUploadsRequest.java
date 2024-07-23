@@ -31,6 +31,12 @@ public class VideoUploadsRequest extends AbstractYouTubeRequest<List<VideoData>>
         this.publishedOn = publishedOn;
     }
 
+    public VideoUploadsRequest(GoogleAccountCredential credential,
+                               Callback<List<VideoData>> callback,
+                               UserSubscription subscription) {
+        this(credential, callback, subscription, null);
+    }
+
     @Override
     protected Result<List<VideoData>> performRequest() throws IOException {
         String playlistId = subscription.getUploadsPlaylistId();
@@ -47,6 +53,14 @@ public class VideoUploadsRequest extends AbstractYouTubeRequest<List<VideoData>>
         int results = playlistItems.size();
         if (results == 0) {
             return new Result.Success<>(new ArrayList<>());
+        }
+
+        if (publishedOn == null) {
+            List<VideoData> result = playlistItems
+                    .stream()
+                    .map(i -> new VideoData(i.getSnippet(), subscription))
+                    .collect(Collectors.toList());
+            return new Result.Success<>(result);
         }
 
         Calendar calendar = Calendar.getInstance();
@@ -79,14 +93,14 @@ public class VideoUploadsRequest extends AbstractYouTubeRequest<List<VideoData>>
             recursiveWorker(playlistItems, response.getNextPageToken(), publishedAfter);
         }
 
-        List<VideoData> fetchedVideos = playlistItems
+        List<VideoData> filteredVideos = playlistItems
                 .stream()
                 .filter(i -> i.getSnippet().getPublishedAt().getValue() > publishedAfter.getValue())
                 .filter(i -> i.getSnippet().getPublishedAt().getValue() < publishedBefore.getValue())
                 .map(i -> new VideoData(i.getSnippet(), subscription))
                 .collect(Collectors.toList());
 
-        return new Result.Success<>(fetchedVideos);
+        return new Result.Success<>(filteredVideos);
     }
 
     private void recursiveWorker(List<PlaylistItem> list, String nextPageToken, DateTime publishedAfter) throws IOException {
