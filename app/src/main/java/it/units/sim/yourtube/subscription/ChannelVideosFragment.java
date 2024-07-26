@@ -38,15 +38,6 @@ public class ChannelVideosFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ChannelVideosFragment newInstance(String param1, String param2) {
-        ChannelVideosFragment fragment = new ChannelVideosFragment();
-        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
