@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,12 +38,19 @@ public class SubscriptionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_subscriptions, container, false);
+
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         RecyclerView recyclerView = view.findViewById(R.id.subscriptions_recycler_view);
         adapter = new SubscriptionsAdapter(
                 viewModel.getSubscriptionsList().getValue(),
-                v -> SubscriptionInfoDialog
-                            .newInstance((UserSubscription) v.getTag())
-                            .show(getChildFragmentManager(), SubscriptionInfoDialog.TAG)
+                v -> {
+                    Bundle args = new Bundle();
+                    args.putParcelable("channel", (UserSubscription) v.getTag());
+                    navController.navigate(R.id.channelVideosFragment, args);
+                }
+//                v -> SubscriptionInfoDialog
+//                            .newInstance((UserSubscription) v.getTag())
+//                            .show(getChildFragmentManager(), SubscriptionInfoDialog.TAG)
         );
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

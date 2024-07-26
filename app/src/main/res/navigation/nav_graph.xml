@@ -87,9 +87,15 @@
             android:id="@+id/action_videoPlayer_to_videos"
             app:destination="@id/videosFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="it.units.sim.yourtube.settings.SettingsFragment"
         android:label="SettingsFragment" />
+
+    <fragment
+        android:id="@+id/channelVideosFragment"
+        android:name="it.units.sim.yourtube.subscription.ChannelVideosFragment"
+        android:label="ChannelVideosFragment" />
 
 </navigation>
