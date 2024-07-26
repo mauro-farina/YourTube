@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.YouTubeDataViewModel;
-import it.units.sim.yourtube.model.Category;
 import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
 import it.units.sim.yourtube.video.VideosAdapter;
@@ -32,7 +29,6 @@ public class ChannelVideosFragment extends Fragment {
 
     private YouTubeDataViewModel viewModel;
     private VideosAdapter adapter;
-    private UserSubscription channel;
 
     public ChannelVideosFragment() {
         // Required empty public constructor
@@ -50,7 +46,7 @@ public class ChannelVideosFragment extends Fragment {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication());
         viewModel = new ViewModelProvider(requireActivity(), factory).get(YouTubeDataViewModel.class);
 
-        channel = getArguments().getParcelable("channel");
+        UserSubscription channel = getArguments().getParcelable("channel");
         viewModel.fetchVideos(channel);
     }
 
