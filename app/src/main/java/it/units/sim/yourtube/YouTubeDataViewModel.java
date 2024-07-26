@@ -30,6 +30,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
     private final ExecutorService executorService;
     private final MutableLiveData<List<UserSubscription>> subscriptionsList;
     private final MutableLiveData<List<VideoData>> videosList;
+    private final MutableLiveData<List<VideoData>> channelVideos;
     private final MutableLiveData<Boolean> missingYouTubeDataAuthorization;
     private final MutableLiveData<Boolean> quotaExceeded;
     private final GoogleAccountCredential credential;
@@ -41,6 +42,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
         executorService = app.getExecutorService();
         subscriptionsList = new MutableLiveData<>(new LinkedList<>());
         videosList = new MutableLiveData<>(new LinkedList<>());
+        channelVideos = new MutableLiveData<>(new LinkedList<>());
         missingYouTubeDataAuthorization = new MutableLiveData<>();
         quotaExceeded = new MutableLiveData<>();
     }
@@ -102,12 +104,28 @@ public class YouTubeDataViewModel extends AndroidViewModel {
         }
     }
 
+    public void fetchVideos(UserSubscription channel) {
+        channelVideos.setValue(new LinkedList<>());
+        executorService.submit(new VideoUploadsRequest(credential, result -> {
+            if (result instanceof Result.Success) {
+                List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
+                channelVideos.postValue(fetchedVideos);
+            } else {
+                handleResultError((Result.Error<?>) result);
+            }
+        }, channel));
+    }
+
     public LiveData<List<UserSubscription>> getSubscriptionsList() {
         return subscriptionsList;
     }
 
     public LiveData<List<VideoData>> getVideosList() {
         return videosList;
+    }
+
+    public LiveData<List<VideoData>> getChannelVideos() {
+        return channelVideos;
     }
 
     public LiveData<Boolean> getMissingYouTubeDataAuthorization() {
