@@ -55,8 +55,6 @@ public class VideoPlayerFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // DateFormatter.formatDate(video.getPublishedDate().getValue(), getResources())
-
     private final Runnable delayedHideSysUi = () -> {
         if(isFullscreen && isAdded()) turnImmersionModeOn();
     };
@@ -115,12 +113,35 @@ public class VideoPlayerFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (videoWatchData == null) {
-            watchDataViewModel.add(video.getVideoId(), tracker.getCurrentSecond(), false);
+
+        float currentTime = tracker.getCurrentSecond();
+        float duration = tracker.getVideoDuration();
+        float timestamp;
+        boolean watched = false;
+        if (duration < 60) { // possibly a short
+            timestamp = 0;
+            if (currentTime / duration > 90) {
+                watched = true;
+            }
         } else {
-            videoWatchData.setTimestamp(tracker.getCurrentSecond());
+            if (currentTime / duration < 5) {
+                timestamp = 0;
+            } else if (currentTime / duration > 95) {
+                timestamp = 0;
+                watched = true;
+            } else {
+                timestamp = currentTime;
+            }
+        }
+
+        if (videoWatchData == null) {
+            watchDataViewModel.add(video.getVideoId(), timestamp, watched);
+        } else {
+            videoWatchData.setTimestamp(timestamp);
+            videoWatchData.setWatched(watched);
             watchDataViewModel.update(videoWatchData);
         }
+
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         turnImmersionModeOff();
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
