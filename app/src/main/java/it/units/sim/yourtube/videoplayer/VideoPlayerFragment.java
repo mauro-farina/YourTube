@@ -116,22 +116,17 @@ public class VideoPlayerFragment extends Fragment {
 
         float currentTime = tracker.getCurrentSecond();
         float duration = tracker.getVideoDuration();
-        float timestamp;
-        boolean watched = false;
+        float timestamp = 0;
+        boolean watched;
+        float watchedPct = currentTime / duration * 100;
+
         if (duration < 60) { // possibly a short
-            timestamp = 0;
-            if (currentTime / duration > 90) {
-                watched = true;
-            }
+            watched = watchedPct > 60;
         } else {
-            if (currentTime / duration < 5) {
-                timestamp = 0;
-            } else if (currentTime / duration > 95) {
-                timestamp = 0;
-                watched = true;
-            } else {
+            if (watchedPct > 5 && watchedPct < 90) {
                 timestamp = currentTime;
             }
+            watched = watchedPct > 90;
         }
 
         if (videoWatchData == null) {
