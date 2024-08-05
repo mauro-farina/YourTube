@@ -9,11 +9,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -29,7 +30,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
 
     private final ExecutorService executorService;
     private final MutableLiveData<List<UserSubscription>> subscriptionsList;
-    private final MutableLiveData<List<VideoData>> videosList;
+    private final MutableLiveData<List<VideoData>> feedVideos;
     private final MutableLiveData<List<VideoData>> channelVideos;
     private final MutableLiveData<Boolean> missingYouTubeDataAuthorization;
     private final MutableLiveData<Boolean> quotaExceeded;
@@ -41,7 +42,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
         credential = app.getGoogleCredential();
         executorService = app.getExecutorService();
         subscriptionsList = new MutableLiveData<>(new LinkedList<>());
-        videosList = new MutableLiveData<>(new LinkedList<>());
+        feedVideos = new MutableLiveData<>(new LinkedList<>());
         channelVideos = new MutableLiveData<>(new LinkedList<>());
         missingYouTubeDataAuthorization = new MutableLiveData<>();
         quotaExceeded = new MutableLiveData<>();
@@ -72,10 +73,10 @@ public class YouTubeDataViewModel extends AndroidViewModel {
         }
     }
 
-    private final List<Future<?>> ongoingFetchTasks = new ArrayList<>();
+    private final Map<String, Future<?>> ongoingFetchTasks = new HashMap<>();
 
     private void cancelOngoingTasks() {
-        for (Future<?> task : ongoingFetchTasks) {
+        for (Future<?> task : ongoingFetchTasks.values()) {
             task.cancel(true);
         }
         ongoingFetchTasks.clear();
@@ -83,24 +84,25 @@ public class YouTubeDataViewModel extends AndroidViewModel {
 
     public void fetchVideos(Date date, Category category) {
         cancelOngoingTasks();
-        videosList.setValue(new LinkedList<>());
+        feedVideos.setValue(new LinkedList<>());
         for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
             if (category != null && !category.getChannelIds().contains(sub.getChannelId()))
                 continue;
             Future<?> task = executorService.submit(new VideoUploadsRequest(credential, result -> {
                 if (result instanceof Result.Success) {
                     List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
-                    List<VideoData> videos = videosList.getValue();
+                    List<VideoData> videos = feedVideos.getValue();
                     if (videos != null) {
                         videos.addAll(fetchedVideos);
                         videos.sort(Comparator.comparingLong(VideoData::getPublishedDateInMillis).reversed());
-                        videosList.postValue(videos);
+                        feedVideos.postValue(videos);
                     }
                 } else {
                     handleResultError((Result.Error<?>) result);
                 }
+                ongoingFetchTasks.remove(sub.getChannelName());
             }, sub, date));
-            ongoingFetchTasks.add(task);
+            ongoingFetchTasks.put(sub.getChannelName(), task);
         }
     }
 
@@ -120,8 +122,8 @@ public class YouTubeDataViewModel extends AndroidViewModel {
         return subscriptionsList;
     }
 
-    public LiveData<List<VideoData>> getVideosList() {
-        return videosList;
+    public LiveData<List<VideoData>> getFeedVideos() {
+        return feedVideos;
     }
 
     public LiveData<List<VideoData>> getChannelVideos() {
