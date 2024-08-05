@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import it.units.sim.yourtube.api.Result;
 import it.units.sim.yourtube.api.SubscriptionListRequest;
@@ -31,6 +32,8 @@ public class YouTubeDataViewModel extends AndroidViewModel {
     private final ExecutorService executorService;
     private final MutableLiveData<List<UserSubscription>> subscriptionsList;
     private final MutableLiveData<List<VideoData>> feedVideos;
+    private final MutableLiveData<Integer> feedFetchCounter = new MutableLiveData<>(0);
+    private final AtomicInteger feedFetchAtomicCounter = new AtomicInteger(0);
     private final MutableLiveData<List<VideoData>> channelVideos;
     private final MutableLiveData<Boolean> missingYouTubeDataAuthorization;
     private final MutableLiveData<Boolean> quotaExceeded;
@@ -80,6 +83,8 @@ public class YouTubeDataViewModel extends AndroidViewModel {
             task.cancel(true);
         }
         ongoingFetchTasks.clear();
+        feedFetchCounter.setValue(0);
+        feedFetchAtomicCounter.set(0);
     }
 
     public void fetchVideos(Date date, Category category) {
@@ -101,6 +106,8 @@ public class YouTubeDataViewModel extends AndroidViewModel {
                     handleResultError((Result.Error<?>) result);
                 }
                 ongoingFetchTasks.remove(sub.getChannelName());
+                int counter = feedFetchAtomicCounter.incrementAndGet();
+                feedFetchCounter.postValue(counter);
             }, sub, date));
             ongoingFetchTasks.put(sub.getChannelName(), task);
         }
@@ -136,6 +143,10 @@ public class YouTubeDataViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> getQuotaExceeded() {
         return quotaExceeded;
+    }
+
+    public LiveData<Integer> getFeedFetchCounter() {
+        return feedFetchCounter;
     }
 
 }

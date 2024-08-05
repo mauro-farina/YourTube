@@ -20,9 +20,11 @@ import android.widget.Button;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.utils.DateFormatter;
@@ -42,6 +44,7 @@ public class VideosFragment extends Fragment {
     private Button datePicker;
     private FloatingActionButton categoryFilterFAB;
     private Chip categoryFilterChip;
+    private LinearProgressIndicator progressIndicator;
     private boolean dateObserverBypass;
     private List<UserSubscription> subscriptionsObserverBypass;
     private boolean hasDateChangedWhileCategoryFilterOn;
@@ -84,7 +87,7 @@ public class VideosFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_videos, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.videos_recycler_view);
-        adapter = new VideosAdapter(youTubeDataViewModel.getVideosList().getValue(), clickedView -> {
+        adapter = new VideosAdapter(youTubeDataViewModel.getFeedVideos().getValue(), clickedView -> {
             VideoData video = (VideoData) clickedView.getTag();
             Bundle extras = new Bundle();
             extras.putParcelable("video", video);
@@ -109,6 +112,7 @@ public class VideosFragment extends Fragment {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
             localViewModel.setDateFilter(calendar.getTime());
         });
+        progressIndicator = view.findViewById(R.id.feed_fetch_progress);
         return view;
     }
 
@@ -135,8 +139,9 @@ public class VideosFragment extends Fragment {
             if (localViewModel.getCategoryFilter().getValue() != null) {
                 hasDateChangedWhileCategoryFilterOn = true;
             }
+            progressIndicator.setVisibility(View.VISIBLE);
         });
-        youTubeDataViewModel.getVideosList().observe(getViewLifecycleOwner(), list -> adapter.setVideosList(list));
+        youTubeDataViewModel.getFeedVideos().observe(getViewLifecycleOwner(), list -> adapter.setVideosList(list));
         localViewModel.getCategoryFilter().observe(
                 getViewLifecycleOwner(),
                 category -> {
@@ -179,17 +184,28 @@ public class VideosFragment extends Fragment {
                     .newInstance()
                     .show(fragmentManager, FilterVideosByCategoryDialog.TAG);
         });
+        youTubeDataViewModel.getFeedFetchCounter().observe(getViewLifecycleOwner(), fetchCount -> {
+            int totSubs = Objects.requireNonNull(youTubeDataViewModel.getSubscriptionsList().getValue()).size();
+            if (totSubs <= 0)
+                return;
+            int progress = 100 * fetchCount / totSubs;
+            progressIndicator.setProgress(progress, false);
+            if (progress >= 99) {
+                progressIndicator.setVisibility(View.GONE);
+                progressIndicator.setProgress(0);
+            }
+        });
     }
 
     private void setFilteredVideosListInAdapter(Category filterCategory) {
-        if (youTubeDataViewModel.getVideosList().getValue() == null)
+        if (youTubeDataViewModel.getFeedVideos().getValue() == null)
             return;
         if (filterCategory == null) {
-            adapter.setVideosList(youTubeDataViewModel.getVideosList().getValue());
+            adapter.setVideosList(youTubeDataViewModel.getFeedVideos().getValue());
             return;
         }
         adapter.setVideosList(
-                youTubeDataViewModel.getVideosList().getValue()
+                youTubeDataViewModel.getFeedVideos().getValue()
                         .stream()
                         .filter(v -> filterCategory.getChannelIds().contains(v.getChannel().getChannelId()))
                         .collect(Collectors.toList())
