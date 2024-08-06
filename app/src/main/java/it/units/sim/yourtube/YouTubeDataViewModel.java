@@ -93,6 +93,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
         for (UserSubscription sub : Objects.requireNonNull(subscriptionsList.getValue())) {
             if (category != null && !category.getChannelIds().contains(sub.getChannelId()))
                 continue;
+            feedFetchAtomicCounter.incrementAndGet();
             Future<?> task = executorService.submit(new VideoUploadsRequest(credential, result -> {
                 if (result instanceof Result.Success) {
                     List<VideoData> fetchedVideos = ((Result.Success<List<VideoData>>) result).getData();
@@ -106,7 +107,7 @@ public class YouTubeDataViewModel extends AndroidViewModel {
                     handleResultError((Result.Error<?>) result);
                 }
                 ongoingFetchTasks.remove(sub.getChannelName());
-                int counter = feedFetchAtomicCounter.incrementAndGet();
+                int counter = feedFetchAtomicCounter.decrementAndGet();
                 feedFetchCounter.postValue(counter);
             }, sub, date));
             ongoingFetchTasks.put(sub.getChannelName(), task);

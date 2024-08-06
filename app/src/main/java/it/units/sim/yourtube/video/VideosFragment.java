@@ -20,11 +20,10 @@ import android.widget.Button;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.utils.DateFormatter;
@@ -44,7 +43,7 @@ public class VideosFragment extends Fragment {
     private Button datePicker;
     private FloatingActionButton categoryFilterFAB;
     private Chip categoryFilterChip;
-    private LinearProgressIndicator progressIndicator;
+    private CircularProgressIndicator progressIndicator;
     private boolean dateObserverBypass;
     private List<UserSubscription> subscriptionsObserverBypass;
     private boolean hasDateChangedWhileCategoryFilterOn;
@@ -139,7 +138,6 @@ public class VideosFragment extends Fragment {
             if (localViewModel.getCategoryFilter().getValue() != null) {
                 hasDateChangedWhileCategoryFilterOn = true;
             }
-            progressIndicator.setVisibility(View.VISIBLE);
         });
         youTubeDataViewModel.getFeedVideos().observe(getViewLifecycleOwner(), list -> adapter.setVideosList(list));
         localViewModel.getCategoryFilter().observe(
@@ -185,14 +183,10 @@ public class VideosFragment extends Fragment {
                     .show(fragmentManager, FilterVideosByCategoryDialog.TAG);
         });
         youTubeDataViewModel.getFeedFetchCounter().observe(getViewLifecycleOwner(), fetchCount -> {
-            int totSubs = Objects.requireNonNull(youTubeDataViewModel.getSubscriptionsList().getValue()).size();
-            if (totSubs <= 0)
-                return;
-            int progress = 100 * fetchCount / totSubs;
-            progressIndicator.setProgress(progress, false);
-            if (progress >= 99) {
+            if (fetchCount <= 1) {
                 progressIndicator.setVisibility(View.GONE);
-                progressIndicator.setProgress(0);
+            } else {
+                progressIndicator.setVisibility(View.VISIBLE);
             }
         });
     }
