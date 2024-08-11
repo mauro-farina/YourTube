@@ -45,6 +45,7 @@ public class VideosFragment extends Fragment {
     private Chip categoryFilterChip;
     private CircularProgressIndicator progressIndicator;
     private boolean dateObserverBypass;
+    private boolean openedVideoPlayer;
     private List<UserSubscription> subscriptionsObserverBypass;
     private boolean hasDateChangedWhileCategoryFilterOn;
 
@@ -60,6 +61,7 @@ public class VideosFragment extends Fragment {
         youTubeDataViewModel = new ViewModelProvider(requireActivity(), factory).get(YouTubeDataViewModel.class);
         localViewModel = new ViewModelProvider(this).get(VideosViewModel.class);
         dateObserverBypass = false;
+        openedVideoPlayer = false;
         subscriptionsObserverBypass = youTubeDataViewModel.getSubscriptionsList().getValue();
         calendar = Calendar.getInstance();
         hasDateChangedWhileCategoryFilterOn = false;
@@ -92,6 +94,7 @@ public class VideosFragment extends Fragment {
             extras.putParcelable("video", video);
             Intent intent = new Intent(requireActivity(), VideoPlayerActivity.class);
             intent.putExtras(extras);
+            openedVideoPlayer = true;
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
@@ -127,6 +130,10 @@ public class VideosFragment extends Fragment {
         });
         localViewModel.getDateFilter().observe(getViewLifecycleOwner(), date -> {
             datePicker.setText(DateFormatter.formatDate(date.getTime(), getResources()));
+            if (openedVideoPlayer) {
+                openedVideoPlayer = false;
+                dateObserverBypass = false;
+            }
             if (dateObserverBypass) {
                 dateObserverBypass = false;
                 return;
