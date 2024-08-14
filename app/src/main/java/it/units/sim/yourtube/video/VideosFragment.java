@@ -133,6 +133,7 @@ public class VideosFragment extends Fragment {
             if (openedVideoPlayer) {
                 openedVideoPlayer = false;
                 dateObserverBypass = false;
+                return;
             }
             if (dateObserverBypass) {
                 dateObserverBypass = false;
