@@ -1,5 +1,6 @@
 package it.units.sim.yourtube.videoplayer;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -89,6 +90,14 @@ public class VideoInfosFragment extends Fragment {
         view.findViewById(R.id.video_player_container_title_description).setOnClickListener(v -> {
             VideoInfoBottomSheet bottomSheet = VideoInfoBottomSheet.newInstance(video);
             bottomSheet.show(getChildFragmentManager(), bottomSheet.getTag());
+        });
+
+        view.findViewById(R.id.video_player_share).setOnClickListener(v -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            String shareBody = "https://youtu.be/" + video.getVideoId();
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(shareIntent, "Share via"));
         });
 
         return view;
