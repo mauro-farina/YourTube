@@ -73,6 +73,7 @@
     <string name="like_button">Like button</string>
     <string name="dislike_button">Dislike button</string>
     <string name="description">Description</string>
+    <string name="video_description_template" translatable="false">\u00A0• %1$s</string>
     <string name="comments">Comments</string>
     <string name="number_views">%1$s Views</string>
     <!-- Settings -->
@@ -84,4 +85,6 @@
     <string name="delete_account">Delete account</string>
     <string name="dialog_delete_account_warning">By proceeding, you will delete your account and your local data.</string>
     <string name="portrait_fullscreen">Portrait fullscreen</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

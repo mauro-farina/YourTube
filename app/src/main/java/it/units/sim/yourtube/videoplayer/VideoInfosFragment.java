@@ -12,13 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.google.android.material.tabs.TabLayout;
 
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.VideoData;
+import it.units.sim.yourtube.utils.DateFormatter;
 
 public class VideoInfosFragment extends Fragment {
 
@@ -58,17 +56,26 @@ public class VideoInfosFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_infos, container, false);
         TextView videoTitle = view.findViewById(R.id.video_player_title);
-        TextView videoViewsCount = view.findViewById(R.id.video_player_views_counter);
+        TextView videoViewsCount = view.findViewById(R.id.video_player_views);
         TextView videoChannelName = view.findViewById(R.id.list_item_subscription_channel_name);
         ImageView videoChannelThumbnail = view.findViewById(R.id.list_item_subscription_thumbnail);
-        ScrollView descriptionScrollview = view.findViewById(R.id.video_player_description_scroll_view);
         TextView videoDescription = view.findViewById(R.id.video_player_description);
-        TextView videoLikesCounter = view.findViewById(R.id.video_player_likes_counter);
+        TextView videoLikesCounter = view.findViewById(R.id.video_player_likes);
+        TextView publishedDate = view.findViewById(R.id.video_player_date);
+
+//        import android.text.util.Linkify;
+//        Linkify.addLinks(videoDescription, Linkify.WEB_URLS);
 
         videoTitle.setText(video.getTitle());
+        String date = DateFormatter.formatDate(video.getPublishedDateInMillis(), getResources());
+        publishedDate.setText(date);
         videoChannelName.setText(video.getChannel().getChannelName());
-        videoDescription.setText((video.getDescription()));
+        if (video.getDescription().length() > 0)
+            videoDescription.setText(getString(R.string.video_description_template, video.getDescription()));
+
+
         viewModel.getViewsCount().observe(getViewLifecycleOwner(), views -> videoViewsCount.setText(getString(R.string.number_views, views)));
+        viewModel.getViewsCount().observe(getViewLifecycleOwner(), videoViewsCount::setText);
         viewModel.getLikesCount().observe(getViewLifecycleOwner(), videoLikesCounter::setText);
         Uri channelThumbnailUri = Uri.parse(video.getChannel().getThumbnailUrl());
         videoChannelThumbnail.setImageURI(channelThumbnailUri);
@@ -79,31 +86,11 @@ public class VideoInfosFragment extends Fragment {
         commentsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         viewModel.getComments().observe(getViewLifecycleOwner(), adapter::setCommentsList);
 
-        TabLayout tabLayout = view.findViewById(R.id.video_player_tab_layout);
-        tabLayout.addOnTabSelectedListener(
-                new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        if (tab.equals(tabLayout.getTabAt(0)))      // Description
-                            descriptionScrollview.setVisibility(View.VISIBLE);
-                        else                                             // Comments
-                            commentsRecyclerView.setVisibility(View.VISIBLE);
-                    }
+        view.findViewById(R.id.video_player_container_title_description).setOnClickListener(v -> {
+            VideoInfoBottomSheet bottomSheet = VideoInfoBottomSheet.newInstance(video);
+            bottomSheet.show(getChildFragmentManager(), bottomSheet.getTag());
+        });
 
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-                        if (tab.equals(tabLayout.getTabAt(0)))      // Description
-                            descriptionScrollview.setVisibility(View.GONE);
-                        else                                             // Comments
-                            commentsRecyclerView.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
-                        // nothing
-                    }
-                }
-        );
         return view;
     }
 }
