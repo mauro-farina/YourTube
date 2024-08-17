@@ -26,6 +26,7 @@
     <string name="current_date">Oggi</string>
     <string name="remove_filter">Rimuovi filtro</string>
     <string name="subscribed_since">Iscritto dal %1$s</string>
+    <string name="subscribe">Iscriviti</string>
     <string name="new_category_dialog_title">Nuova categoria</string>
     <string name="new_category_name_field">Nome</string>
     <string name="add_channels_to_the_category">Aggiungi canali</string>
@@ -72,4 +73,5 @@
     <string name="category_school">Scuola</string>
     <string name="category_shopping">Compere</string>
     <string name="portrait_fullscreen">Schermata piena verticale</string>
+    <string name="unsubscribe">Disiscriviti</string>
 </resources>

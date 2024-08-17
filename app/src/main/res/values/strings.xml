@@ -32,6 +32,8 @@
     <string name="remove_filter">Remove filer</string>
     <!-- Subscriptions -->
     <string name="subscribed_since">Subscribed since %1$s</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="unsubscribe">Unsubscribe</string>
     <!-- Categories -->
     <string name="new_category_dialog_title">New category</string>
     <string name="new_category_name_field">New category name</string>
@@ -85,6 +87,4 @@
     <string name="delete_account">Delete account</string>
     <string name="dialog_delete_account_warning">By proceeding, you will delete your account and your local data.</string>
     <string name="portrait_fullscreen">Portrait fullscreen</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
