@@ -74,8 +74,6 @@ public class VideoInfosFragment extends Fragment {
         if (video.getDescription().length() > 0)
             videoDescription.setText(getString(R.string.video_description_template, video.getDescription()));
 
-
-        viewModel.getViewsCount().observe(getViewLifecycleOwner(), views -> videoViewsCount.setText(getString(R.string.number_views, views)));
         viewModel.getViewsCount().observe(getViewLifecycleOwner(), videoViewsCount::setText);
         viewModel.getLikesCount().observe(getViewLifecycleOwner(), videoLikesCounter::setText);
         Uri channelThumbnailUri = Uri.parse(video.getChannel().getThumbnailUrl());
