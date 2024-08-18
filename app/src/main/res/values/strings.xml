@@ -32,8 +32,6 @@
     <string name="remove_filter">Remove filer</string>
     <!-- Subscriptions -->
     <string name="subscribed_since">Subscribed since %1$s</string>
-    <string name="subscribe">Subscribe</string>
-    <string name="unsubscribe">Unsubscribe</string>
     <!-- Categories -->
     <string name="new_category_dialog_title">New category</string>
     <string name="new_category_name_field">New category name</string>

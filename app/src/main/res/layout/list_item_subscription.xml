@@ -34,21 +34,6 @@
         android:paddingStart="10dp"
         android:paddingEnd="0dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_item_subscription_subscribe_btn"
-        android:text="@string/subscribe"
-        android:visibility="gone" />
-
-    <Button
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_item_subscription_unsubscribe_btn"
-        android:text="@string/unsubscribe"
-        android:visibility="gone" />
-
     <CheckBox
         android:id="@+id/list_item_subscription_checkbox"
         android:layout_width="wrap_content"
