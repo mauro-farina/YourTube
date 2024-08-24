@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(tableName = "playlist")
@@ -14,16 +15,19 @@ public class Playlist implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo
-    private final String name;
+    private String name;
     @ColumnInfo
-    private final String owner;
+    private String owner;
     @ColumnInfo
-    private final List<VideoData> videos;
+    private List<VideoData> videos;
 
-    public Playlist(@NonNull String name, @NonNull String owner, @NonNull List<VideoData> videos) {
+    public Playlist(@NonNull String name, @NonNull String owner, List<VideoData> videos) {
         this.name = name;
         this.owner = owner;
-        this.videos = videos;
+        if (videos == null)
+            this.videos = new ArrayList<>();
+        else
+            this.videos = videos;
     }
 
     public int getId() {
@@ -40,6 +44,22 @@ public class Playlist implements Serializable {
 
     public List<VideoData> getVideos() {
         return videos;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public void setVideos(List<VideoData> videos) {
+        this.videos = videos;
     }
 
     public void addVideo(VideoData video) {
