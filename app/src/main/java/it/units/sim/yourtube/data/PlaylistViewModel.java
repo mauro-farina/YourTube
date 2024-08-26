@@ -51,4 +51,8 @@ public class PlaylistViewModel extends AndroidViewModel {
         executorService.submit(() -> dao.update(playlist));
     }
 
+    public void deletePlaylist(Playlist playlist) {
+        executorService.submit(() -> dao.delete(playlist));
+    }
+
 }
