@@ -12,7 +12,7 @@
 
     <fragment
         android:id="@+id/videosFragment"
-        android:name="it.units.sim.yourtube.video.VideosFragment"
+        android:name="it.units.sim.yourtube.video.FeedFragment"
         android:label="fragment_homepage"
         tools:layout="@layout/fragment_videos" >
         <action

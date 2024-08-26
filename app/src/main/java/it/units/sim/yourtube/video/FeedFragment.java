@@ -34,7 +34,7 @@ import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
 import it.units.sim.yourtube.videoplayer.VideoPlayerActivity;
 
-public class VideosFragment extends Fragment {
+public class FeedFragment extends Fragment {
 
     private YouTubeDataViewModel youTubeDataViewModel;
     private VideosViewModel localViewModel;
@@ -49,7 +49,7 @@ public class VideosFragment extends Fragment {
     private List<UserSubscription> subscriptionsObserverBypass;
     private boolean hasDateChangedWhileCategoryFilterOn;
 
-    public VideosFragment() {
+    public FeedFragment() {
         super(R.layout.fragment_videos);
     }
 
