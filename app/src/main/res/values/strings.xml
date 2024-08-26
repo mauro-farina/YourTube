@@ -86,4 +86,5 @@
     <string name="dialog_delete_account_warning">By proceeding, you will delete your account and your local data.</string>
     <string name="portrait_fullscreen">Portrait fullscreen</string>
     <string name="playlist">Playlist</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 </resources>
