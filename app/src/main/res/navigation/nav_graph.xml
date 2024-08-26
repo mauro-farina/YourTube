@@ -98,4 +98,9 @@
         android:name="it.units.sim.yourtube.subscription.ChannelVideosFragment"
         android:label="ChannelVideosFragment" />
 
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="it.units.sim.yourtube.playlist.PlaylistFragment"
+        android:label="PlaylistFragment" />
+
 </navigation>
