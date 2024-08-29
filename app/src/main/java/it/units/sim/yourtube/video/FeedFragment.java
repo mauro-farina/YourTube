@@ -20,7 +20,6 @@ import android.widget.Button;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.util.Calendar;
 import java.util.List;
@@ -43,14 +42,14 @@ public class FeedFragment extends Fragment {
     private Button datePicker;
     private FloatingActionButton categoryFilterFAB;
     private Chip categoryFilterChip;
-    private CircularProgressIndicator progressIndicator;
+    private View progressIndicator;
     private boolean dateObserverBypass;
     private boolean openedVideoPlayer;
     private List<UserSubscription> subscriptionsObserverBypass;
     private boolean hasDateChangedWhileCategoryFilterOn;
 
     public FeedFragment() {
-        super(R.layout.fragment_videos);
+        super();  // empty constructor
     }
 
     @Override
@@ -100,6 +99,7 @@ public class FeedFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemViewCacheSize(30);
+
         categoryFilterFAB = view.findViewById(R.id.category_filter_fab);
         categoryFilterChip = view.findViewById(R.id.category_filter_chip);
         datePicker = view.findViewById(R.id.date_filter_pick);
