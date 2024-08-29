@@ -14,7 +14,7 @@
         android:id="@+id/videosFragment"
         android:name="it.units.sim.yourtube.video.FeedFragment"
         android:label="fragment_homepage"
-        tools:layout="@layout/fragment_videos" >
+        tools:layout="@layout/fragment_feed" >
         <action
             android:id="@+id/action_homepage_to_subscriptions"
             app:destination="@id/subscriptionsFragment" />

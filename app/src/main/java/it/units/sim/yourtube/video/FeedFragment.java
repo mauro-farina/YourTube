@@ -85,7 +85,7 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_videos, container, false);
+        View view = inflater.inflate(R.layout.fragment_feed, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.videos_recycler_view);
         adapter = new VideosAdapter(youTubeDataViewModel.getFeedVideos().getValue(), clickedView -> {
             VideoData video = (VideoData) clickedView.getTag();
