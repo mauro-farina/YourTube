@@ -10,6 +10,7 @@ import androidx.room.Room;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 import it.units.sim.yourtube.YourTubeApp;
 import it.units.sim.yourtube.model.Playlist;
@@ -47,7 +48,9 @@ public class PlaylistViewModel extends AndroidViewModel {
     }
 
     public void addToPlaylist(Playlist playlist, VideoData video) {
-        playlist.addVideo(video);
+        List<VideoData> newList = new ArrayList<>(playlist.getVideos());
+        newList.add(video);
+        playlist.setVideos(newList);
         executorService.submit(() -> dao.update(playlist));
     }
 
