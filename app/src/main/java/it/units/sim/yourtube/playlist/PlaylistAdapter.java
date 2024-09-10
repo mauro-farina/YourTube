@@ -15,16 +15,18 @@ import java.util.List;
 
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.Playlist;
-import it.units.sim.yourtube.model.VideoData;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
 
     private List<Playlist> playlists;
+    private final View.OnClickListener onClickListener;
     private final View.OnLongClickListener onLongClickListener;
 
     public PlaylistAdapter(List<Playlist> playlists,
+                           View.OnClickListener onClickListener,
                            View.OnLongClickListener onLongClickListener) {
         this.playlists = playlists;
+        this.onClickListener = onClickListener;
         this.onLongClickListener = onLongClickListener;
     }
 
@@ -46,6 +48,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull PlaylistAdapter.ViewHolder holder, int position) {
         Playlist playlist = playlists.get(position);
+        holder.name.getRootView().setOnClickListener(onClickListener);
         holder.name.getRootView().setOnLongClickListener(onLongClickListener);
         holder.name.getRootView().setTag(playlist);
         holder.name.setText(playlist.getName());
