@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +45,11 @@ public class PlaylistFragment extends Fragment {
         adapter = new PlaylistAdapter(
                 new ArrayList<>(),
                 v -> {
-                    // open PlaylistElementsFragment
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                    Bundle args = new Bundle();
+                    Playlist playlist = (Playlist) v.getTag();
+                    args.putSerializable("playlist", playlist);
+                    navController.navigate(R.id.playlistVideosFragment, args);
                 },
                 v -> {
                     Playlist playlist = (Playlist) v.getTag();
