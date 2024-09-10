@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,6 @@ import it.units.sim.yourtube.model.Playlist;
 
 
 public class PlaylistFragment extends Fragment {
-
 
     private PlaylistAdapter adapter;
     private PlaylistViewModel viewModel;
@@ -44,6 +42,9 @@ public class PlaylistFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(PlaylistViewModel.class);
         adapter = new PlaylistAdapter(
                 new ArrayList<>(),
+                v -> {
+                    // open PlaylistElementsFragment
+                },
                 v -> {
                     Playlist playlist = (Playlist) v.getTag();
                     FragmentManager fragmentManager = getChildFragmentManager();
