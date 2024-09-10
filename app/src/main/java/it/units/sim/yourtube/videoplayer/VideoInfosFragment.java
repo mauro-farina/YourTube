@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.VideoData;
+import it.units.sim.yourtube.playlist.ChoosePlaylistBottomSheet;
 import it.units.sim.yourtube.utils.DateFormatter;
 
 public class VideoInfosFragment extends Fragment {
@@ -96,6 +97,11 @@ public class VideoInfosFragment extends Fragment {
             String shareBody = "https://youtu.be/" + video.getVideoId();
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(shareIntent, "Share via"));
+        });
+
+        view.findViewById(R.id.video_player_add_to_playlist).setOnClickListener(v -> {
+            ChoosePlaylistBottomSheet bottomSheet = ChoosePlaylistBottomSheet.newInstance(video);
+            bottomSheet.show(getChildFragmentManager(), bottomSheet.getTag());
         });
 
         return view;
