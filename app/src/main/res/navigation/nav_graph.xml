@@ -103,4 +103,9 @@
         android:name="it.units.sim.yourtube.playlist.PlaylistFragment"
         android:label="PlaylistFragment" />
 
+    <fragment
+        android:id="@+id/playlistVideosFragment"
+        android:name="it.units.sim.yourtube.playlist.PlaylistVideosFragment"
+        android:label="PlaylistVideosFragment" />
+
 </navigation>
