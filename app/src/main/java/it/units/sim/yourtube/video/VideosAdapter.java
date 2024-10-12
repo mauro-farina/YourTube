@@ -20,10 +20,19 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
 
     private List<VideoData> videosList;
     private final View.OnClickListener onVideoClick;
+    private final View.OnLongClickListener onVideoLongClick;
 
     public VideosAdapter(List<VideoData> videosList, View.OnClickListener onVideoClick) {
+        this(videosList, onVideoClick, null);
+    }
+
+    public VideosAdapter(
+            List<VideoData> videosList,
+            View.OnClickListener onVideoClick,
+            View.OnLongClickListener onVideoLongClick) {
         this.videosList = videosList;
         this.onVideoClick = onVideoClick;
+        this.onVideoLongClick = onVideoLongClick;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -45,6 +54,9 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
     public void onBindViewHolder(@NonNull VideosAdapter.ViewHolder holder, int position) {
         holder.itemView.setTag(videosList.get(position));
         holder.itemView.setOnClickListener(onVideoClick);
+        if (onVideoLongClick != null) {
+            holder.itemView.setOnLongClickListener(onVideoLongClick);
+        }
         TextView videoTitleTextView = holder.getVideoTitleTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
         ImageView channelImageView = holder.getChannelImageView();

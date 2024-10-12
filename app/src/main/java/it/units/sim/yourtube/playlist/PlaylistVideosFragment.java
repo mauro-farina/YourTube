@@ -48,14 +48,18 @@ public class PlaylistVideosFragment extends NoNavFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_playlist_videos, container, false);
         RecyclerView listView = view.findViewById(R.id.playlist_videos_list);
-        VideosAdapter adapter = new VideosAdapter(mPlaylist.getVideos(), v -> {
-            VideoData video = (VideoData) v.getTag();
-            Bundle extras = new Bundle();
-            extras.putParcelable("video", video);
-            Intent intent = new Intent(requireActivity(), VideoPlayerActivity.class);
-            intent.putExtras(extras);
-            startActivity(intent);
-        });
+        VideosAdapter adapter = new VideosAdapter(
+                mPlaylist.getVideos(),
+                v -> {
+                    VideoData video = (VideoData) v.getTag();
+                    Bundle extras = new Bundle();
+                    extras.putParcelable("video", video);
+                    Intent intent = new Intent(requireActivity(), VideoPlayerActivity.class);
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                },
+                v ->  true
+        );
         listView.setAdapter(adapter);
         listView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
