@@ -35,7 +35,7 @@ public class PlaylistOptionsDialog extends DialogFragment {
     public static PlaylistOptionsDialog newInstance(Playlist playlist) {
         PlaylistOptionsDialog fragment = new PlaylistOptionsDialog();
         Bundle args = new Bundle();
-        args.putSerializable(ARG, playlist);
+        args.putParcelable(ARG, playlist);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,7 +44,7 @@ public class PlaylistOptionsDialog extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            playlist = (Playlist) getArguments().getSerializable(ARG);
+            playlist = getArguments().getParcelable(ARG);
         }
     }
 

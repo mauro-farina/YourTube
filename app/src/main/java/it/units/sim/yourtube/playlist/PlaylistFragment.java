@@ -48,7 +48,7 @@ public class PlaylistFragment extends Fragment {
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                     Bundle args = new Bundle();
                     Playlist playlist = (Playlist) v.getTag();
-                    args.putSerializable("playlist", playlist);
+                    args.putParcelable("playlist", playlist);
                     navController.navigate(R.id.playlistVideosFragment, args);
                 },
                 v -> {

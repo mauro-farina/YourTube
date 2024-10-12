@@ -29,7 +29,7 @@ public class PlaylistVideosFragment extends Fragment {
     public static PlaylistVideosFragment newInstance(Playlist playlist) {
         PlaylistVideosFragment fragment = new PlaylistVideosFragment();
         Bundle args = new Bundle();
-        args.putSerializable("playlist", playlist);
+        args.putParcelable("playlist", playlist);
 //        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -39,7 +39,7 @@ public class PlaylistVideosFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mPlaylist = (Playlist) getArguments().getSerializable("playlist");
+            mPlaylist = getArguments().getParcelable("playlist");
         }
     }
 
