@@ -3,7 +3,6 @@ package it.units.sim.yourtube.playlist;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,10 +14,11 @@ import android.widget.TextView;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.Playlist;
 import it.units.sim.yourtube.model.VideoData;
+import it.units.sim.yourtube.utils.NoNavFragment;
 import it.units.sim.yourtube.video.VideosAdapter;
 import it.units.sim.yourtube.videoplayer.VideoPlayerActivity;
 
-public class PlaylistVideosFragment extends Fragment {
+public class PlaylistVideosFragment extends NoNavFragment {
 
     private Playlist mPlaylist;
 
@@ -30,7 +30,6 @@ public class PlaylistVideosFragment extends Fragment {
         PlaylistVideosFragment fragment = new PlaylistVideosFragment();
         Bundle args = new Bundle();
         args.putParcelable("playlist", playlist);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,4 +64,10 @@ public class PlaylistVideosFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    protected String getToolbarTitle() {
+        return mPlaylist.getName();
+    }
+
 }
