@@ -5,9 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,19 +19,17 @@ import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.model.UserSubscription;
 import it.units.sim.yourtube.model.VideoData;
-import it.units.sim.yourtube.utils.EmptyMenuProvider;
+import it.units.sim.yourtube.utils.NoNavFragment;
 import it.units.sim.yourtube.video.VideosAdapter;
 import it.units.sim.yourtube.videoplayer.VideoPlayerActivity;
 
 
-public class ChannelVideosFragment extends Fragment {
+public class ChannelVideosFragment extends NoNavFragment {
 
 
     private YouTubeDataViewModel viewModel;
     private VideosAdapter adapter;
     private UserSubscription channel;
-    private ActionBar toolbar;
-    private EmptyMenuProvider menuProvider;
 
     public ChannelVideosFragment() {
         // Required empty public constructor
@@ -54,8 +49,6 @@ public class ChannelVideosFragment extends Fragment {
 
         channel = getArguments().getParcelable("channel");
         viewModel.fetchVideos(channel);
-
-        menuProvider = new EmptyMenuProvider();
     }
 
     @Override
@@ -87,35 +80,8 @@ public class ChannelVideosFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        toggleBottomNav();
-        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        if (toolbar != null) {
-            toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setTitle(channel.getChannelName());
-            requireActivity().addMenuProvider(menuProvider);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        toggleBottomNav();
-        requireActivity().removeMenuProvider(menuProvider);
-        if (toolbar != null) {
-            toolbar.setDisplayHomeAsUpEnabled(false);
-            toolbar.setTitle(R.string.app_name);
-        }
-    }
-
-    private void toggleBottomNav() {
-        View bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
-        if (bottomNav.getVisibility() == View.VISIBLE) {
-            bottomNav.setVisibility(View.GONE);
-        } else {
-            bottomNav.setVisibility(View.VISIBLE);
-        }
+    protected String getToolbarTitle() {
+        return channel.getChannelName();
     }
 
 }

@@ -14,14 +14,6 @@ public abstract class NoNavFragment extends Fragment {
 
 
     private ActionBar toolbar;
-    private EmptyMenuProvider menuProvider;
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        menuProvider = new EmptyMenuProvider();
-    }
 
     @Override
     public void onResume() {
@@ -31,7 +23,7 @@ public abstract class NoNavFragment extends Fragment {
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(true);
             toolbar.setTitle(getToolbarTitle());
-            requireActivity().addMenuProvider(menuProvider);
+            requireActivity().addMenuProvider(new EmptyMenuProvider());
         }
     }
 
@@ -39,7 +31,7 @@ public abstract class NoNavFragment extends Fragment {
     public void onStop() {
         super.onStop();
         toggleBottomNav();
-        requireActivity().removeMenuProvider(menuProvider);
+        requireActivity().removeMenuProvider(new EmptyMenuProvider());
         if (toolbar != null) {
             toolbar.setDisplayHomeAsUpEnabled(false);
             toolbar.setTitle(R.string.app_name);

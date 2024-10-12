@@ -11,10 +11,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuProvider;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -27,15 +23,14 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
-import it.units.sim.yourtube.utils.EmptyMenuProvider;
 import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.model.CategoryIcon;
 import it.units.sim.yourtube.model.UserSubscription;
+import it.units.sim.yourtube.utils.NoNavFragment;
 
-public abstract class AbstractCategoryEditorFragment extends Fragment {
+public abstract class AbstractCategoryEditorFragment extends NoNavFragment {
 
-    private ActionBar toolbar;
     protected List<UserSubscription> subscriptions;
     protected CategoryEditorViewModel localViewModel;
     protected ChipGroup selectedChannelsChipGroup;
@@ -44,40 +39,16 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     protected CategoryIcon chosenCategoryIcon;
     protected String categoryName;
     protected String failureReason;
-    private MenuProvider menuProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         YouTubeDataViewModel subscriptionsViewModel = new ViewModelProvider(requireActivity()).get(YouTubeDataViewModel.class);
-        menuProvider = new EmptyMenuProvider();
+
         localViewModel = new ViewModelProvider(this).get(CategoryEditorViewModel.class);
         subscriptions = subscriptionsViewModel
                 .getSubscriptionsList()
                 .getValue();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        toggleBottomNav();
-        toolbar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        if (toolbar != null) {
-            toolbar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setTitle(getToolbarTitle());
-            requireActivity().addMenuProvider(menuProvider);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        toggleBottomNav();
-        requireActivity().removeMenuProvider(menuProvider);
-        if (toolbar != null) {
-            toolbar.setDisplayHomeAsUpEnabled(false);
-            toolbar.setTitle(R.string.app_name);
-        }
     }
 
     @Override
@@ -176,16 +147,5 @@ public abstract class AbstractCategoryEditorFragment extends Fragment {
     private void showFailureFeedbackMessage(String failureReason) {
         Snackbar.make(requireView(), failureReason, Snackbar.LENGTH_SHORT).show();
     }
-
-    private void toggleBottomNav() {
-        View bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
-        if (bottomNav.getVisibility() == View.VISIBLE) {
-            bottomNav.setVisibility(View.GONE);
-        } else {
-            bottomNav.setVisibility(View.VISIBLE);
-        }
-    }
-
-    protected abstract String getToolbarTitle();
 
 }
