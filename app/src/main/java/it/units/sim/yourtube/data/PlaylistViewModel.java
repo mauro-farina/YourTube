@@ -53,6 +53,14 @@ public class PlaylistViewModel extends AndroidViewModel {
         executorService.submit(() -> dao.update(playlist));
     }
 
+    public void removeFromPlaylist(Playlist playlist, List<VideoData> videos) {
+        List<VideoData> newList = new ArrayList<>(playlist.getVideos());
+        for (VideoData videoData : videos)
+            newList.remove(videoData);
+        playlist.setVideos(newList);
+        executorService.submit(() -> dao.update(playlist));
+    }
+
     public void deletePlaylist(Playlist playlist) {
         executorService.submit(() -> dao.delete(playlist));
     }
