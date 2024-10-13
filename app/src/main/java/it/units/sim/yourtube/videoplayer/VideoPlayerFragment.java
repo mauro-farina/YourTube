@@ -114,6 +114,13 @@ public class VideoPlayerFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        turnImmersionModeOff();
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+
+        if (tracker == null)
+            return;
+
         float currentTime = tracker.getCurrentSecond();
         float duration = tracker.getVideoDuration();
         float timestamp = 0;
@@ -136,10 +143,6 @@ public class VideoPlayerFragment extends Fragment {
             videoWatchData.setWatched(watched);
             watchDataViewModel.update(videoWatchData);
         }
-
-        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        turnImmersionModeOff();
-        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     @Override
