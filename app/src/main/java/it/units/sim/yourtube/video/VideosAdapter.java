@@ -1,6 +1,7 @@
 package it.units.sim.yourtube.video;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.units.sim.yourtube.R;
@@ -19,20 +23,22 @@ import it.units.sim.yourtube.model.VideoData;
 public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder> {
 
     private List<VideoData> videosList;
+    private final MutableLiveData<List<VideoData>> selectedVideosLiveData;
     private final View.OnClickListener onVideoClick;
-    private final View.OnLongClickListener onVideoLongClick;
+    private final boolean selectable;
 
     public VideosAdapter(List<VideoData> videosList, View.OnClickListener onVideoClick) {
-        this(videosList, onVideoClick, null);
+        this(videosList, onVideoClick, false);
     }
 
     public VideosAdapter(
             List<VideoData> videosList,
             View.OnClickListener onVideoClick,
-            View.OnLongClickListener onVideoLongClick) {
+            boolean selectable) {
         this.videosList = videosList;
         this.onVideoClick = onVideoClick;
-        this.onVideoLongClick = onVideoLongClick;
+        this.selectable = selectable;
+        this.selectedVideosLiveData = new MutableLiveData<>();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -52,21 +58,39 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull VideosAdapter.ViewHolder holder, int position) {
+        VideoData videoData = videosList.get(position);
         holder.itemView.setTag(videosList.get(position));
         holder.itemView.setOnClickListener(onVideoClick);
-        if (onVideoLongClick != null) {
-            holder.itemView.setOnLongClickListener(onVideoLongClick);
+        if (selectable) {
+            holder.itemView.setOnLongClickListener(v -> {
+                List<VideoData> selectedVideos = selectedVideosLiveData.getValue();
+                selectedVideos = (selectedVideos == null ? new ArrayList<>() : selectedVideos);
+                int bgColor = Color.TRANSPARENT;
+                if (selectedVideos.contains(videoData)) {
+                    selectedVideos.remove(videoData);
+                } else {
+                    selectedVideos.add(videoData);
+                    bgColor = Color.GRAY;
+                }
+                v.setBackgroundColor(bgColor);
+                selectedVideosLiveData.postValue(selectedVideos);
+                return true;
+            });
         }
         TextView videoTitleTextView = holder.getVideoTitleTextView();
         ImageView thumbnailImageView = holder.getThumbnailImageView();
         ImageView channelImageView = holder.getChannelImageView();
         TextView channelTextView = holder.getChannelTextView();
-        videoTitleTextView.setText(videosList.get(position).getTitle());
-        channelTextView.setText(videosList.get(position).getChannel().getChannelName());
-        Uri videoThumbnailUri = Uri.parse(videosList.get(position).getThumbnailUrl());
-        Uri channelThumbnailUri = Uri.parse(videosList.get(position).getChannel().getThumbnailUrl());
+        videoTitleTextView.setText(videoData.getTitle());
+        channelTextView.setText(videoData.getChannel().getChannelName());
+        Uri videoThumbnailUri = Uri.parse(videoData.getThumbnailUrl());
+        Uri channelThumbnailUri = Uri.parse(videoData.getChannel().getThumbnailUrl());
         thumbnailImageView.setImageURI(videoThumbnailUri);
         channelImageView.setImageURI(channelThumbnailUri);
+    }
+
+    public LiveData<List<VideoData>> getSelectedVideosData() {
+        return selectedVideosLiveData;
     }
 
     @Override
