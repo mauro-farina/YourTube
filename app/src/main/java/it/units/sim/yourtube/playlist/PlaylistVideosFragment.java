@@ -3,15 +3,18 @@ package it.units.sim.yourtube.playlist;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import java.util.Objects;
 
 import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.data.PlaylistViewModel;
 import it.units.sim.yourtube.model.Playlist;
 import it.units.sim.yourtube.model.VideoData;
 import it.units.sim.yourtube.utils.NoNavFragment;
@@ -21,6 +24,7 @@ import it.units.sim.yourtube.videoplayer.VideoPlayerActivity;
 public class PlaylistVideosFragment extends NoNavFragment {
 
     private Playlist mPlaylist;
+    private boolean showDeleteFab;
 
     public PlaylistVideosFragment() {
         // Required empty public constructor
@@ -47,6 +51,8 @@ public class PlaylistVideosFragment extends NoNavFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_playlist_videos, container, false);
+        PlaylistViewModel viewModel = new ViewModelProvider(requireActivity()).get(PlaylistViewModel.class);
+        View deleteFab = view.findViewById(R.id.playlist_videos_list_delete_fab);
         RecyclerView listView = view.findViewById(R.id.playlist_videos_list);
         VideosAdapter adapter = new VideosAdapter(
                 mPlaylist.getVideos(),
@@ -58,13 +64,24 @@ public class PlaylistVideosFragment extends NoNavFragment {
                     intent.putExtras(extras);
                     startActivity(intent);
                 },
-                v ->  true
+                true
         );
+        adapter.getSelectedVideosData().observe(getViewLifecycleOwner(), list -> {
+            if (showDeleteFab && list.size() == 0) {
+                    showDeleteFab = false;
+                    deleteFab.setVisibility(View.GONE);
+            } else if (!showDeleteFab && list.size() > 0) {
+                    showDeleteFab = true;
+                    deleteFab.setVisibility(View.VISIBLE);
+            }
+        });
         listView.setAdapter(adapter);
         listView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        TextView name = view.findViewById(R.id.playlist_videos_name);
-        name.setText(mPlaylist.getName());
+        deleteFab.setOnClickListener(v -> viewModel.removeFromPlaylist(
+                mPlaylist,
+                Objects.requireNonNull(adapter.getSelectedVideosData().getValue()))
+        );
 
         return view;
     }
