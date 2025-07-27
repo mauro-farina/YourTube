@@ -9,11 +9,15 @@
         android:icon="@drawable/icon_subscriptions"
         android:title="@string/bottom_nav_subscriptions"/>
     <item
-        android:id="@+id/categoriesFragment"
-        android:icon="@drawable/icon_categories"
-        android:title="@string/bottom_nav_categories"/>
-    <item
-        android:id="@+id/playlistFragment"
+        android:id="@+id/watchLaterFragment"
         android:icon="@drawable/icon_playlist"
         android:title="@string/playlist" />
+<!--    <item-->
+<!--        android:id="@+id/categoriesFragment"-->
+<!--        android:icon="@drawable/icon_categories"-->
+<!--        android:title="@string/bottom_nav_categories"/>-->
+<!--    <item-->
+<!--        android:id="@+id/playlistFragment"-->
+<!--        android:icon="@drawable/icon_playlist"-->
+<!--        android:title="@string/playlist" />-->
 </menu>

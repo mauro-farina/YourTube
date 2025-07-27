@@ -9,6 +9,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTubeScopes;
+import com.tencent.mmkv.MMKV;
 
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
@@ -26,6 +27,7 @@ public class YourTubeApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        MMKV.initialize(this);
         executorService = Executors.newFixedThreadPool(NUM_THREADS);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String theme = sharedPreferences.getString(SettingsManager.PREFERENCE_THEME, SettingsManager.PREFERENCE_THEME_DEFAULT);

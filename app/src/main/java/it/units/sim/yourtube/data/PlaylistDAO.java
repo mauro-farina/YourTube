@@ -10,6 +10,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import it.units.sim.yourtube.model.Playlist;
+import it.units.sim.yourtube.model.WatchLaterPlaylist;
 
 @Dao
 public interface PlaylistDAO {
@@ -31,5 +32,8 @@ public interface PlaylistDAO {
 
     @Query("DELETE FROM playlist WHERE owner LIKE :owner")
     void deleteAll(String owner);
+
+//    @Query("SELECT * FROM watchlater WHERE owner LIKE :owner")
+//    LiveData<List<String>> getWatchLaterPlaylist(String owner);
 
 }

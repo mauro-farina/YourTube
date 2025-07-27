@@ -89,6 +89,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/watchLaterFragment"
+        android:name="it.units.sim.yourtube.watchlater.WatchLaterFragment"
+        android:label="fragment_watch_later"
+        tools:layout="@layout/fragment_watch_later" />
+
+    <fragment
         android:id="@+id/settingsFragment"
         android:name="it.units.sim.yourtube.settings.SettingsFragment"
         android:label="SettingsFragment" />
