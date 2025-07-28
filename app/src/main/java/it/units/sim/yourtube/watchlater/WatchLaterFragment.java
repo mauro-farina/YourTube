@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import it.units.sim.yourtube.R;
-import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.YourTubeApp;
 import it.units.sim.yourtube.data.WatchLaterViewModel;
 import it.units.sim.yourtube.model.VideoData;
@@ -33,8 +32,6 @@ public class WatchLaterFragment extends Fragment {
     public static WatchLaterFragment newInstance() {
         WatchLaterFragment fragment = new WatchLaterFragment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,21 +39,17 @@ public class WatchLaterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-////            mParam1 = getArguments().getString(ARG_PARAM1);
-////            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
+        YourTubeApp app = (YourTubeApp) requireActivity().getApplication();
+        ViewModelProvider.AndroidViewModelFactory factory =
+                ViewModelProvider.AndroidViewModelFactory.getInstance(app);
+        viewModel = new ViewModelProvider(requireActivity(), factory).get(WatchLaterViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Can i do this in the onCreate?
-        YourTubeApp app = (YourTubeApp) requireActivity().getApplication();
-        ViewModelProvider.AndroidViewModelFactory factory =
-                ViewModelProvider.AndroidViewModelFactory.getInstance(app);
-        viewModel = new ViewModelProvider(requireActivity(), factory).get(WatchLaterViewModel.class);
+        viewModel.updateList();
 
         View view = inflater.inflate(R.layout.fragment_watch_later, container, false);
         RecyclerView listView = view.findViewById(R.id.watchlater_recycler_view);

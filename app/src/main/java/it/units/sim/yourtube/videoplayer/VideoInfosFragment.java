@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import it.units.sim.yourtube.R;
+import it.units.sim.yourtube.YourTubeApp;
+import it.units.sim.yourtube.data.WatchLaterDatabase;
 import it.units.sim.yourtube.model.VideoData;
 import it.units.sim.yourtube.playlist.ChoosePlaylistBottomSheet;
 import it.units.sim.yourtube.utils.DateFormatter;
@@ -100,8 +102,11 @@ public class VideoInfosFragment extends Fragment {
         });
 
         view.findViewById(R.id.video_player_add_to_playlist).setOnClickListener(v -> {
-            ChoosePlaylistBottomSheet bottomSheet = ChoosePlaylistBottomSheet.newInstance(video);
-            bottomSheet.show(getChildFragmentManager(), bottomSheet.getTag());
+//            ChoosePlaylistBottomSheet bottomSheet = ChoosePlaylistBottomSheet.newInstance(video);
+//            bottomSheet.show(getChildFragmentManager(), bottomSheet.getTag());
+            YourTubeApp app = (YourTubeApp) requireActivity().getApplication();
+            WatchLaterDatabase db = new WatchLaterDatabase(app.getGoogleCredential().getSelectedAccountName());
+            db.addVideo(video);
         });
 
         return view;

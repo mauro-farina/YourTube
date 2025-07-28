@@ -26,13 +26,11 @@ public class WatchLaterViewModel extends AndroidViewModel {
     public WatchLaterViewModel(@NonNull Application application) {
         super(application);
         YourTubeApp app = getApplication();
-//        executorService = app.getExecutorService();
         String owner = app.getGoogleCredential().getSelectedAccountName();
         watchLaterDB = new WatchLaterDatabase(owner);
-        updateList();
     }
 
-    private void updateList() {
+    public void updateList() {
         videosLiveData.setValue(watchLaterDB.getVideos());
     }
 
