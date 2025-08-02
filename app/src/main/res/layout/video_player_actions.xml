@@ -70,19 +70,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:id="@+id/video_player_add_to_playlist"
+        android:id="@+id/video_player_add_to_watchlater"
         android:orientation="vertical"
         android:gravity="center">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_bookmark" />
+            android:src="@drawable/icon_watch_later" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Playlist"
+            android:text="@string/watch_later"
             android:layout_marginTop="8dp"
             android:gravity="center" />
     </LinearLayout>

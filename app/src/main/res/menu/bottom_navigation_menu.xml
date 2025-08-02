@@ -10,8 +10,8 @@
         android:title="@string/bottom_nav_subscriptions"/>
     <item
         android:id="@+id/watchLaterFragment"
-        android:icon="@drawable/icon_playlist"
-        android:title="@string/playlist" />
+        android:icon="@drawable/icon_watch_later"
+        android:title="@string/watch_later" />
 <!--    <item-->
 <!--        android:id="@+id/categoriesFragment"-->
 <!--        android:icon="@drawable/icon_categories"-->

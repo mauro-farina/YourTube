@@ -87,4 +87,5 @@
     <string name="portrait_fullscreen">Portrait fullscreen</string>
     <string name="playlist">Playlist</string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="watch_later">Watch Later</string>
 </resources>
