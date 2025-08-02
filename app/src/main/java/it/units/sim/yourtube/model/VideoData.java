@@ -9,6 +9,8 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.youtube.model.PlaylistItemSnippet;
 import com.google.api.services.youtube.model.ThumbnailDetails;
 
+import java.util.Objects;
+
 public class VideoData implements Parcelable {
     private final String title;
     private final String videoId;
@@ -88,6 +90,14 @@ public class VideoData implements Parcelable {
 
     public long getPublishedDateInMillis() {
         return publishedAt.getValue();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof VideoData) {
+            return Objects.equals(this.videoId, ((VideoData) other).videoId);
+        }
+        return false;
     }
 
     @Override
