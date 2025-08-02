@@ -40,7 +40,7 @@ public class FeedFragment extends Fragment {
     private VideosAdapter adapter;
     private Calendar calendar;
     private Button datePicker;
-    private FloatingActionButton categoryFilterFAB;
+//    private FloatingActionButton categoryFilterFAB;
     private Chip categoryFilterChip;
     private View progressIndicator;
     private boolean dateObserverBypass;
@@ -100,7 +100,7 @@ public class FeedFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemViewCacheSize(30);
 
-        categoryFilterFAB = view.findViewById(R.id.category_filter_fab);
+//        categoryFilterFAB = view.findViewById(R.id.category_filter_fab);
         categoryFilterChip = view.findViewById(R.id.category_filter_chip);
         datePicker = view.findViewById(R.id.date_filter_pick);
         datePicker.setOnClickListener(v -> showDatePickerDialog());
@@ -171,24 +171,24 @@ public class FeedFragment extends Fragment {
                     }
                 }
         );
-        categoryFilterFAB.setOnClickListener(v -> {
-            FragmentManager fragmentManager = getChildFragmentManager();
-            fragmentManager.setFragmentResultListener(
-                    FilterVideosByCategoryDialog.REQUEST_KEY,
-                    getViewLifecycleOwner(),
-                    (requestKey, result) -> {
-                        if (!requestKey.equals(FilterVideosByCategoryDialog.REQUEST_KEY))
-                            return;
-                        if (result.keySet().size() == 0)
-                            return;
-                        localViewModel.setCategoryFilter(
-                                result.getParcelable(FilterVideosByCategoryDialog.RESULT_KEY)
-                        );
-                    });
-            FilterVideosByCategoryDialog
-                    .newInstance()
-                    .show(fragmentManager, FilterVideosByCategoryDialog.TAG);
-        });
+//        categoryFilterFAB.setOnClickListener(v -> {
+//            FragmentManager fragmentManager = getChildFragmentManager();
+//            fragmentManager.setFragmentResultListener(
+//                    FilterVideosByCategoryDialog.REQUEST_KEY,
+//                    getViewLifecycleOwner(),
+//                    (requestKey, result) -> {
+//                        if (!requestKey.equals(FilterVideosByCategoryDialog.REQUEST_KEY))
+//                            return;
+//                        if (result.keySet().size() == 0)
+//                            return;
+//                        localViewModel.setCategoryFilter(
+//                                result.getParcelable(FilterVideosByCategoryDialog.RESULT_KEY)
+//                        );
+//                    });
+//            FilterVideosByCategoryDialog
+//                    .newInstance()
+//                    .show(fragmentManager, FilterVideosByCategoryDialog.TAG);
+//        });
         youTubeDataViewModel.getFeedFetchCounter().observe(getViewLifecycleOwner(), fetchCount -> {
             if (fetchCount <= 1) {
                 progressIndicator.setVisibility(View.GONE);
