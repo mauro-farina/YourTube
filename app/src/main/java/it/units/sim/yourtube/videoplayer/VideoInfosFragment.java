@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import it.units.sim.yourtube.R;
 import it.units.sim.yourtube.YourTubeApp;
@@ -27,6 +28,8 @@ public class VideoInfosFragment extends Fragment {
 
     private VideoData video;
     private VideoPlayerViewModel viewModel;
+    private WatchLaterDatabase db;
+    private boolean isVideoInWL;
 
     public VideoInfosFragment() {
         // Required empty public constructor
@@ -52,6 +55,9 @@ public class VideoInfosFragment extends Fragment {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication());
         viewModel = new ViewModelProvider(requireActivity(), factory).get(VideoPlayerViewModel.class);
         viewModel.setVideoId(video.getVideoId());
+        YourTubeApp app = (YourTubeApp) requireActivity().getApplication();
+        db = new WatchLaterDatabase(app.getGoogleCredential().getSelectedAccountName());
+        isVideoInWL = db.getVideos().contains(video);
     }
 
     @Override
@@ -100,12 +106,23 @@ public class VideoInfosFragment extends Fragment {
             startActivity(Intent.createChooser(shareIntent, "Share via"));
         });
 
+        ImageView addToWatchLater = view.findViewById(R.id.video_player_add_to_watchlater_icon);
+
+        if (isVideoInWL) {
+            addToWatchLater.setImageResource(R.drawable.icon_watch_later_checked);
+        }
+
         view.findViewById(R.id.video_player_add_to_watchlater).setOnClickListener(v -> {
 //            ChoosePlaylistBottomSheet bottomSheet = ChoosePlaylistBottomSheet.newInstance(video);
 //            bottomSheet.show(getChildFragmentManager(), bottomSheet.getTag());
-            YourTubeApp app = (YourTubeApp) requireActivity().getApplication();
-            WatchLaterDatabase db = new WatchLaterDatabase(app.getGoogleCredential().getSelectedAccountName());
-            db.addVideo(video);
+            if (isVideoInWL) {
+                db.removeVideo(video);
+                addToWatchLater.setImageResource(R.drawable.icon_watch_later);
+            } else {
+                db.addVideo(video);
+                addToWatchLater.setImageResource(R.drawable.icon_watch_later_checked);
+            }
+            isVideoInWL = !isVideoInWL;
         });
 
         return view;

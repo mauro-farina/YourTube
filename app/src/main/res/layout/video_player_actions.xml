@@ -77,6 +77,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/video_player_add_to_watchlater_icon"
             android:src="@drawable/icon_watch_later" />
 
         <TextView
