@@ -2,14 +2,17 @@ package it.units.sim.yourtube.video;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,14 +20,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import it.units.sim.yourtube.YourTubeApp;
+import it.units.sim.yourtube.data.WatchLaterDatabase;
 import it.units.sim.yourtube.utils.DateFormatter;
 import it.units.sim.yourtube.YouTubeDataViewModel;
 import it.units.sim.yourtube.R;
@@ -47,6 +52,7 @@ public class FeedFragment extends Fragment {
     private boolean openedVideoPlayer;
     private List<UserSubscription> subscriptionsObserverBypass;
     private boolean hasDateChangedWhileCategoryFilterOn;
+    private WatchLaterDatabase db;
 
     public FeedFragment() {
         super();  // empty constructor
@@ -64,6 +70,8 @@ public class FeedFragment extends Fragment {
         subscriptionsObserverBypass = youTubeDataViewModel.getSubscriptionsList().getValue();
         calendar = Calendar.getInstance();
         hasDateChangedWhileCategoryFilterOn = false;
+        YourTubeApp app = (YourTubeApp) requireActivity().getApplication();
+        db = new WatchLaterDatabase(app.getGoogleCredential().getSelectedAccountName());
     }
 
     @Override
@@ -115,6 +123,87 @@ public class FeedFragment extends Fragment {
             localViewModel.setDateFilter(calendar.getTime());
         });
         progressIndicator = view.findViewById(R.id.feed_fetch_progress);
+
+        Drawable watchLaterIcon = ContextCompat.getDrawable(requireContext(), R.drawable.icon_watch_later);
+        final int intrinsicWidth = watchLaterIcon != null ? watchLaterIcon.getIntrinsicWidth() : 0;
+        final int intrinsicHeight = watchLaterIcon != null ? watchLaterIcon.getIntrinsicHeight() : 0;
+
+        // Swipe to add to "Watch Later"
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                return false; // no drag & drop
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+//                int pos = viewHolder.getBindingAdapterPosition();
+                VideoData video = (VideoData) viewHolder.itemView.getTag();
+                db.addVideo(video);
+                Toast.makeText(requireContext(), "Saved in WatchLater", Toast.LENGTH_SHORT).show();
+
+                int pos = viewHolder.getAdapterPosition();
+                if (pos == RecyclerView.NO_POSITION) return;
+
+                recyclerView.post(() -> adapter.notifyItemChanged(pos));
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c,
+                                    @NonNull RecyclerView recyclerView,
+                                    @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY,
+                                    int actionState,
+                                    boolean isCurrentlyActive) {
+
+                View itemView = viewHolder.itemView;
+                int itemHeight = itemView.getBottom() - itemView.getTop();
+
+                // Draw only the icon, no colored background
+                if (watchLaterIcon != null) {
+                    // Scale icon if it's too big (optional: keep aspect ratio)
+                    int iconSize = Math.min(intrinsicHeight, (int) (itemHeight * 0.6f));
+                    int top = itemView.getTop() + (itemHeight - iconSize) / 2;
+                    int bottom = top + iconSize;
+
+                    int alpha = Math.min(255, (int) (255 * (Math.abs(dX) / (float) itemView.getWidth())));
+                    watchLaterIcon.setAlpha(alpha);
+
+                    if (dX > 0) { // swiping right: icon on left
+                        int left = itemView.getLeft() + (itemHeight - iconSize) / 2;
+                        int right = left + iconSize;
+                        watchLaterIcon.setBounds(left, top, right, bottom);
+                    } else if (dX < 0) { // swiping left: icon on right
+                        int right = itemView.getRight() - (itemHeight - iconSize) / 2;
+                        int left = right - iconSize;
+                        watchLaterIcon.setBounds(left, top, right, bottom);
+                    } else {
+                        // no displacement: don't draw
+                        watchLaterIcon.setBounds(0, 0, 0, 0);
+                    }
+
+                    c.save();
+                    watchLaterIcon.draw(c);
+                    c.restore();
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+            @Override
+            public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                // ensure translation is zeroed
+                viewHolder.itemView.setTranslationX(0);
+            }
+        };
+
+        new ItemTouchHelper(callback).attachToRecyclerView(recyclerView);
+
         return view;
     }
 
