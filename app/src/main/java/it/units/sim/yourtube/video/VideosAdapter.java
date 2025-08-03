@@ -98,6 +98,13 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
         return videosList.size();
     }
 
+    public VideoData removeAt(int position) {
+        VideoData video = this.videosList.remove(position);
+        notifyDataSetChanged();
+//        notifyItemRemoved(position);
+        return video;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // will generate a new layout item for each list item
         private final TextView videoTitleTextView;
