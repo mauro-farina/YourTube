@@ -1,9 +1,12 @@
 package it.units.sim.yourtube;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkRequest;
 import android.os.Bundle;
@@ -22,6 +25,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import it.units.sim.yourtube.auth.AuthenticationActivity;
+import it.units.sim.yourtube.settings.SettingsManager;
 import it.units.sim.yourtube.utils.NetworkAvailabilityCallback;
 import it.units.sim.yourtube.utils.NoYouTubeAuthorizationDialog;
 
@@ -34,6 +38,19 @@ public class MainActivity extends AppCompatActivity implements MenuProvider {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String lang = sharedPreferences.getString(SettingsManager.PREFERENCE_LANGUAGE, SettingsManager.PREFERENCE_LANGUAGE_DEFAULT);
+        SettingsManager.setLanguage(getResources(), lang);
+
+        GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (googleAccount == null) {
+            logoutViaAuthenticationActivity();
+        } else {
+            YourTubeApp app = (YourTubeApp) getApplication();
+            app.setGoogleCredentialAccount(googleAccount.getEmail());
+        }
+
         setContentView(R.layout.activity_main);
 
         networkCallback = new NetworkAvailabilityCallback();

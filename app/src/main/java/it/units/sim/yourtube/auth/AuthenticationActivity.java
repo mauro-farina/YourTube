@@ -3,7 +3,6 @@ package it.units.sim.yourtube.auth;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -16,7 +15,6 @@ import com.google.api.services.youtube.YouTubeScopes;
 
 import it.units.sim.yourtube.MainActivity;
 import it.units.sim.yourtube.R;
-import it.units.sim.yourtube.settings.SettingsManager;
 import it.units.sim.yourtube.YourTubeApp;
 
 public class AuthenticationActivity extends AppCompatActivity {
@@ -28,10 +26,6 @@ public class AuthenticationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
-
-        SharedPreferences sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String lang = sharedPreferences.getString(SettingsManager.PREFERENCE_LANGUAGE, SettingsManager.PREFERENCE_LANGUAGE_DEFAULT);
-        SettingsManager.setLanguage(getResources(), lang);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
