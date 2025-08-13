@@ -149,17 +149,20 @@ public class FeedFragment extends Fragment {
                 double dx = motionEvent1.getX() - motionEvent.getX();
                 double dy = motionEvent1.getY() - motionEvent.getY();
 
-                if (dx > 150 && Math.abs(dy) < 80)
+                if (dx > 150 && Math.abs(dy) < 80) {
                     calendar.add(Calendar.DAY_OF_MONTH, -1);
-                else if (dx < 150 && Math.abs(dy) < 80)
+                    localViewModel.setDateFilter(calendar.getTime());
+                } else if (dx < 150 && Math.abs(dy) < 80) {
                     calendar.add(Calendar.DAY_OF_MONTH, 1);
-
-                localViewModel.setDateFilter(calendar.getTime());
+                    localViewModel.setDateFilter(calendar.getTime());
+                }
                 return false;
             }
         });
 
-        datePicker.setOnTouchListener((view1, motionEvent) -> gestureDetector.onTouchEvent(motionEvent));
+        datePicker.setOnTouchListener(
+                (view1, motionEvent) -> gestureDetector.onTouchEvent(motionEvent)
+        );
 
         progressIndicator = view.findViewById(R.id.feed_fetch_progress);
 
