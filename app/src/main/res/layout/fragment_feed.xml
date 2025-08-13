@@ -7,25 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".video.FeedFragment" >
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/fragment_videos_date_filters"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <include-->
+<!--        android:id="@+id/include"-->
+<!--        layout="@layout/fragment_videos_date_filters"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <com.google.android.material.chip.Chip
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Widget.Material3.Chip.Input"
-        android:id="@+id/category_filter_chip"
-        android:visibility="gone"
-        android:checkable="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include"/>
+<!--    <com.google.android.material.chip.Chip-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        style="@style/Widget.Material3.Chip.Input"-->
+<!--        android:id="@+id/category_filter_chip"-->
+<!--        android:visibility="gone"-->
+<!--        android:checkable="false"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/include"/>-->
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/feed_fetch_progress"
@@ -35,7 +35,7 @@
         android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/category_filter_chip" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/videos_recycler_view"
@@ -44,7 +44,17 @@
         app:layout_constraintTop_toBottomOf="@id/feed_fetch_progress"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <include
+        android:id="@+id/include_date_filter"
+        layout="@layout/fragment_videos_date_filters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
 <!--        android:id="@+id/category_filter_fab"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->

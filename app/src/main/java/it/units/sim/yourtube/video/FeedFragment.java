@@ -3,6 +3,7 @@ package it.units.sim.yourtube.video;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -16,13 +17,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.google.android.material.chip.Chip;
 
 import java.util.Calendar;
 import java.util.List;
@@ -46,7 +47,7 @@ public class FeedFragment extends Fragment {
     private Calendar calendar;
     private Button datePicker;
 //    private FloatingActionButton categoryFilterFAB;
-    private Chip categoryFilterChip;
+//    private Chip categoryFilterChip;
     private View progressIndicator;
     private boolean dateObserverBypass;
     private boolean openedVideoPlayer;
@@ -107,21 +108,59 @@ public class FeedFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemViewCacheSize(30);
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            private final int bottomSpace = 200; // pixels of extra scroll
+
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                int position = parent.getChildAdapterPosition(view);
+                if (position == state.getItemCount() - 1) {
+                    outRect.bottom = bottomSpace;
+                }
+            }
+        });
+
 
 //        categoryFilterFAB = view.findViewById(R.id.category_filter_fab);
-        categoryFilterChip = view.findViewById(R.id.category_filter_chip);
-        datePicker = view.findViewById(R.id.date_filter_pick);
-        datePicker.setOnClickListener(v -> showDatePickerDialog());
-        Button previousDateButton = view.findViewById(R.id.date_filter_previous);
-        Button nextDateButton = view.findViewById(R.id.date_filter_next);
-        previousDateButton.setOnClickListener(view1 -> {
-            calendar.add(Calendar.DAY_OF_MONTH, -1);
-            localViewModel.setDateFilter(calendar.getTime());
+//        categoryFilterChip = view.findViewById(R.id.category_filter_chip);
+//        datePicker = view.findViewById(R.id.date_filter_pick);
+//        datePicker.setOnClickListener(v -> showDatePickerDialog());
+//        Button previousDateButton = view.findViewById(R.id.date_filter_previous);
+//        Button nextDateButton = view.findViewById(R.id.date_filter_next);
+//        previousDateButton.setOnClickListener(view1 -> {
+//            calendar.add(Calendar.DAY_OF_MONTH, -1);
+//            localViewModel.setDateFilter(calendar.getTime());
+//        });
+//        nextDateButton.setOnClickListener(view1 -> {
+//            calendar.add(Calendar.DAY_OF_MONTH, 1);
+//            localViewModel.setDateFilter(calendar.getTime());
+//        });
+
+        datePicker = view.findViewById(R.id.date_filter_button);
+
+        GestureDetector gestureDetector = new GestureDetector(requireContext(), new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(@NonNull MotionEvent motionEvent) {
+                showDatePickerDialog();
+                return false;
+            }
+
+            @Override
+            public boolean onFling(@NonNull MotionEvent motionEvent, @NonNull MotionEvent motionEvent1, float v, float v1) {
+                double dx = motionEvent1.getX() - motionEvent.getX();
+                double dy = motionEvent1.getY() - motionEvent.getY();
+
+                if (dx > 150 && Math.abs(dy) < 80)
+                    calendar.add(Calendar.DAY_OF_MONTH, -1);
+                else if (dx < 150 && Math.abs(dy) < 80)
+                    calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+                localViewModel.setDateFilter(calendar.getTime());
+                return false;
+            }
         });
-        nextDateButton.setOnClickListener(view1 -> {
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-            localViewModel.setDateFilter(calendar.getTime());
-        });
+
+        datePicker.setOnTouchListener((view1, motionEvent) -> gestureDetector.onTouchEvent(motionEvent));
+
         progressIndicator = view.findViewById(R.id.feed_fetch_progress);
 
         Drawable watchLaterIcon = ContextCompat.getDrawable(requireContext(), R.drawable.icon_watch_later);
@@ -218,7 +257,19 @@ public class FeedFragment extends Fragment {
             );
         });
         localViewModel.getDateFilter().observe(getViewLifecycleOwner(), date -> {
-            datePicker.setText(DateFormatter.formatDate(date.getTime(), getResources()));
+            datePicker.animate()
+                    .alpha(0f)
+                    .setDuration(150)
+                    .withEndAction(() -> {
+                        datePicker.setText(DateFormatter.formatDate(date.getTime(), getResources()));
+                        datePicker.setAlpha(0f);
+                        datePicker.animate()
+                                .alpha(1f)
+                                .setDuration(150)
+                                .start();
+                    })
+                    .start();
+
             if (openedVideoPlayer) {
                 openedVideoPlayer = false;
                 dateObserverBypass = false;
@@ -236,30 +287,30 @@ public class FeedFragment extends Fragment {
             }
         });
         youTubeDataViewModel.getFeedVideos().observe(getViewLifecycleOwner(), list -> adapter.setVideosList(list));
-        localViewModel.getCategoryFilter().observe(
-                getViewLifecycleOwner(),
-                category -> {
-                    if (hasDateChangedWhileCategoryFilterOn) {
-                        hasDateChangedWhileCategoryFilterOn = false;
-                        youTubeDataViewModel.fetchVideos(
-                                localViewModel.getDateFilter().getValue(),
-                                localViewModel.getCategoryFilter().getValue()
-                        );
-                    } else {
-                        setFilteredVideosListInAdapter(category);
-                    }
-                    if (category != null) {
-                        categoryFilterChip.setText(category.getName());
-                        categoryFilterChip.setVisibility(View.VISIBLE);
-                        categoryFilterChip.setOnCloseIconClickListener(v -> {
-                            v.setVisibility(View.GONE);
-                            localViewModel.setCategoryFilter(null);
-                        });
-                    } else {
-                        categoryFilterChip.setVisibility(View.GONE);
-                    }
-                }
-        );
+//        localViewModel.getCategoryFilter().observe(
+//                getViewLifecycleOwner(),
+//                category -> {
+//                    if (hasDateChangedWhileCategoryFilterOn) {
+//                        hasDateChangedWhileCategoryFilterOn = false;
+//                        youTubeDataViewModel.fetchVideos(
+//                                localViewModel.getDateFilter().getValue(),
+//                                localViewModel.getCategoryFilter().getValue()
+//                        );
+//                    } else {
+//                        setFilteredVideosListInAdapter(category);
+//                    }
+//                    if (category != null) {
+//                        categoryFilterChip.setText(category.getName());
+//                        categoryFilterChip.setVisibility(View.VISIBLE);
+//                        categoryFilterChip.setOnCloseIconClickListener(v -> {
+//                            v.setVisibility(View.GONE);
+//                            localViewModel.setCategoryFilter(null);
+//                        });
+//                    } else {
+//                        categoryFilterChip.setVisibility(View.GONE);
+//                    }
+//                }
+//        );
 //        categoryFilterFAB.setOnClickListener(v -> {
 //            FragmentManager fragmentManager = getChildFragmentManager();
 //            fragmentManager.setFragmentResultListener(
